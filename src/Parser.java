@@ -1,3 +1,4 @@
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,23 +19,38 @@ public class Parser {
         //read from local file
         File input = new File("D:\\BetsAPI.html");
 
-        Document doc = null;
-        try {
+        /*try {
             doc = Jsoup.parse(input, "UTF-8", "");
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
+
         Element tblInplayElement;
         String pageTitle = "";
         String matchURL = "";
-        ArrayList<Element> elementList = new ArrayList<>(); //list of parsed elements
 
+        //Setting up connection
+        Connection.Response response = null;
         try {
-            doc = Jsoup.connect(MAIN_URL).get();
-            pageTitle = doc.title();
+            response = Jsoup.connect(MAIN_URL)
+                    .proxy("88.12.42.81", 47617)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36")
+                    .referrer("http://www.google.com")
+                    .timeout(10000)
+                    .execute();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Document doc = null;
+        try {
+            doc = response.parse();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        pageTitle = doc.title();
+        System.out.println(pageTitle);
 
         assert doc != null;
         tblInplayElement = doc.getElementsByAttributeValue("id", "tbl_inplay").first();
@@ -45,6 +61,7 @@ public class Parser {
         ) {
             matchURL = HOST_SITE + urlAttributes;
             //parseMatchSite(matchURL);
+            System.out.println(matchURL);
         }
 
 
@@ -54,7 +71,7 @@ public class Parser {
 
         //String matchSite = "";
 
-        File input = new File("e:\\zeno\\matchSite.html");
+        File input = new File("d:\\matchSite.html");
         Document doc = null;
         try {
             doc = Jsoup.parse(input, "UTF-8", "");
@@ -62,11 +79,21 @@ public class Parser {
             e.printStackTrace();
         }
 
-        //creating elements with main information
+        //creating elements that contain target information
         Elements infoInTr = doc.select("table.table-sm tr");
-        for (Element e:infoInTr
-             ) {
-            System.out.println("!!!Element!!!"+e);
+        for (Element e : infoInTr
+        ) {
+            String elementSpanL = "", elementSpanR = "";
+            Elements listTdElements = e.getElementsByTag("td");
+            String leftTeamVal = listTdElements.first().ownText();
+            String rightTeamVal = listTdElements.last().ownText();
+            Element leftTeamSpanElem = listTdElements.first();
+            Element rightTeamSpanVal = listTdElements.tagName("span").attr("class", "sr-only").first();
+            //String rightTeamSpanVal = leftTeamSpanElem.selectFirst("span.sr-only").ownText();
+            //System.out.println("Left team span val " + leftTeamSpanVal);
+            //System.out.println("Right team span val " + rightTeamSpanVal);
+            System.out.println(rightTeamSpanVal);
+
         }
 
     }
