@@ -82,34 +82,32 @@ public class Parser {
         //remove <span class="sr-only"> cause of repeating parameters with <div ... role="progressbar"...>
         infoInTr.select("span.sr-only").remove();
 
-        List<String[]> paramArrList = new ArrayList<>();
+        List<String[]> paramList = new ArrayList<>();
         String[] paramInfoBlock = new String[3];
 
         for (Element trElement:infoInTr
              ) {
-            Elements tdTagElements = infoInTr.select("td");
+            Elements tdTagElements = trElement.select("td");
             int counter = 0;
+            System.out.println("!!!New elements group!!!");
             for (Element elem:tdTagElements
                  ) {
                 System.out.println("Element==>"+elem+"<==Element, at index = "+counter);
                 paramInfoBlock[counter] = elem.text();
                 counter++;
             }
-            paramArrList.add(paramInfoBlock);
+            paramList.add(paramInfoBlock);
         }
 
 
-        for (ArrayList param : paramArrList
-        ) {
-            String header = (String) param.get(1);
-            System.out.println(header);
-            int leftTeamParam = Integer.parseInt((String) param.get(0));
-            int rightTeamParam = Integer.parseInt((String) param.get(2));
-
+        paramList.forEach(param -> {
+            String header = param[1];
+            int leftTeamParam = Integer.parseInt(param[0]);
+            int rightTeamParam = Integer.parseInt(param[2]);
             switch (header) {
                 case "":
-                    info.setClubName((String) param.get(0));
-                    info.setClubName((String) param.get(2));
+                    info.setClubName(param[0]);
+                    info.setClubName(param[2]);
                     break;
 
                 case "Goals":
@@ -174,8 +172,8 @@ public class Parser {
                     break;
 
             }
-            System.out.println(info.getAttacks());
-        }
+        });
+        System.out.println("мимо"+info.getTargetOff());
 
     }
 
