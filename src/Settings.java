@@ -1,5 +1,3 @@
-import java.util.List;
-
 public class Settings {
 
     // Токен Telegram бота
@@ -12,7 +10,7 @@ public class Settings {
     public String ProxyTelegram = "";
 
     // Минута матча, для отправки сообщения
-    //public int TimeSelect = 10;
+    public int TimeSelect = 10;
 
     // Владение мячом, минимум
     public int PossessionMin = 65;
@@ -28,6 +26,9 @@ public class Settings {
 
     // Список прокси для сайта
     //private List<String> lstProxy =new List<String>();
+
+    //Тайм-аут прокси, мс
+    public int timeout = 20000;
 
     // Логика условий
     public enum logic {
