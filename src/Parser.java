@@ -3,11 +3,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-import java.io.File;
 import java.io.IOException;
-import java.lang.management.MonitorInfo;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Parser {
@@ -84,28 +82,29 @@ public class Parser {
         infoInTr.select("span.sr-only").remove();
 
         List<String[]> paramList = new ArrayList<>();
-        String[] paramInfoBlock = new String[3];
 
         for (Element trElement:infoInTr
              ) {
             Elements tdTagElements = trElement.select("td");
             int counter = 0;
-            System.out.println("!!!New elements group!!!");
+            //System.out.println("!!!New elements group!!!");
+            String[] paramInfoBlock = new String[3];
             for (Element elem:tdTagElements
                  ) {
-                System.out.println("Element==>"+elem+"<==Element, at index = "+counter);
+                //System.out.println("Element==>"+elem+"<==Element, at index = "+counter);
                 paramInfoBlock[counter] = elem.text();
                 counter++;
+                if (counter == 2) paramList.add(paramInfoBlock);
             }
-            paramList.add(paramInfoBlock);
-            System.out.println(paramInfoBlock);
+            System.out.println(Arrays.toString(paramInfoBlock));
         }
 
 
-        paramList.forEach(param -> {
+        for (String[] param:paramList
+             ) {
             String header = param[1];
-            int leftTeamParam = Integer.parseInt(param[0]);
-            int rightTeamParam = Integer.parseInt(param[2]);
+            String leftTeamParam = param[0];
+            String rightTeamParam = param[2];
             switch (header) {
                 case "":
                     leftMatch.setClubName(param[0]);
@@ -113,70 +112,68 @@ public class Parser {
                     break;
 
                 case "Goals":
-                    leftMatch.setGoals(leftTeamParam);
-                    rightMatch.setGoals(rightTeamParam);
+                    leftMatch.setGoals(Integer.parseInt(leftTeamParam));
+                    rightMatch.setGoals(Integer.parseInt(rightTeamParam));
                     break;
 
                 case "Corners":
-                    leftMatch.setCorners(leftTeamParam);
-                    rightMatch.setCorners(rightTeamParam);
+                    leftMatch.setCorners(Integer.parseInt(leftTeamParam));
+                    rightMatch.setCorners(Integer.parseInt(rightTeamParam));
                     break;
 
                 case "Corners (Half)":
-                    leftMatch.setCornersHalf(leftTeamParam);
-                    rightMatch.setCornersHalf(rightTeamParam);
+                    leftMatch.setCornersHalf(Integer.parseInt(leftTeamParam));
+                    rightMatch.setCornersHalf(Integer.parseInt(rightTeamParam));
                     break;
 
                 case "Желтые карточки":
-                    leftMatch.setCardYellow(leftTeamParam);
-                    rightMatch.setCardYellow(rightTeamParam);
+                    leftMatch.setCardYellow(Integer.parseInt(leftTeamParam));
+                    rightMatch.setCardYellow(Integer.parseInt(rightTeamParam));
                     break;
 
                 case "Красные карточки":
-                    leftMatch.setCardRed(leftTeamParam);
-                    rightMatch.setCardRed(rightTeamParam);
+                    leftMatch.setCardRed(Integer.parseInt(leftTeamParam));
+                    rightMatch.setCardRed(Integer.parseInt(rightTeamParam));
                     break;
 
                 case "Пенальти":
-                    leftMatch.setPenalties(leftTeamParam);
-                    rightMatch.setPenalties(rightTeamParam);
+                    leftMatch.setPenalties(Integer.parseInt(leftTeamParam));
+                    rightMatch.setPenalties(Integer.parseInt(rightTeamParam));
                     break;
 
                 case "Замены":
-                    leftMatch.setSubstitutions(leftTeamParam);
-                    rightMatch.setSubstitutions(rightTeamParam);
+                    leftMatch.setSubstitutions(Integer.parseInt(leftTeamParam));
+                    rightMatch.setSubstitutions(Integer.parseInt(rightTeamParam));
                     break;
 
                 case "Атака":
-                    leftMatch.setAttacks(leftTeamParam);
-                    rightMatch.setAttacks(rightTeamParam);
+                    leftMatch.setAttacks(Integer.parseInt(leftTeamParam));
+                    rightMatch.setAttacks(Integer.parseInt(rightTeamParam));
                     break;
 
                 case "Опасная Атака":
-                    leftMatch.setAttacksDangerous(leftTeamParam);
-                    rightMatch.setAttacksDangerous(rightTeamParam);
+                    leftMatch.setAttacksDangerous(Integer.parseInt(leftTeamParam));
+                    rightMatch.setAttacksDangerous(Integer.parseInt(rightTeamParam));
                     break;
 
 
                 case "Удары в створ ворот":
-                    leftMatch.setTargetOn(leftTeamParam);
-                    rightMatch.setTargetOn(rightTeamParam);
+                    leftMatch.setTargetOn(Integer.parseInt(leftTeamParam));
+                    rightMatch.setTargetOn(Integer.parseInt(rightTeamParam));
                     break;
 
                 case "Удары мимо ворот":
-                    leftMatch.setTargetOff(leftTeamParam);
-                    rightMatch.setTargetOff(rightTeamParam);
+                    leftMatch.setTargetOff(Integer.parseInt(leftTeamParam));
+                    rightMatch.setTargetOff(Integer.parseInt(rightTeamParam));
                     break;
 
                 case "Владение мячом":
-                    leftMatch.setPossession(leftTeamParam);
-                    rightMatch.setPossession(rightTeamParam);
+                    leftMatch.setPossession(Integer.parseInt(leftTeamParam));
+                    rightMatch.setPossession(Integer.parseInt(rightTeamParam));
                     break;
 
             }
-        });
-        System.out.println("Goals r"+rightMatch.getGoals());
-        System.out.println("Goals l"+leftMatch.getGoals());
+        }
 
     }
 
