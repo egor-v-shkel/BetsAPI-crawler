@@ -10,9 +10,11 @@ import java.util.List;
 
 public class Parser {
 
+    MatchInfo leftMatch = new MatchInfo();
+    MatchInfo rightMatch = new MatchInfo();
     static Settings settings = new Settings();
 
-    public static void parseMainPage() {
+    public void parseMainPage() {
 
         final String HOST_SITE = "https://ru.betsapi.com";
         //read from url
@@ -24,11 +26,7 @@ public class Parser {
         //Setting up connection
         Document doc = getDoc(MAIN_URL);
 
-        //String pageTitle = doc.title();
-        //System.out.println(pageTitle);
-
         tblInplayElements = doc.select("table[id=tbl_inplay] tr");
-        //System.out.println("Element ==>"+tblInplayElements+"<==Element");
 
         //parse values from main page and write it to mainPageInfoList
         for (Element e:tblInplayElements
@@ -60,23 +58,33 @@ public class Parser {
 
         }
 
-        mainPageInfoList.removeIf(s -> s.getTime() == settings.TimeSelect);
+        //remove matches from list , that don't meet time value
+        mainPageInfoList.removeIf(s -> s.getTime() != settings.TimeSelect);
+
+        //parse all compatible matches sites
         if (mainPageInfoList.size() > 0){
             for (MainPageInfo info:mainPageInfoList
                  ) {
+                /*//this look pretty bad
                 String site = HOST_SITE+info.getUrlMatch();
-                parseMatchSite(site);
+                MatchInfo[] matchParam = parseMatchSite(site);
+                MatchInfo leftMatch = matchParam[0];
+                MatchInfo rightMatch = matchParam[1];*/
+
+                switch (settings.logic){
+                    case OR:
+                        if (leftMatch.getPossession() >= settings.possessionMin)
+                }
             }
         }
 
 
     }
 
-    public static void parseMatchSite(String site) {
+    public void parseMatchSite(String site) {
 
-        MatchInfo leftMatch = new MatchInfo();
-        MatchInfo rightMatch = new MatchInfo();
         Document doc = getDoc(site);
+
         Elements infoInTr = doc.select("table.table-sm tr");
         //remove <span class="sr-only"> cause of repeating parameters with <div ... role="progressbar"...>
         infoInTr.select("span.sr-only").remove();
