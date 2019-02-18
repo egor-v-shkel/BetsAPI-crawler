@@ -25,10 +25,10 @@ public class Settings {
     public logic Logic = logic.OR;
 
     // Список прокси для сайта
-    //private List<String> lstProxy =new List<String>();
+    //private List<String> lstProxy =new ArrayList<String>();
 
     //Тайм-аут прокси, мс
-    public int timeout = 20000;
+    public int timeout = 30000;
 
     // Логика условий
     public enum logic {

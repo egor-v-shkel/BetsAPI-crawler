@@ -76,7 +76,8 @@ public class Parser {
 
     public static void parseMatchSite(String site) {
 
-        MatchInfo info = new MatchInfo();
+        MatchInfo leftMatch = new MatchInfo();
+        MatchInfo rightMatch = new MatchInfo();
         Document doc = getDoc(site);
         Elements infoInTr = doc.select("table.table-sm tr");
         //remove <span class="sr-only"> cause of repeating parameters with <div ... role="progressbar"...>
@@ -97,6 +98,7 @@ public class Parser {
                 counter++;
             }
             paramList.add(paramInfoBlock);
+            System.out.println(paramInfoBlock);
         }
 
 
@@ -106,74 +108,75 @@ public class Parser {
             int rightTeamParam = Integer.parseInt(param[2]);
             switch (header) {
                 case "":
-                    info.setClubName(param[0]);
-                    info.setClubName(param[2]);
+                    leftMatch.setClubName(param[0]);
+                    rightMatch.setClubName(param[2]);
                     break;
 
                 case "Goals":
-                    info.setGoals(leftTeamParam);
-                    info.setGoals(rightTeamParam);
+                    leftMatch.setGoals(leftTeamParam);
+                    rightMatch.setGoals(rightTeamParam);
                     break;
 
                 case "Corners":
-                    info.setCorners(leftTeamParam);
-                    info.setCorners(rightTeamParam);
+                    leftMatch.setCorners(leftTeamParam);
+                    rightMatch.setCorners(rightTeamParam);
                     break;
 
                 case "Corners (Half)":
-                    info.setCornersHalf(leftTeamParam);
-                    info.setCornersHalf(rightTeamParam);
+                    leftMatch.setCornersHalf(leftTeamParam);
+                    rightMatch.setCornersHalf(rightTeamParam);
                     break;
 
                 case "Желтые карточки":
-                    info.setCardYellow(leftTeamParam);
-                    info.setCardYellow(rightTeamParam);
+                    leftMatch.setCardYellow(leftTeamParam);
+                    rightMatch.setCardYellow(rightTeamParam);
                     break;
 
                 case "Красные карточки":
-                    info.setCardRed(leftTeamParam);
-                    info.setCardRed(rightTeamParam);
+                    leftMatch.setCardRed(leftTeamParam);
+                    rightMatch.setCardRed(rightTeamParam);
                     break;
 
                 case "Пенальти":
-                    info.setPenalties(leftTeamParam);
-                    info.setPenalties(rightTeamParam);
+                    leftMatch.setPenalties(leftTeamParam);
+                    rightMatch.setPenalties(rightTeamParam);
                     break;
 
                 case "Замены":
-                    info.setSubstitutions(leftTeamParam);
-                    info.setSubstitutions(rightTeamParam);
+                    leftMatch.setSubstitutions(leftTeamParam);
+                    rightMatch.setSubstitutions(rightTeamParam);
                     break;
 
                 case "Атака":
-                    info.setAttacks(leftTeamParam);
-                    info.setAttacks(rightTeamParam);
+                    leftMatch.setAttacks(leftTeamParam);
+                    rightMatch.setAttacks(rightTeamParam);
                     break;
 
                 case "Опасная Атака":
-                    info.setAttacksDangerous(leftTeamParam);
-                    info.setAttacksDangerous(rightTeamParam);
+                    leftMatch.setAttacksDangerous(leftTeamParam);
+                    rightMatch.setAttacksDangerous(rightTeamParam);
                     break;
 
 
                 case "Удары в створ ворот":
-                    info.setTargetOn(leftTeamParam);
-                    info.setTargetOn(rightTeamParam);
+                    leftMatch.setTargetOn(leftTeamParam);
+                    rightMatch.setTargetOn(rightTeamParam);
                     break;
 
                 case "Удары мимо ворот":
-                    info.setTargetOff(leftTeamParam);
-                    info.setTargetOff(rightTeamParam);
+                    leftMatch.setTargetOff(leftTeamParam);
+                    rightMatch.setTargetOff(rightTeamParam);
                     break;
 
                 case "Владение мячом":
-                    info.setPossession(leftTeamParam);
-                    info.setPossession(rightTeamParam);
+                    leftMatch.setPossession(leftTeamParam);
+                    rightMatch.setPossession(rightTeamParam);
                     break;
 
             }
         });
-        System.out.println("мимо"+info.getTargetOff());
+        System.out.println("Goals r"+rightMatch.getGoals());
+        System.out.println("Goals l"+leftMatch.getGoals());
 
     }
 
@@ -181,7 +184,7 @@ public class Parser {
         Connection.Response response = null;
         try {
             response = Jsoup.connect(MAIN_URL)
-                    .proxy("176.197.103.210", 53281)
+                    .proxy("189.51.96.114", 52858)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36")
                     .referrer("http://www.google.com")
                     .timeout(settings.timeout)
