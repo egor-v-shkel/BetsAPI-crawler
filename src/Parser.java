@@ -12,7 +12,7 @@ public class Parser {
 
     MatchInfo leftMatch = new MatchInfo();
     MatchInfo rightMatch = new MatchInfo();
-    static Settings settings = new Settings();
+    Settings settings = new Settings();
 
     public void parseMainPage() {
 
@@ -73,8 +73,27 @@ public class Parser {
 
                 switch (settings.logic){
                     case OR:
-                        if (leftMatch.getPossession() >= settings.possessionMin)
+                        if (leftMatch.getPossession() >= settings.possessionMin ||
+                                leftMatch.getTargetOn() >= settings.TargetOnMin ||
+                                leftMatch.getTargetOff() >= settings.TargetOffMin) break;
+                        if (rightMatch.getPossession() >= settings.possessionMin ||
+                                rightMatch.getTargetOn() >= settings.TargetOnMin ||
+                                rightMatch.getTargetOff() >= settings.TargetOffMin) break;
+                        continue;
+                    case AND:
+                        if (leftMatch.getPossession() >= settings.possessionMin &&
+                                leftMatch.getTargetOn() >= settings.TargetOnMin &&
+                                leftMatch.getTargetOff() >= settings.TargetOffMin) break;
+                        if (rightMatch.getPossession() >= settings.possessionMin &&
+                                rightMatch.getTargetOn() >= settings.TargetOnMin &&
+                                rightMatch.getTargetOff() >= settings.TargetOffMin) break;
+                        continue;
+
                 }
+
+                StringBuilder telegramMessage = new StringBuilder();
+                telegramMessage.append(String.format("<b>{}"))
+
             }
         }
 
@@ -185,7 +204,7 @@ public class Parser {
 
     }
 
-    public static Document getDoc(String MAIN_URL) {
+    public Document getDoc(String MAIN_URL) {
         Connection.Response response = null;
         try {
             response = Jsoup.connect(MAIN_URL)
