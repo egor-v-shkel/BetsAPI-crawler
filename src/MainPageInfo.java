@@ -35,10 +35,18 @@ public class MainPageInfo {
     private String Response;
 
     // Спарсенная инфа по матчу (левая колонка)
-    private MatchInfo MatchInfoL = new MatchInfo();
+    private static MatchInfo matchInfoL = new MatchInfo();
 
     // Спарсенная инфа по матчу (правая колонка)
-    private MatchInfo MatchInfoR = new MatchInfo();
+    private static MatchInfo matchInfoR = new MatchInfo();
+
+    public static MatchInfo getMatchInfoL() {
+        return matchInfoL;
+    }
+
+    public static MatchInfo getMatchInfoR() {
+        return matchInfoR;
+    }
 
     public String getLeague() {
         return League;

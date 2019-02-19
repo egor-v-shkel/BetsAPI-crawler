@@ -10,16 +10,16 @@ public class Settings {
     public String proxyTelegram = "";
 
     // Минута матча, для отправки сообщения
-    public int TimeSelect = 10;
+    public int TimeSelect = 45;
 
     // Владение мячом, минимум
-    public int possessionMin = 65;
+    public int possessionMin = 0;
 
     // Удар по воротам, минимум
-    public int TargetOnMin = 2;
+    public int TargetOnMin = 0;
 
     // Удар мимо ворот, минимум
-    public int TargetOffMin = 5;
+    public int TargetOffMin = 0;
 
     // И/ИЛИ
     public Logic logic = Logic.OR;

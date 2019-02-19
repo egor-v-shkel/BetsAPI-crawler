@@ -9,12 +9,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Parser {
+    static Settings settings = new Settings();
 
-    MatchInfo leftMatch = new MatchInfo();
-    MatchInfo rightMatch = new MatchInfo();
-    Settings settings = new Settings();
-
-    public void parseMainPage() {
+    public static void parseMainPage() {
 
         final String HOST_SITE = "https://ru.betsapi.com";
         //read from url
@@ -71,6 +68,11 @@ public class Parser {
                 MatchInfo leftMatch = matchParam[0];
                 MatchInfo rightMatch = matchParam[1];*/
 
+                parseMatchSite(HOST_SITE+info.getUrlMatch());
+
+                MatchInfo leftMatch = MainPageInfo.getMatchInfoL();
+                MatchInfo rightMatch = MainPageInfo.getMatchInfoL();
+
                 switch (settings.logic){
                     case OR:
                         if (leftMatch.getPossession() >= settings.possessionMin ||
@@ -90,9 +92,12 @@ public class Parser {
                         continue;
 
                 }
+                System.out.println(info.getClubL());
 
+/*
                 StringBuilder telegramMessage = new StringBuilder();
-                telegramMessage.append(String.format("<b>{}"))
+                telegramMessage.append(String.format("<b>{}"));
+*/
 
             }
         }
@@ -100,11 +105,15 @@ public class Parser {
 
     }
 
-    public void parseMatchSite(String site) {
+    public static void parseMatchSite(String site) {
 
         Document doc = getDoc(site);
+        System.out.println("!!!Document!!!");
+        System.out.println(doc);
 
         Elements infoInTr = doc.select("table.table-sm tr");
+        System.out.println("!!!Selected info!!!");
+        System.out.println(infoInTr);
         //remove <span class="sr-only"> cause of repeating parameters with <div ... role="progressbar"...>
         infoInTr.select("span.sr-only").remove();
 
@@ -114,11 +123,11 @@ public class Parser {
              ) {
             Elements tdTagElements = trElement.select("td");
             int counter = 0;
-            //System.out.println("!!!New elements group!!!");
+            System.out.println("!!!New elements group!!!");
             String[] paramInfoBlock = new String[3];
             for (Element elem:tdTagElements
                  ) {
-                //System.out.println("Element==>"+elem+"<==Element, at index = "+counter);
+                System.out.println("Element==>"+elem+"<==Element, at index = "+counter);
                 paramInfoBlock[counter] = elem.text();
                 counter++;
                 if (counter == 2) paramList.add(paramInfoBlock);
@@ -132,6 +141,10 @@ public class Parser {
             String header = param[1];
             String leftTeamParam = param[0];
             String rightTeamParam = param[2];
+
+            MatchInfo leftMatch = MainPageInfo.getMatchInfoL();
+            MatchInfo rightMatch = MainPageInfo.getMatchInfoL();
+
             switch (header) {
                 case "":
                     leftMatch.setClubName(param[0]);
@@ -204,11 +217,11 @@ public class Parser {
 
     }
 
-    public Document getDoc(String MAIN_URL) {
+    public static Document getDoc(String MAIN_URL) {
         Connection.Response response = null;
         try {
             response = Jsoup.connect(MAIN_URL)
-                    .proxy("189.51.96.114", 52858)
+                    .proxy("109.68.161.188", 3128 )
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36")
                     .referrer("http://www.google.com")
                     .timeout(settings.timeout)
