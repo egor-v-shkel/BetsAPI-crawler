@@ -17,37 +17,42 @@ public class Parser {
         //read from url
         final String MAIN_URL = "https://ru.betsapi.com/ci/soccer";
 
-        Elements tblInplayElements;
+        Elements scopeElements;
         List<MainPageInfo> mainPageInfoList = new ArrayList<>();
 
         //Setting up connection
         Document doc = getDoc(MAIN_URL);
 
-        tblInplayElements = doc.select("table[id=tbl_inplay] tr");
+        //selecting scope of elements, where needed information located
+        scopeElements = doc.select("table[id=tbl_inplay] tr");
 
-        //parse values from main page and write it to mainPageInfoList
-        for (Element e:tblInplayElements
+        //parse values from scope and write it to mainPageInfoList
+        for (Element e:scopeElements
              ) {
             MainPageInfo mainPageInfo = new MainPageInfo();
 
+            //league
             mainPageInfo.setLeague(e.selectFirst("td[class=league_n] a").ownText());
+            //matchId
             mainPageInfo.setIdMatch(e.attr("id").replace("r_","" ));
-
+            //time
             Element timeElement = e.selectFirst("span[class=race-time]");
             mainPageInfo.setTime(Integer.parseInt(timeElement.ownText().replace("\'", "")));
-
+            //timesup
             Element timeSupElement = timeElement.selectFirst("sup");
             if (timeSupElement != null){
                 timeSupElement.remove();
             }
-
+            //score
             Element scoreElement = e.selectFirst(String.format("td[id=o_%s_0]", mainPageInfo.getIdMatch()));
             mainPageInfo.setScore(scoreElement.ownText());
-
-            mainPageInfo.setUrlMatch(timeElement.attr("href"));
+            //URL
+            mainPageInfo.setUrlMatch(e.select("td[class=text-center] a").attr("href"));
+            //Rate
             mainPageInfo.setRateL(e.selectFirst(String.format("td[id=o_%s_0]", mainPageInfo.getIdMatch())).ownText());
             mainPageInfo.setRateC(e.selectFirst(String.format("td[id=o_%s_1]", mainPageInfo.getIdMatch())).ownText());
             mainPageInfo.setRateR(e.selectFirst(String.format("td[id=o_%s_2]", mainPageInfo.getIdMatch())).ownText());
+            //clubs names
             mainPageInfo.setClubL(e.selectFirst("td[class=text-right text-truncate] a").ownText());
             mainPageInfo.setClubR(e.selectFirst("td[class=text-truncate] a").ownText());
 
@@ -112,7 +117,7 @@ public class Parser {
         System.out.println(doc);
 
         Elements infoInTr = doc.select("table.table-sm tr");
-        System.out.println("!!!Selected info!!!");
+        //System.out.println("!!!Selected info!!!");
         System.out.println(infoInTr);
         //remove <span class="sr-only"> cause of repeating parameters with <div ... role="progressbar"...>
         infoInTr.select("span.sr-only").remove();
@@ -123,7 +128,7 @@ public class Parser {
              ) {
             Elements tdTagElements = trElement.select("td");
             int counter = 0;
-            System.out.println("!!!New elements group!!!");
+            //System.out.println("!!!New elements group!!!");
             String[] paramInfoBlock = new String[3];
             for (Element elem:tdTagElements
                  ) {
