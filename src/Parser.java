@@ -3,7 +3,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.telegram.telegrambots.ApiContextInitializer;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import sun.misc.Unsafe;
+
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,7 +54,7 @@ public class Parser {
             mainPageInfo.setScore(scoreElement.ownText());
             //URL
             mainPageInfo.setUrlMatch(e.select("td[class=text-center] a").attr("href"));
-            //Rate
+            //rate
             mainPageInfo.setRateL(e.selectFirst(String.format("td[id=o_%s_0]", mainPageInfo.getIdMatch())).ownText());
             mainPageInfo.setRateC(e.selectFirst(String.format("td[id=o_%s_1]", mainPageInfo.getIdMatch())).ownText());
             mainPageInfo.setRateR(e.selectFirst(String.format("td[id=o_%s_2]", mainPageInfo.getIdMatch())).ownText());
@@ -67,13 +73,9 @@ public class Parser {
         if (mainPageInfoList.size() > 0){
             for (MainPageInfo info:mainPageInfoList
                  ) {
-                /*//this look pretty bad
-                String site = HOST_SITE+info.getUrlMatch();
-                MatchInfo[] matchParam = parseMatchSite(site);
-                MatchInfo leftMatch = matchParam[0];
-                MatchInfo rightMatch = matchParam[1];*/
 
-                parseMatchSite(HOST_SITE+info.getUrlMatch());
+                String matchURL = HOST_SITE + info.getUrlMatch();
+                parseMatchSite(matchURL);
 
                 MatchInfo leftMatch = MainPageInfo.getMatchInfoL();
                 MatchInfo rightMatch = MainPageInfo.getMatchInfoL();
@@ -97,12 +99,9 @@ public class Parser {
                         continue;
 
                 }
-                System.out.println(info.getClubL());
 
-/*
-                StringBuilder telegramMessage = new StringBuilder();
-                telegramMessage.append(String.format("<b>{}"));
-*/
+                successTelegramMessage();
+                initTelegBotsAPI();
 
             }
         }
@@ -110,25 +109,44 @@ public class Parser {
 
     }
 
+    public static Document getDoc(String MAIN_URL) {
+        Connection.Response response = null;
+        try {
+            response = Jsoup.connect(MAIN_URL)
+                    .proxy("109.68.161.188", 3128 )
+                    //TODO add method, that get proxy list from http://spys.me/proxy.txt
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36")
+                    .referrer("http://www.google.com")
+                    .timeout(settings.timeout)
+                    .execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Document doc = null;
+        try {
+            doc = response.parse();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return doc;
+    }
+
     public static void parseMatchSite(String site) {
 
         Document doc = getDoc(site);
-        System.out.println("!!!Document!!!");
-        System.out.println(doc);
 
         Elements infoInTr = doc.select("table.table-sm tr");
-        //System.out.println("!!!Selected info!!!");
-        System.out.println(infoInTr);
-        //remove <span class="sr-only"> cause of repeating parameters with <div ... role="progressbar"...>
+        //remove <span class="sr-only"> because of repetition parameters with <div ... role="progressbar"...>
         infoInTr.select("span.sr-only").remove();
 
         List<String[]> paramList = new ArrayList<>();
 
+        //TODO shit code. can be better.
         for (Element trElement:infoInTr
              ) {
             Elements tdTagElements = trElement.select("td");
             int counter = 0;
-            //System.out.println("!!!New elements group!!!");
             String[] paramInfoBlock = new String[3];
             for (Element elem:tdTagElements
                  ) {
@@ -222,26 +240,33 @@ public class Parser {
 
     }
 
-    public static Document getDoc(String MAIN_URL) {
-        Connection.Response response = null;
-        try {
-            response = Jsoup.connect(MAIN_URL)
-                    .proxy("109.68.161.188", 3128 )
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36")
-                    .referrer("http://www.google.com")
-                    .timeout(settings.timeout)
-                    .execute();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void successTelegramMessage() {
+        StringBuilder telegramMessage = new StringBuilder();
+        telegramMessage.append(String.format("<b>%s<b>%s%s",  System.lineSeparator()));
+    }
 
-        Document doc = null;
+    public static void initTelegBotsAPI(){
+        ApiContextInitializer.init();
+
+        TelegramBotsApi botsApi = new TelegramBotsApi();
+
         try {
-            doc = response.parse();
-        } catch (IOException e) {
+            botsApi.registerBot(new TelegramBot());
+        } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-        return doc;
+    }
+
+    public static void disableWarning() {
+        try {
+            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe"); theUnsafe.setAccessible(true);
+            Unsafe u = (Unsafe) theUnsafe.get(null);
+            Class cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
+            Field logger = cls.getDeclaredField("logger");
+            u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
+        } catch (Exception e) {
+            // ignore
+        }
     }
 
 }
