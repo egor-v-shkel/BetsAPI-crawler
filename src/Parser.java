@@ -3,13 +3,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.telegram.telegrambots.ApiContextInitializer;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import sun.misc.Unsafe;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -78,7 +76,7 @@ public class Parser {
                 parseMatchSite(matchURL);
 
                 MatchInfo leftMatch = MainPageInfo.getMatchInfoL();
-                MatchInfo rightMatch = MainPageInfo.getMatchInfoL();
+                MatchInfo rightMatch = MainPageInfo.getMatchInfoR();
 
                 switch (settings.logic){
                     case OR:
@@ -100,6 +98,22 @@ public class Parser {
 
                 }
 
+                StringBuilder stringBuilder = new StringBuilder();
+                String newLine = System.lineSeparator();
+                stringBuilder.append("<b>").append(info.getLeague()).append("</b>").append(newLine)
+                        .append(leftMatch.getClubName()).append(" (").append(info.getRateL()).append(") - ").append(rightMatch).append(" (").append(info.getRateR()).append(")").append(newLine)
+                        .append("<i>").append(info.getTime()).append(" мин.</i>").append(newLine)
+                        .append("<b>").append(info.getScore()).append("</b>");
+
+                TelegramBot bot = new TelegramBot();
+                SendMessage sendMessage = new SendMessage();
+                long chatId = -333530356;
+                sendMessage.setChatId(chatId).setText(stringBuilder.toString());
+                try {
+                    bot.execute(sendMessage);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
 
             }
         }
@@ -148,12 +162,10 @@ public class Parser {
             String[] paramInfoBlock = new String[3];
             for (Element elem:tdTagElements
                  ) {
-                System.out.println("Element==>"+elem+"<==Element, at index = "+counter);
                 paramInfoBlock[counter] = elem.text();
                 counter++;
                 if (counter == 2) paramList.add(paramInfoBlock);
             }
-            System.out.println(Arrays.toString(paramInfoBlock));
         }
 
 
