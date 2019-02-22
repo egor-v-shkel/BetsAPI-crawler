@@ -214,7 +214,7 @@ public class Parser {
         Connection.Response response = null;
         try {
             response = Jsoup.connect(MAIN_URL)
-                    .proxy("91.102.219.73", 3128)
+                    .proxy("103.76.188.52", 58867)
                     //TODO add method, that get proxy list from http://spys.me/proxy.txt
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36")
                     .referrer("http://www.google.com")
