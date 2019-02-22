@@ -4,18 +4,32 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Main {
 
     public static void main(String[] args) {
 
         //
-        //Parser.parseMatchSite("https://ru.betsapi.com/r/1415616/Atl%C3%A9tico-Venezuela-v-Deportivo-La-Guaira");
+        //Parser.parseMatchPage("https://ru.betsapi.com/r/1415616/Atl%C3%A9tico-Venezuela-v-Deportivo-La-Guaira");
         Main.disableWarning();
 
         Main.initTelegBotsAPI();
 
-        Parser.parseMainPage();
+        Timer timer = new Timer();
+        TimerTask myTask = new TimerTask() {
+            @Override
+            public void run() {
+                Parser.parseMainPage();
+            }
+        };
+
+        timer.schedule(myTask, 0, 60000);
+
+
+
+
     }
 
     public static void initTelegBotsAPI(){

@@ -4,16 +4,17 @@ public class Settings {
     public String tgToken = "";
 
     // ID чата в ТГ
-    public String tgChatId = "";
+    public long chatId = -333530356;
 
     // Прокси для отправки сообщения в Telegram
     public String proxyTelegram = "";
 
     // Минута матча, для отправки сообщения
-    public int TimeSelect = 78;
+    public int TimeSelectMin = 45;
+    public int TimeSelectMax = 45;
 
     // Владение мячом, минимум
-    public int possessionMin = 0;
+    public int possessionMin = 60;
 
     // Удар по воротам, минимум
     public int TargetOnMin = 0;
@@ -22,7 +23,7 @@ public class Settings {
     public int TargetOffMin = 0;
 
     // И/ИЛИ
-    public Logic logic = Logic.OR;
+    public Logic logic = Logic.AND;
 
     // Список прокси для сайта
     //private List<String> lstProxy =new ArrayList<String>();

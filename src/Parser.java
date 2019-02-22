@@ -4,12 +4,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Parser {
@@ -65,7 +63,7 @@ public class Parser {
         }
 
         //remove matches from list , that don't meet time value
-        mainPageInfoList.removeIf(s -> s.getTime() != settings.TimeSelect);
+        mainPageInfoList.removeIf(s -> (s.getTime() <= settings.TimeSelectMin && s.getTime() >= settings.TimeSelectMax));
 
         //parse all compatible matches sites
         if (mainPageInfoList.size() > 0){
@@ -73,7 +71,7 @@ public class Parser {
                  ) {
 
                 String matchURL = HOST_SITE + info.getUrlMatch();
-                parseMatchSite(matchURL);
+                parseMatchPage(matchURL);
 
                 MatchInfo leftMatch = MainPageInfo.getMatchInfoL();
                 MatchInfo rightMatch = MainPageInfo.getMatchInfoR();
@@ -101,14 +99,19 @@ public class Parser {
                 StringBuilder stringBuilder = new StringBuilder();
                 String newLine = System.lineSeparator();
                 stringBuilder.append("<b>").append(info.getLeague()).append("</b>").append(newLine)
-                        .append(leftMatch.getClubName()).append(" (").append(info.getRateL()).append(") - ").append(rightMatch).append(" (").append(info.getRateR()).append(")").append(newLine)
+                        .append(leftMatch.getClubName()).append(" (").append(info.getRateL()).append(") - ").append(rightMatch.getClubName()).append(" (").append(info.getRateR()).append(")").append(newLine)
                         .append("<i>").append(info.getTime()).append(" мин.</i>").append(newLine)
-                        .append("<b>").append(info.getScore()).append("</b>");
+                        .append("<b>").append(info.getScore()).append("</b>")
+                        .append("АТ (атаки): [").append(leftMatch.getAttacks()).append(", ").append(rightMatch.getAttacks()).append("]").append(newLine)
+                        .append("ОАТ (опасные атаки): [").append(leftMatch.getAttacksDangerous()).append(", ").append(rightMatch.getAttacksDangerous()).append("]").append(newLine)
+                        .append("В (владение мячем): [").append(leftMatch.getPossession()).append(", ").append(rightMatch.getPossession()).append("]").append(newLine)
+                        .append("У (угловые): [").append(leftMatch.getCorners()).append(", ").append(rightMatch.getCorners()).append("]").append(newLine)
+                        .append("УВ (удары в створ): [").append(leftMatch.getTargetOn()).append(", ").append(rightMatch.getTargetOn()).append("]").append(newLine)
+                        .append("УМ (удары мимо ворот): [").append(leftMatch.getTargetOff()).append(", ").append(rightMatch.getTargetOff()).append("]").append(newLine);
 
                 TelegramBot bot = new TelegramBot();
                 SendMessage sendMessage = new SendMessage();
-                long chatId = -333530356;
-                sendMessage.setChatId(chatId).setText(stringBuilder.toString());
+                sendMessage.setChatId(settings.chatId).setParseMode("html").setText(stringBuilder.toString());
                 try {
                     bot.execute(sendMessage);
                 } catch (TelegramApiException e) {
@@ -125,7 +128,7 @@ public class Parser {
         Connection.Response response = null;
         try {
             response = Jsoup.connect(MAIN_URL)
-                    .proxy("109.68.161.188", 3128 )
+                    .proxy("103.231.136.165", 8080)
                     //TODO add method, that get proxy list from http://spys.me/proxy.txt
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36")
                     .referrer("http://www.google.com")
@@ -144,7 +147,7 @@ public class Parser {
         return doc;
     }
 
-    public static void parseMatchSite(String site) {
+    public static void parseMatchPage(String site) {
 
         Document doc = getDoc(site);
 
@@ -249,11 +252,5 @@ public class Parser {
         }
 
     }
-
-    public static void successTelegramMessage() {
-        StringBuilder telegramMessage = new StringBuilder();
-        telegramMessage.append(String.format("<b>%s<b>%s%s",  System.lineSeparator()));
-    }
-
 
 }
