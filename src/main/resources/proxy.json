@@ -1,0 +1,275 @@
+{
+  "data": [
+
+
+
+
+    {
+      "ipPort": "91.102.219.73:3128",
+      "ip": "91.102.219.73",
+      "port": "3128",
+      "country": "RU",
+      "last_checked": "2019-02-22 14:08:22",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "1",
+      "support": {
+        "https": 1,
+        "get": null,
+        "post": null,
+        "cookies": null,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "47.52.40.184:3128",
+      "ip": "47.52.40.184",
+      "port": "3128",
+      "country": "US",
+      "last_checked": "2019-02-22 13:57:30",
+      "proxy_level": "anonymous",
+      "type": "http",
+      "speed": "10",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "154.79.242.86:52458",
+      "ip": "154.79.242.86",
+      "port": "52458",
+      "country": "KE",
+      "last_checked": "2019-02-22 14:15:19",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "13",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "178.46.160.18:3128",
+      "ip": "178.46.160.18",
+      "port": "3128",
+      "country": "RU",
+      "last_checked": "2019-02-22 14:10:15",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "1",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 1
+      }
+    },
+    {
+      "ipPort": "103.76.188.52:58867",
+      "ip": "103.76.188.52",
+      "port": "58867",
+      "country": "IN",
+      "last_checked": "2019-02-22 14:24:34",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "10",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "223.165.241.9:38526",
+      "ip": "223.165.241.9",
+      "port": "38526",
+      "country": "KR",
+      "last_checked": "2019-02-22 13:57:21",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "10",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "51.77.238.151:1080",
+      "ip": "51.77.238.151",
+      "port": "1080",
+      "country": "GB",
+      "last_checked": "2019-02-22 14:16:24",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "9",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "103.219.212.49:30281",
+      "ip": "103.219.212.49",
+      "port": "30281",
+      "country": "IN",
+      "last_checked": "2019-02-22 14:20:54",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "17",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "173.249.43.105:3128",
+      "ip": "173.249.43.105",
+      "port": "3128",
+      "country": "US",
+      "last_checked": "2019-02-22 14:18:00",
+      "proxy_level": "anonymous",
+      "type": "http",
+      "speed": "9",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "88.204.154.155:8080",
+      "ip": "88.204.154.155",
+      "port": "8080",
+      "country": "KZ",
+      "last_checked": "2019-02-22 14:22:49",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "2",
+      "support": {
+        "https": 1,
+        "get": null,
+        "post": null,
+        "cookies": null,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "97.64.135.4:8080",
+      "ip": "97.64.135.4",
+      "port": "8080",
+      "country": "US",
+      "last_checked": "2019-02-22 14:06:17",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "1",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 1
+      }
+    },
+    {
+      "ipPort": "93.171.242.179:42141",
+      "ip": "93.171.242.179",
+      "port": "42141",
+      "country": "CZ",
+      "last_checked": "2019-02-22 14:17:43",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "9",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "185.105.236.4:3128",
+      "ip": "185.105.236.4",
+      "port": "3128",
+      "country": "IR",
+      "last_checked": "2019-02-22 14:11:16",
+      "proxy_level": "anonymous",
+      "type": "http",
+      "speed": "9",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "216.100.88.229:8080",
+      "ip": "216.100.88.229",
+      "port": "8080",
+      "country": "US",
+      "last_checked": "2019-02-22 14:07:17",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "1",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    }
+  ],
+  "count": 20
+}
