@@ -19,7 +19,6 @@
             </plugin>
         </plugins>
     </build>
-
     <dependencies>
         <dependency>
             <groupId>org.jsoup</groupId>
@@ -37,5 +36,4 @@
             <version>1.2.56</version>
         </dependency>
     </dependencies>
-
 </project>

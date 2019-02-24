@@ -15,10 +15,9 @@ public class Main {
         //disable warning "An illegal reflective access operation has occurred"
         Main.disableWarning();
 
-        //Main.getProxList
-
         Main.initTelegBotsAPI();
         //configure to repeat once a minute
+        Proxy proxy  = new Proxy();
         Timer timer = new Timer();
         TimerTask myTask = new TimerTask() {
             @Override
@@ -26,11 +25,7 @@ public class Main {
                 Parser.parseMainPage();
             }
         };
-        timer.schedule(myTask, 0, 120000);
-
-
-
-
+        timer.schedule(myTask, 0, 60000);
     }
 
     public static void initTelegBotsAPI(){

@@ -1,37 +1,14 @@
 {
   "data": [
-
-
-
-
     {
-      "ipPort": "91.102.219.73:3128",
-      "ip": "91.102.219.73",
-      "port": "3128",
-      "country": "RU",
-      "last_checked": "2019-02-22 14:08:22",
+      "ipPort": "221.120.163.242:31767",
+      "ip": "221.120.163.242",
+      "port": "31767",
+      "country": "AU",
+      "last_checked": "2019-02-23 17:29:12",
       "proxy_level": "elite",
       "type": "http",
-      "speed": "1",
-      "support": {
-        "https": 1,
-        "get": null,
-        "post": null,
-        "cookies": null,
-        "referer": 1,
-        "user_agent": 1,
-        "google": 0
-      }
-    },
-    {
-      "ipPort": "47.52.40.184:3128",
-      "ip": "47.52.40.184",
-      "port": "3128",
-      "country": "US",
-      "last_checked": "2019-02-22 13:57:30",
-      "proxy_level": "anonymous",
-      "type": "http",
-      "speed": "10",
+      "speed": "12",
       "support": {
         "https": 1,
         "get": 1,
@@ -43,11 +20,11 @@
       }
     },
     {
-      "ipPort": "154.79.242.86:52458",
-      "ip": "154.79.242.86",
-      "port": "52458",
-      "country": "KE",
-      "last_checked": "2019-02-22 14:15:19",
+      "ipPort": "78.26.126.33:42136",
+      "ip": "78.26.126.33",
+      "port": "42136",
+      "country": "IT",
+      "last_checked": "2019-02-23 17:40:53",
       "proxy_level": "elite",
       "type": "http",
       "speed": "13",
@@ -62,128 +39,109 @@
       }
     },
     {
-      "ipPort": "178.46.160.18:3128",
-      "ip": "178.46.160.18",
+      "ipPort": "178.128.208.74:8080",
+      "ip": "178.128.208.74",
+      "port": "8080",
+      "country": "GR",
+      "last_checked": "2019-02-23 17:28:13",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "9",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "91.216.231.94:30886",
+      "ip": "91.216.231.94",
+      "port": "30886",
+      "country": "UA",
+      "last_checked": "2019-02-23 17:40:18",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "9",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "191.241.228.78:20183",
+      "ip": "191.241.228.78",
+      "port": "20183",
+      "country": "BR",
+      "last_checked": "2019-02-23 17:35:21",
+      "proxy_level": "anonymous",
+      "type": "http",
+      "speed": "11",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "2.185.149.4:8888",
+      "ip": "2.185.149.4",
+      "port": "8888",
+      "country": "IR",
+      "last_checked": "2019-02-23 17:33:08",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "18",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "83.171.113.12:44422",
+      "ip": "83.171.113.12",
+      "port": "44422",
+      "country": "RU",
+      "last_checked": "2019-02-23 17:40:43",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "10",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "91.102.218.2:3128",
+      "ip": "91.102.218.2",
       "port": "3128",
       "country": "RU",
-      "last_checked": "2019-02-22 14:10:15",
+      "last_checked": "2019-02-23 17:37:36",
       "proxy_level": "elite",
       "type": "http",
       "speed": "1",
-      "support": {
-        "https": 1,
-        "get": 1,
-        "post": 1,
-        "cookies": 1,
-        "referer": 1,
-        "user_agent": 1,
-        "google": 1
-      }
-    },
-    {
-      "ipPort": "103.76.188.52:58867",
-      "ip": "103.76.188.52",
-      "port": "58867",
-      "country": "IN",
-      "last_checked": "2019-02-22 14:24:34",
-      "proxy_level": "elite",
-      "type": "http",
-      "speed": "10",
-      "support": {
-        "https": 1,
-        "get": 1,
-        "post": 1,
-        "cookies": 1,
-        "referer": 1,
-        "user_agent": 1,
-        "google": 0
-      }
-    },
-    {
-      "ipPort": "223.165.241.9:38526",
-      "ip": "223.165.241.9",
-      "port": "38526",
-      "country": "KR",
-      "last_checked": "2019-02-22 13:57:21",
-      "proxy_level": "elite",
-      "type": "http",
-      "speed": "10",
-      "support": {
-        "https": 1,
-        "get": 1,
-        "post": 1,
-        "cookies": 1,
-        "referer": 1,
-        "user_agent": 1,
-        "google": 0
-      }
-    },
-    {
-      "ipPort": "51.77.238.151:1080",
-      "ip": "51.77.238.151",
-      "port": "1080",
-      "country": "GB",
-      "last_checked": "2019-02-22 14:16:24",
-      "proxy_level": "elite",
-      "type": "http",
-      "speed": "9",
-      "support": {
-        "https": 1,
-        "get": 1,
-        "post": 1,
-        "cookies": 1,
-        "referer": 1,
-        "user_agent": 1,
-        "google": 0
-      }
-    },
-    {
-      "ipPort": "103.219.212.49:30281",
-      "ip": "103.219.212.49",
-      "port": "30281",
-      "country": "IN",
-      "last_checked": "2019-02-22 14:20:54",
-      "proxy_level": "elite",
-      "type": "http",
-      "speed": "17",
-      "support": {
-        "https": 1,
-        "get": 1,
-        "post": 1,
-        "cookies": 1,
-        "referer": 1,
-        "user_agent": 1,
-        "google": 0
-      }
-    },
-    {
-      "ipPort": "173.249.43.105:3128",
-      "ip": "173.249.43.105",
-      "port": "3128",
-      "country": "US",
-      "last_checked": "2019-02-22 14:18:00",
-      "proxy_level": "anonymous",
-      "type": "http",
-      "speed": "9",
-      "support": {
-        "https": 1,
-        "get": 1,
-        "post": 1,
-        "cookies": 1,
-        "referer": 1,
-        "user_agent": 1,
-        "google": 0
-      }
-    },
-    {
-      "ipPort": "88.204.154.155:8080",
-      "ip": "88.204.154.155",
-      "port": "8080",
-      "country": "KZ",
-      "last_checked": "2019-02-22 14:22:49",
-      "proxy_level": "elite",
-      "type": "http",
-      "speed": "2",
       "support": {
         "https": 1,
         "get": null,
@@ -195,11 +153,11 @@
       }
     },
     {
-      "ipPort": "97.64.135.4:8080",
-      "ip": "97.64.135.4",
-      "port": "8080",
-      "country": "US",
-      "last_checked": "2019-02-22 14:06:17",
+      "ipPort": "190.216.7.9:8181",
+      "ip": "190.216.7.9",
+      "port": "8181",
+      "country": "AR",
+      "last_checked": "2019-02-23 17:41:11",
       "proxy_level": "elite",
       "type": "http",
       "speed": "1",
@@ -210,15 +168,15 @@
         "cookies": 1,
         "referer": 1,
         "user_agent": 1,
-        "google": 1
+        "google": 0
       }
     },
     {
-      "ipPort": "93.171.242.179:42141",
-      "ip": "93.171.242.179",
-      "port": "42141",
-      "country": "CZ",
-      "last_checked": "2019-02-22 14:17:43",
+      "ipPort": "46.237.206.55:3128",
+      "ip": "46.237.206.55",
+      "port": "3128",
+      "country": "DE",
+      "last_checked": "2019-02-23 17:36:13",
       "proxy_level": "elite",
       "type": "http",
       "speed": "9",
@@ -233,33 +191,185 @@
       }
     },
     {
-      "ipPort": "185.105.236.4:3128",
-      "ip": "185.105.236.4",
+      "ipPort": "170.82.4.217:59192",
+      "ip": "170.82.4.217",
+      "port": "59192",
+      "country": "BR",
+      "last_checked": "2019-02-23 17:18:50",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "10",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "185.68.28.76:443",
+      "ip": "185.68.28.76",
+      "port": "443",
+      "country": "CZ",
+      "last_checked": "2019-02-23 17:16:42",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "14",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "54.36.117.30:3128",
+      "ip": "54.36.117.30",
       "port": "3128",
-      "country": "IR",
-      "last_checked": "2019-02-22 14:11:16",
+      "country": "FR",
+      "last_checked": "2019-02-23 17:30:12",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "9",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "160.119.131.114:38794",
+      "ip": "160.119.131.114",
+      "port": "38794",
+      "country": "",
+      "last_checked": "2019-02-23 17:40:07",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "11",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "82.207.41.135:39962",
+      "ip": "82.207.41.135",
+      "port": "39962",
+      "country": "UA",
+      "last_checked": "2019-02-23 17:30:53",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "10",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "181.112.188.38:34744",
+      "ip": "181.112.188.38",
+      "port": "34744",
+      "country": "EC",
+      "last_checked": "2019-02-23 17:29:08",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "14",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "5.141.9.32:41341",
+      "ip": "5.141.9.32",
+      "port": "41341",
+      "country": "RU",
+      "last_checked": "2019-02-23 17:37:12",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "10",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "220.130.205.58:8080",
+      "ip": "220.130.205.58",
+      "port": "8080",
+      "country": "TW",
+      "last_checked": "2019-02-23 17:36:23",
+      "proxy_level": "anonymous",
+      "type": "http",
+      "speed": "10",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "36.74.72.76:41437",
+      "ip": "36.74.72.76",
+      "port": "41437",
+      "country": "ID",
+      "last_checked": "2019-02-23 17:39:08",
+      "proxy_level": "elite",
+      "type": "http",
+      "speed": "11",
+      "support": {
+        "https": 1,
+        "get": 1,
+        "post": 1,
+        "cookies": 1,
+        "referer": 1,
+        "user_agent": 1,
+        "google": 0
+      }
+    },
+    {
+      "ipPort": "47.89.37.177:3128",
+      "ip": "47.89.37.177",
+      "port": "3128",
+      "country": "US",
+      "last_checked": "2019-02-23 17:29:27",
       "proxy_level": "anonymous",
       "type": "http",
       "speed": "9",
-      "support": {
-        "https": 1,
-        "get": 1,
-        "post": 1,
-        "cookies": 1,
-        "referer": 1,
-        "user_agent": 1,
-        "google": 0
-      }
-    },
-    {
-      "ipPort": "216.100.88.229:8080",
-      "ip": "216.100.88.229",
-      "port": "8080",
-      "country": "US",
-      "last_checked": "2019-02-22 14:07:17",
-      "proxy_level": "elite",
-      "type": "http",
-      "speed": "1",
       "support": {
         "https": 1,
         "get": 1,

@@ -12,12 +12,22 @@ import java.util.List;
 
 public class Parser {
     static Settings settings = new Settings();
+    static String ip;
+    static int port;
 
     public static void parseMainPage() {
 
         final String HOST_SITE = "https://ru.betsapi.com";
         //read from url
         final String MAIN_URL = "https://ru.betsapi.com/ci/soccer";
+        Proxy proxy = new Proxy();
+        try {
+            ip = proxy.getIp();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        port = proxy.getPort();
+        System.out.println("proxy "+ip+":"+port);
 
         Elements scopeElements;
         List<MainPageInfo> mainPageInfoList = new ArrayList<>();
@@ -214,7 +224,7 @@ public class Parser {
         Connection.Response response = null;
         try {
             response = Jsoup.connect(MAIN_URL)
-                    .proxy("91.102.219.73", 3128)
+                    .proxy(ip, port)
                     //TODO add method, that get proxy list from http://spys.me/proxy.txt
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36")
                     .referrer("http://www.google.com")
