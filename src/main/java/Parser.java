@@ -9,23 +9,25 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Parser {
     static Settings settings = new Settings();
     static String ip;
     static int port;
+    static Proxy proxy;
 
-    public static void parseMainPage() {
+    public Parser(Proxy proxy) {
+        this.proxy = proxy;
+    }
+
+
+    public static void parseMainPage() throws IOException {
 
         final String HOST_SITE = "https://ru.betsapi.com";
         //read from url
         final String MAIN_URL = "https://ru.betsapi.com/ci/soccer";
-        Proxy proxy = new Proxy();
-        try {
-            ip = proxy.getIp();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ip = proxy.getIp();
         port = proxy.getPort();
         System.out.println("proxy "+ip+":"+port);
 
@@ -114,7 +116,7 @@ public class Parser {
 
     }
 
-    public static void parseMatchPage(String site) {
+    public static void parseMatchPage(String site) throws IOException {
 
         Document doc = getDoc(site);
 
@@ -220,18 +222,43 @@ public class Parser {
 
     }
 
-    public static Document getDoc(String MAIN_URL) {
-        Connection.Response response = null;
+    public static Document getDoc(String URL){
         try {
-            response = Jsoup.connect(MAIN_URL)
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Connection.Response response = null;
+        int statusCode = 0;
+        try {
+            statusCode = Jsoup.connect(URL)
                     .proxy(ip, port)
-                    //TODO add method, that get proxy list from http://spys.me/proxy.txt
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36")
                     .referrer("http://www.google.com")
                     .timeout(settings.timeout)
-                    .execute();
+                    .execute().statusCode();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        System.out.println("Status code - "+statusCode);
+        if ((statusCode == 200)) {
+            try {
+                response = Jsoup.connect(URL)
+                        .proxy(ip, port)
+                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36")
+                        .referrer("http://www.google.com")
+                        .timeout(settings.timeout)
+                        .execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Establishing connection with proxy "+ip+":"+port);
+        } else {
+            ip = proxy.getIp();
+            port = proxy.getPort();
+            System.out.println("!!!Connection was not successful!!!");
+            System.out.println("Trying establish new connection with proxy "+ip+":"+port);
+            getDoc(URL);
         }
 
         Document doc = null;

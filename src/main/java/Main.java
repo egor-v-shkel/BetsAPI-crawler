@@ -4,6 +4,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.LongPollingBot;
 import sun.misc.Unsafe;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,10 +23,15 @@ public class Main {
         TimerTask myTask = new TimerTask() {
             @Override
             public void run() {
-                Parser.parseMainPage();
+                Parser ps = new Parser(proxy);
+                try {
+                    Parser.parseMainPage();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         };
-        timer.schedule(myTask, 0, 60000);
+        timer.schedule(myTask, 0, 120000);
     }
 
     public static void initTelegBotsAPI(){

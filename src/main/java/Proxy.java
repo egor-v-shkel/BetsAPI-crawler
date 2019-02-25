@@ -13,6 +13,27 @@ class Proxy {
     private JSONArray ipArray;
     private JSONObject proxyObj;
 
+    public String getIp() {
+        if (firstTimeCall){
+            try {
+                getNewProxyArray();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            firstTimeCall = false;
+        } else {
+            try {
+                renew();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return ip;
+    }
+    public int getPort() {
+        return port;
+    }
+
     private void renew() throws IOException {
         if(ipArray.isEmpty()){
             getNewProxyArray();
@@ -26,7 +47,7 @@ class Proxy {
 
     private void getNewProxyArray() throws IOException {
         //TODO rewrite this part
-        URL url = new URL("http://pubproxy.com/api/proxy?format=json&type=http&https=true&last_check=60&speed=25&limit=20&user_agent=true&referer=true");
+        URL url = new URL("http://pubproxy.com/api/proxy?format=json&type=http&https=true&last_check=60&speed=25&limit=20&user_agent=true&referer=true&country=RU");
         Scanner scanner = new Scanner((InputStream) url.getContent());
         StringBuilder sb = new StringBuilder();
         while (scanner.hasNext()){
@@ -40,20 +61,6 @@ class Proxy {
         proxyObj = ipArray.getJSONObject(0);
         ip = proxyObj.getString("ip");
         port = proxyObj.getInt("port");
-    }
-
-    public String getIp() throws IOException {
-        if (firstTimeCall){
-            getNewProxyArray();
-            ipArray.remove(0);
-            firstTimeCall = false;
-        } else {
-            renew();
-        }
-        return ip;
-    }
-
-    public int getPort() {
-        return port;
+        ipArray.remove(0);
     }
 }
