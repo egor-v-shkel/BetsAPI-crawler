@@ -1,4 +1,5 @@
 import org.jsoup.Connection;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -7,6 +8,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -228,19 +230,43 @@ public class Parser {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        int statusCode;
         Connection.Response response = null;
-        int statusCode = 0;
         try {
-            statusCode = Jsoup.connect(URL)
+            response = Jsoup.connect(URL)
                     .proxy(ip, port)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36")
                     .referrer("http://www.google.com")
                     .timeout(settings.timeout)
-                    .execute().statusCode();
+                    .ignoreHttpErrors(true)
+                    .execute();
+            System.out.println("Response status code"+response.statusCode());
+            System.out.println("Response status message"+response.statusMessage());
+        } catch (HttpStatusException | SocketTimeoutException e){
+            e.printStackTrace();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Status code - "+statusCode);
+
+        while (response.statusCode() != 200){
+            ip = proxy.getIp();
+            port = proxy.getPort();
+            try {
+                response = Jsoup.connect(URL)
+                        .proxy(ip, port)
+                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36")
+                        .referrer("http://www.google.com")
+                        .timeout(settings.timeout)
+                        .ignoreHttpErrors(true)
+                        .execute();
+                statusCode = response.statusCode();
+                System.out.println("Statuscode from loop "+statusCode);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        /*System.out.println("Status code - "+statusCode);
         if ((statusCode == 200)) {
             try {
                 response = Jsoup.connect(URL)
@@ -259,7 +285,7 @@ public class Parser {
             System.out.println("!!!Connection was not successful!!!");
             System.out.println("Trying establish new connection with proxy "+ip+":"+port);
             getDoc(URL);
-        }
+        }*/
 
         Document doc = null;
         try {
