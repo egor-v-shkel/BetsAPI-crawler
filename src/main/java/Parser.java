@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,11 @@ public class Parser {
     static int port;
     static Proxy proxy;
 
-    public Parser(Proxy proxy) {
+    public Parser(Proxy proxy, String ip, int port) {
+        Parser.ip = ip;
+        Parser.port = port;
         this.proxy = proxy;
+
     }
 
 
@@ -29,9 +33,7 @@ public class Parser {
         final String HOST_SITE = "https://ru.betsapi.com";
         //read from url
         final String MAIN_URL = "https://ru.betsapi.com/ci/soccer";
-        ip = proxy.getIp();
-        port = proxy.getPort();
-        System.out.println("proxy "+ip+":"+port);
+        System.out.println("proxy " + ip + ":" + port);
 
         Elements scopeElements;
         List<MainPageInfo> mainPageInfoList = new ArrayList<>();
@@ -43,20 +45,20 @@ public class Parser {
         scopeElements = doc.select("table[id=tbl_inplay] tr");
 
         //parse values from scope and write it to mainPageInfoList
-        for (Element e:scopeElements
-             ) {
+        for (Element e : scopeElements
+        ) {
             MainPageInfo mainPageInfo = new MainPageInfo();
 
             //league
             mainPageInfo.setLeague(e.selectFirst("td[class=league_n] a").ownText());
             //matchId
-            mainPageInfo.setIdMatch(e.attr("id").replace("r_","" ));
+            mainPageInfo.setIdMatch(e.attr("id").replace("r_", ""));
             //time
             Element timeElement = e.selectFirst("span[class=race-time]");
             mainPageInfo.setTime(Integer.parseInt(timeElement.ownText().replace("\'", "")));
             //timesup
             Element timeSupElement = timeElement.selectFirst("sup");
-            if (timeSupElement != null){
+            if (timeSupElement != null) {
                 timeSupElement.remove();
             }
             //score
@@ -76,13 +78,18 @@ public class Parser {
 
         }
 
+        System.out.println("List before removing");
+        System.out.println(mainPageInfoList);
+
         //remove matches from list , that don't meet time value
         mainPageInfoList.removeIf(s -> (s.getTime() <= settings.TimeSelectMin && s.getTime() >= settings.TimeSelectMax));
+        System.out.println("List after removing");
+        System.out.println(mainPageInfoList);
 
         //parse all compatible matches sites
-        if (mainPageInfoList.size() > 0){
-            for (MainPageInfo info:mainPageInfoList
-                 ) {
+        if (mainPageInfoList.size() > 0) {
+            for (MainPageInfo info : mainPageInfoList
+            ) {
                 //assemble url
                 info.setUrlMatch(HOST_SITE + info.getUrlMatch());
                 parseMatchPage(info.getUrlMatch());
@@ -90,7 +97,7 @@ public class Parser {
                 MatchInfo leftMatch = MainPageInfo.getMatchInfoL();
                 MatchInfo rightMatch = MainPageInfo.getMatchInfoR();
 
-                switch (settings.logic){
+                switch (settings.logic) {
                     case OR:
                         if (leftMatch.getPossession() >= settings.possessionMin ||
                                 leftMatch.getTargetOn() >= settings.TargetOnMin ||
@@ -118,7 +125,7 @@ public class Parser {
 
     }
 
-    public static void parseMatchPage(String site) throws IOException {
+    public static void parseMatchPage(String site) {
 
         Document doc = getDoc(site);
 
@@ -129,13 +136,13 @@ public class Parser {
         List<String[]> paramList = new ArrayList<>();
 
         //TODO shit code. can be better.
-        for (Element trElement:infoInTr
-             ) {
+        for (Element trElement : infoInTr
+        ) {
             Elements tdTagElements = trElement.select("td");
             int counter = 0;
             String[] paramInfoBlock = new String[3];
-            for (Element elem:tdTagElements
-                 ) {
+            for (Element elem : tdTagElements
+            ) {
                 paramInfoBlock[counter] = elem.text();
                 counter++;
                 if (counter == 3) paramList.add(paramInfoBlock);
@@ -143,8 +150,8 @@ public class Parser {
         }
 
 
-        for (String[] param:paramList
-             ) {
+        for (String[] param : paramList
+        ) {
             String header = param[1];
             String leftTeamParam = param[0];
             String rightTeamParam = param[2];
@@ -224,68 +231,32 @@ public class Parser {
 
     }
 
-    public static Document getDoc(String URL){
+    public static Document getDoc(String URL) {
         try {
             TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        int statusCode;
+        int statusCode = 0;
         Connection.Response response = null;
-        try {
-            response = Jsoup.connect(URL)
-                    .proxy(ip, port)
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36")
-                    .referrer("http://www.google.com")
-                    .timeout(settings.timeout)
-                    .ignoreHttpErrors(true)
-                    .execute();
-            System.out.println("Response status code"+response.statusCode());
-            System.out.println("Response status message"+response.statusMessage());
-        } catch (HttpStatusException | SocketTimeoutException e){
-            e.printStackTrace();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        while (response.statusCode() != 200){
-            ip = proxy.getIp();
-            port = proxy.getPort();
+        while (statusCode != 200) {
             try {
                 response = Jsoup.connect(URL)
+                        .timeout(settings.timeout)
                         .proxy(ip, port)
                         .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36")
                         .referrer("http://www.google.com")
-                        .timeout(settings.timeout)
-                        .ignoreHttpErrors(true)
+                        //.ignoreHttpErrors(true)
                         .execute();
                 statusCode = response.statusCode();
-                System.out.println("Statuscode from loop "+statusCode);
+                System.out.println("Statuscode from loop " + statusCode);
+                System.out.println("Proxy from loop - "+ip+":"+port);
             } catch (IOException e) {
                 e.printStackTrace();
+                ip = proxy.getIp();
+                port = proxy.getPort();
             }
         }
-        /*System.out.println("Status code - "+statusCode);
-        if ((statusCode == 200)) {
-            try {
-                response = Jsoup.connect(URL)
-                        .proxy(ip, port)
-                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36")
-                        .referrer("http://www.google.com")
-                        .timeout(settings.timeout)
-                        .execute();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            System.out.println("Establishing connection with proxy "+ip+":"+port);
-        } else {
-            ip = proxy.getIp();
-            port = proxy.getPort();
-            System.out.println("!!!Connection was not successful!!!");
-            System.out.println("Trying establish new connection with proxy "+ip+":"+port);
-            getDoc(URL);
-        }*/
 
         Document doc = null;
         try {

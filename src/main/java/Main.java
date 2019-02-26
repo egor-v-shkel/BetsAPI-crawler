@@ -19,11 +19,13 @@ public class Main {
         Main.initTelegBotsAPI();
         //configure to repeat once a minute
         Proxy proxy  = new Proxy();
+        String ip = proxy.getIp();
+        int port = proxy.getPort();
         Timer timer = new Timer();
         TimerTask myTask = new TimerTask() {
             @Override
             public void run() {
-                Parser ps = new Parser(proxy);
+                Parser ps = new Parser(proxy, ip, port);
                 try {
                     Parser.parseMainPage();
                 } catch (IOException e) {

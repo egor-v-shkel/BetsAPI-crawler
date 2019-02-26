@@ -29,7 +29,7 @@ public class Settings {
     //private List<String> lstProxy =new ArrayList<String>();
 
     //Тайм-аут прокси, мс
-    public int timeout = 30000;
+    public int timeout = 10000;
 
     // Логика условий
     public enum Logic {
