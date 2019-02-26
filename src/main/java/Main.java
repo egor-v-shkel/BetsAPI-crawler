@@ -33,7 +33,7 @@ public class Main {
                 }
             }
         };
-        timer.schedule(myTask, 0, 120000);
+        timer.schedule(myTask, 0, 60000);
     }
 
     public static void initTelegBotsAPI(){

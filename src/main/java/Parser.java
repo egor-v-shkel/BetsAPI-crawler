@@ -82,7 +82,7 @@ public class Parser {
         System.out.println(mainPageInfoList);
 
         //remove matches from list , that don't meet time value
-        mainPageInfoList.removeIf(s -> (s.getTime() <= settings.TimeSelectMin && s.getTime() >= settings.TimeSelectMax));
+        mainPageInfoList.removeIf(s -> (s.getTime() <= settings.TimeSelectMin || s.getTime() >= settings.TimeSelectMax));
         System.out.println("List after removing");
         System.out.println(mainPageInfoList);
 
