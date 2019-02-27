@@ -28,7 +28,7 @@ public class Parser {
     }
 
 
-    public static void parseMainPage() throws IOException {
+    public void parseMainPage() {
 
         final String HOST_SITE = "https://ru.betsapi.com";
         //read from url
@@ -78,13 +78,8 @@ public class Parser {
 
         }
 
-        System.out.println("List before removing");
-        System.out.println(mainPageInfoList);
-
         //remove matches from list , that don't meet time value
         mainPageInfoList.removeIf(s -> (s.getTime() <= settings.TimeSelectMin || s.getTime() >= settings.TimeSelectMax));
-        System.out.println("List after removing");
-        System.out.println(mainPageInfoList);
 
         //parse all compatible matches sites
         if (mainPageInfoList.size() > 0) {
@@ -233,7 +228,7 @@ public class Parser {
 
     public static Document getDoc(String URL) {
         try {
-            TimeUnit.SECONDS.sleep(1);
+            TimeUnit.MILLISECONDS.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -254,7 +249,9 @@ public class Parser {
             } catch (IOException e) {
                 e.printStackTrace();
                 ip = proxy.getIp();
+                proxy.setIp(ip);
                 port = proxy.getPort();
+                proxy.setPort(port);
             }
         }
 

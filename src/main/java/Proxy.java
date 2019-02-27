@@ -30,8 +30,15 @@ class Proxy {
         }
         return ip;
     }
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
     public int getPort() {
         return port;
+    }
+    public void setPort(int port) {
+        this.port = port;
     }
 
     private void renew() throws IOException {

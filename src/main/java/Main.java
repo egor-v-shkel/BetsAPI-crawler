@@ -1,10 +1,8 @@
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.meta.generics.LongPollingBot;
 import sun.misc.Unsafe;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,15 +23,13 @@ public class Main {
         TimerTask myTask = new TimerTask() {
             @Override
             public void run() {
+                System.out.println("Timer started");
+                System.out.println("Proxy from timer - "+ip+":"+port);
                 Parser ps = new Parser(proxy, ip, port);
-                try {
-                    Parser.parseMainPage();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                ps.parseMainPage();
             }
         };
-        timer.schedule(myTask, 0, 60000);
+        timer.schedule(myTask, 0, 30000);
     }
 
     public static void initTelegBotsAPI(){
