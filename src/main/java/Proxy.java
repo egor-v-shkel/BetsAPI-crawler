@@ -9,25 +9,10 @@ import java.util.Scanner;
 class Proxy {
     private String ip;
     private int port;
-    private boolean firstTimeCall = true;
     private JSONArray ipArray;
     private JSONObject proxyObj;
 
     public String getIp() {
-        if (firstTimeCall){
-            try {
-                getNewProxyArray();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            firstTimeCall = false;
-        } else {
-            try {
-                renew();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
         return ip;
     }
     public void setIp(String ip) {
@@ -41,9 +26,13 @@ class Proxy {
         this.port = port;
     }
 
-    private void renew() throws IOException {
+    public void refresh() {
         if(ipArray.isEmpty()){
-            getNewProxyArray();
+            try {
+                getNewProxyArray();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             proxyObj = ipArray.getJSONObject(0);
             ip = proxyObj.getString("ip");
@@ -52,7 +41,7 @@ class Proxy {
         }
     }
 
-    private void getNewProxyArray() throws IOException {
+    public void getNewProxyArray() throws IOException {
         //TODO rewrite this part
         URL url = new URL("http://pubproxy.com/api/proxy?format=json&type=http&https=true&last_check=60&speed=25&limit=20&user_agent=true&referer=true&country=RU");
         Scanner scanner = new Scanner((InputStream) url.getContent());

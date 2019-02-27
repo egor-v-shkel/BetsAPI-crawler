@@ -1,5 +1,4 @@
 import org.jsoup.Connection;
-import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -8,8 +7,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.IOException;
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -20,10 +17,10 @@ public class Parser {
     static int port;
     static Proxy proxy;
 
-    public Parser(Proxy proxy, String ip, int port) {
-        Parser.ip = ip;
-        Parser.port = port;
+    public Parser(Proxy proxy) {
         this.proxy = proxy;
+        ip = proxy.getIp();
+        port = proxy.getPort();
 
     }
 
@@ -33,7 +30,7 @@ public class Parser {
         final String HOST_SITE = "https://ru.betsapi.com";
         //read from url
         final String MAIN_URL = "https://ru.betsapi.com/ci/soccer";
-        System.out.println("proxy " + ip + ":" + port);
+        System.out.println("Start proxy " + ip + ":" + port);
 
         Elements scopeElements;
         List<MainPageInfo> mainPageInfoList = new ArrayList<>();
@@ -227,13 +224,17 @@ public class Parser {
     }
 
     public static Document getDoc(String URL) {
-        try {
+        //Possible proxy ban due to a lot number of request. Need to set delay between requests.
+        /*try {
             TimeUnit.MILLISECONDS.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
         int statusCode = 0;
         Connection.Response response = null;
+
+
+        //Need to handle exceptions, not ignore them
         while (statusCode != 200) {
             try {
                 response = Jsoup.connect(URL)
@@ -248,10 +249,9 @@ public class Parser {
                 System.out.println("Proxy from loop - "+ip+":"+port);
             } catch (IOException e) {
                 e.printStackTrace();
+                proxy.refresh();
                 ip = proxy.getIp();
-                proxy.setIp(ip);
                 port = proxy.getPort();
-                proxy.setPort(port);
             }
         }
 

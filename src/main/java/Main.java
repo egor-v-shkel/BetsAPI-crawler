@@ -3,6 +3,7 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import sun.misc.Unsafe;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -17,15 +18,16 @@ public class Main {
         Main.initTelegBotsAPI();
         //configure to repeat once a minute
         Proxy proxy  = new Proxy();
-        String ip = proxy.getIp();
-        int port = proxy.getPort();
+        try {
+            proxy.getNewProxyArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Timer timer = new Timer();
         TimerTask myTask = new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Timer started");
-                System.out.println("Proxy from timer - "+ip+":"+port);
-                Parser ps = new Parser(proxy, ip, port);
+                Parser ps = new Parser(proxy);
                 ps.parseMainPage();
             }
         };

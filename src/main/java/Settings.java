@@ -10,7 +10,7 @@ public class Settings {
     public String proxyTelegram = "";
 
     // Минута матча, для отправки сообщения
-    public int TimeSelectMin = 80;
+    public int TimeSelectMin = 0;
     public int TimeSelectMax = 100;
 
     // Владение мячом, минимум
