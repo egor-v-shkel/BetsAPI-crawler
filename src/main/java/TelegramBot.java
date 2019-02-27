@@ -8,6 +8,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
 
+/*
         if (update.hasMessage() && update.getMessage().hasText()) {
             SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
                     .setChatId(update.getMessage().getChatId())
@@ -17,6 +18,10 @@ public class TelegramBot extends TelegramLongPollingBot {
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
+        }
+*/
+        if (update.getMessage().getText().equals("/stop")){
+            System.exit(0);
         }
     }
 
