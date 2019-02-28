@@ -9,15 +9,14 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-public class Parser {
+class Parser {
     static Settings settings = new Settings();
-    static String ip;
-    static int port;
-    static Proxy proxy;
+    String ip;
+    int port;
+    Proxy proxy;
 
-    public Parser(Proxy proxy) {
+    Parser(Proxy proxy) {
         this.proxy = proxy;
         ip = proxy.getIp();
         port = proxy.getPort();
@@ -25,12 +24,12 @@ public class Parser {
     }
 
 
-    public void parseMainPage() {
+    void parseMainPage() {
 
         final String HOST_SITE = "https://ru.betsapi.com";
         //read from url
         final String MAIN_URL = "https://ru.betsapi.com/ci/soccer";
-        System.out.println("Start proxy " + ip + ":" + port);
+        System.out.println("proxy " + ip + ":" + port);
 
         Elements scopeElements;
         List<MainPageInfo> mainPageInfoList = new ArrayList<>();
@@ -117,9 +116,13 @@ public class Parser {
 
     }
 
-    public static void parseMatchPage(String site) {
+    public void parseMatchPage(String site) {
 
-        Document doc = getDoc(site);
+        //handle NullPointerException
+        Document doc = null;
+        while (doc == null){
+            doc = getDoc(site);
+        }
 
         Elements infoInTr = doc.select("table.table-sm tr");
         //remove <span class="sr-only"> because of repetition parameters with <div ... role="progressbar"...>
@@ -223,19 +226,16 @@ public class Parser {
 
     }
 
-    public static Document getDoc(String URL) {
-        //Possible proxy ban due to a lot number of request. Need to set delay between requests.
+    private Document getDoc(String URL) {
         /*try {
-            TimeUnit.MILLISECONDS.sleep(500);
+            TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
         int statusCode = 0;
+        int numTries = 5;
         Connection.Response response = null;
-
-
-        //Need to handle exceptions, not ignore them
-        while (statusCode != 200) {
+        while (true) {
             try {
                 response = Jsoup.connect(URL)
                         .timeout(settings.timeout)
@@ -245,13 +245,19 @@ public class Parser {
                         //.ignoreHttpErrors(true)
                         .execute();
                 statusCode = response.statusCode();
-                System.out.println("Statuscode from loop " + statusCode);
-                System.out.println("Proxy from loop - "+ip+":"+port);
+                break;
             } catch (IOException e) {
                 e.printStackTrace();
-                proxy.refresh();
-                ip = proxy.getIp();
-                port = proxy.getPort();
+                if (--numTries == 0) try {
+                    throw e;
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                    proxy.refresh();
+                    ip = proxy.getIp();
+                    port = proxy.getPort();
+                    System.out.println("Status code "+statusCode);
+                    System.out.println("Proxy"+ip+":"+port);
+                }
             }
         }
 
@@ -260,8 +266,9 @@ public class Parser {
             doc = response.parse();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            return doc;
         }
-        return doc;
     }
 
     private static void sendTelegramMessage(MainPageInfo info, MatchInfo leftMatch, MatchInfo rightMatch) {

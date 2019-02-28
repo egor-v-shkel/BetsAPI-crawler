@@ -11,22 +11,19 @@ public class Settings {
 
     // Минута матча, для отправки сообщения
     public int TimeSelectMin = 0;
-    public int TimeSelectMax = 100;
+    public int TimeSelectMax = 90;
 
     // Владение мячом, минимум
-    public int possessionMin = 57;
+    public int possessionMin = 50;
 
     // Удар по воротам, минимум
-    public int TargetOnMin = 0;
+    public int TargetOnMin = 3;
 
     // Удар мимо ворот, минимум
     public int TargetOffMin = 0;
 
     // И/ИЛИ
     public Logic logic = Logic.AND;
-
-    // Список прокси для сайта
-    //private List<String> lstProxy =new ArrayList<String>();
 
     //Тайм-аут прокси, мс
     public int timeout = 10000;
