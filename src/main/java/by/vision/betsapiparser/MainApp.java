@@ -1,6 +1,7 @@
 package by.vision.betsapiparser;
 
 import javafx.application.Application;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,7 +27,7 @@ public class MainApp extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
-        stage.setTitle("BetsAPI parser");
+        stage.setTitle("BetsAPI parser v.0.0.1");
         stage.setScene(scene);
         stage.show();
     }

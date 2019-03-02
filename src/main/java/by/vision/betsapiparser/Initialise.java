@@ -12,8 +12,25 @@ import java.util.TimerTask;
 
 public class Initialise {
 
-    public static void start() {
+    public static void start(Proxy proxy) {
 
+        Parser ps = new Parser(proxy);
+        ps.parseMainPage();
+    }
+}
+
+class MyThread implements Runnable {
+    Thread thread;
+
+    // Конструктор
+    MyThread(String name) {
+        // Создаём новый поток
+        thread = new Thread(this, name);
+        thread.start(); // Запускаем поток
+    }
+
+    // Обязательный метод для интерфейса Runnable
+    public void run() {
         //disable warning "An illegal reflective access operation has occurred"
         disableWarning();
 
@@ -25,22 +42,10 @@ public class Initialise {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Parser ps = new Parser(proxy);
-        ps.parseMainPage();
-    }
-
-    public static void initTelegBotsAPI() {
-        ApiContextInitializer.init();
-
-        TelegramBotsApi botsApi = new TelegramBotsApi();
-
-        try {
-            botsApi.registerBot(new TelegramBot());
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
+        while (true) {
+            Initialise.start(proxy);
         }
     }
-
     public static void disableWarning() {
         try {
             Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
@@ -53,21 +58,15 @@ public class Initialise {
             // ignore
         }
     }
+    public static void initTelegBotsAPI() {
+        ApiContextInitializer.init();
 
-}
+        TelegramBotsApi botsApi = new TelegramBotsApi();
 
-class MyRunnable implements Runnable {
-    Thread thread;
-
-    // Конструктор
-    MyRunnable() {
-        // Создаём новый поток
-        thread = new Thread();
-        thread.start(); // Запускаем поток
-    }
-
-    // Обязательный метод для интерфейса Runnable
-    public void run() {
-        Initialise.start();
+        try {
+            botsApi.registerBot(new TelegramBot());
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
 }
