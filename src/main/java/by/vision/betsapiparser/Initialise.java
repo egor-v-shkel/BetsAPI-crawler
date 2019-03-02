@@ -56,18 +56,18 @@ public class Initialise {
 
 }
 
-//class MyRunnable implements Runnable {
-//    Thread thread;
-//
-//    // Конструктор
-//    MyRunnable() {
-//        // Создаём новый поток
-//        thread = new Thread();
-//        thread.start(); // Запускаем поток
-//    }
-//
-//    // Обязательный метод для интерфейса Runnable
-//    public void run() {
-//        Initialise.start();
-//    }
-//}
+class MyRunnable implements Runnable {
+    Thread thread;
+
+    // Конструктор
+    MyRunnable() {
+        // Создаём новый поток
+        thread = new Thread();
+        thread.start(); // Запускаем поток
+    }
+
+    // Обязательный метод для интерфейса Runnable
+    public void run() {
+        Initialise.start();
+    }
+}

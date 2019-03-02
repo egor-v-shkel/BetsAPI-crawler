@@ -47,7 +47,7 @@ class Proxy {
 
     public void getNewProxyArray() throws IOException {
         //TODO rewrite this part
-        URL url = new URL("http://pubproxy.com/api/proxy?format=json&type=http&https=true&last_check=60&speed=25&limit=20&user_agent=true&referer=true");//&country=US,RU
+        URL url = new URL("http://pubproxy.com/api/proxy?format=json&type=http&https=true&last_check=60&speed=25&limit=20&user_agent=true&referer=true&country=RU");//&country=US,RU
         Scanner scanner = new Scanner((InputStream) url.getContent());
         StringBuilder sb = new StringBuilder();
         while (scanner.hasNext()) {

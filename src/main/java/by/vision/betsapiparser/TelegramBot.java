@@ -22,7 +22,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
         }
 */
-        if (update.getMessage().getText().equals("/stop")){
+        if (update.getMessage().getText().equals("/exit")){
             System.exit(0);
         }
     }

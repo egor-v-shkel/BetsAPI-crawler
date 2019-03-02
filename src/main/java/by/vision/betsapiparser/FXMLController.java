@@ -38,30 +38,30 @@ public class FXMLController {
     @FXML
     private void handleButtonAction(ActionEvent event) {
 
-        //MyRunnable myRunnable = null;
+        MyRunnable myRunnable = null;
 
         switch (startStopBtn.getText()) {
             case "Старт":
                 startStopBtn.setText("Стоп");
                 //Settings.logic = Settings.Logic.AND;
-                /*Settings.tgChatID = Long.parseLong(tgChatIDFX.getText());
+                Settings.tgChatID = Long.parseLong(tgChatIDFX.getText());
                 Settings.timeSelectMin = Integer.parseInt(timeMinFX.getText());
-                Settings.timeSelectMax = Integer.parseInt(timeMinFX.getText());
-                Settings.possessionMin = Integer.parseInt(timeMinFX.getText());
-                Settings.targetOnMin = Integer.parseInt(timeMinFX.getText());
-                Settings.targetOffMin = Integer.parseInt(timeMinFX.getText());
-                Settings.proxyTimeout = Integer.parseInt(proxyTimeOutFX.getText());*/
-                /*myRunnable = new MyRunnable();
-                myRunnable.run();*/
-                Initialise.start();
+                Settings.timeSelectMax = Integer.parseInt(timeMaxFX.getText());
+                Settings.possessionMin = Integer.parseInt(possessionMinFX.getText());
+                Settings.targetOnMin = Integer.parseInt(targetOnFX.getText());
+                Settings.targetOffMin = Integer.parseInt(targetOffFX.getText());
+                Settings.proxyTimeout = Integer.parseInt(proxyTimeOutFX.getText());
 
+                myRunnable = new MyRunnable();
+                myRunnable.run();
                 break;
             case "Стоп":
-                /*try {
+                startStopBtn.setText("Старт");
+                try {
                     myRunnable.wait(30000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }*/
+                }
                 System.exit(0);
                 break;
         }

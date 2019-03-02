@@ -80,7 +80,7 @@ class Parser {
         }
 
         //remove matches from list , that don't meet time value
-        mainPageInfoList.removeIf(s -> (s.getTime() <= Settings.timeSelectMin || s.getTime() >= Settings.timeSelectMax));
+        mainPageInfoList.removeIf(s -> (s.getTime() < Settings.timeSelectMin || s.getTime() > Settings.timeSelectMax));
 
         //parse all compatible matches sites
         if (mainPageInfoList.size() > 0) {
@@ -128,7 +128,7 @@ class Parser {
         while (doc == null){
             doc = getDoc(site);
         }
-        System.out.println(doc);
+        System.out.println("Doc was received");
 
         Elements infoInTr = doc.select("table.table-sm tr");
         //remove <span class="sr-only"> because of repetition parameters with <div ... role="progressbar"...>
