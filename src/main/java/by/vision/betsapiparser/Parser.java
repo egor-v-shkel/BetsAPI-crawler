@@ -128,7 +128,6 @@ class Parser {
         while (doc == null){
             doc = getDoc(site);
         }
-        System.out.println("Doc was received");
 
         Elements infoInTr = doc.select("table.table-sm tr");
         //remove <span class="sr-only"> because of repetition parameters with <div ... role="progressbar"...>
