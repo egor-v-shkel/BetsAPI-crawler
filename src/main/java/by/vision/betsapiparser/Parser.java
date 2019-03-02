@@ -1,3 +1,5 @@
+package by.vision.betsapiparser;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -11,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Parser {
-    static Settings settings = new Settings();
+    //static Settings settings = new Settings();
     String ip;
     int port;
     Proxy proxy;
@@ -35,7 +37,10 @@ class Parser {
         List<MainPageInfo> mainPageInfoList = new ArrayList<>();
 
         //Setting up connection
-        Document doc = getDoc(MAIN_URL);
+        Document doc = null;
+        while (doc == null){
+            doc = getDoc(MAIN_URL);
+        }
 
         //selecting scope of elements, where needed information located
         scopeElements = doc.select("table[id=tbl_inplay] tr");
@@ -75,7 +80,7 @@ class Parser {
         }
 
         //remove matches from list , that don't meet time value
-        mainPageInfoList.removeIf(s -> (s.getTime() <= settings.TimeSelectMin || s.getTime() >= settings.TimeSelectMax));
+        mainPageInfoList.removeIf(s -> (s.getTime() <= Settings.timeSelectMin || s.getTime() >= Settings.timeSelectMax));
 
         //parse all compatible matches sites
         if (mainPageInfoList.size() > 0) {
@@ -88,22 +93,22 @@ class Parser {
                 MatchInfo leftMatch = MainPageInfo.getMatchInfoL();
                 MatchInfo rightMatch = MainPageInfo.getMatchInfoR();
 
-                switch (settings.logic) {
+                switch (Settings.logic) {
                     case OR:
-                        if (leftMatch.getPossession() >= settings.possessionMin ||
-                                leftMatch.getTargetOn() >= settings.TargetOnMin ||
-                                leftMatch.getTargetOff() >= settings.TargetOffMin) break;
-                        if (rightMatch.getPossession() >= settings.possessionMin ||
-                                rightMatch.getTargetOn() >= settings.TargetOnMin ||
-                                rightMatch.getTargetOff() >= settings.TargetOffMin) break;
+                        if (leftMatch.getPossession() >= Settings.possessionMin ||
+                                leftMatch.getTargetOn() >= Settings.targetOnMin ||
+                                leftMatch.getTargetOff() >= Settings.targetOffMin) break;
+                        if (rightMatch.getPossession() >= Settings.possessionMin ||
+                                rightMatch.getTargetOn() >= Settings.targetOnMin ||
+                                rightMatch.getTargetOff() >= Settings.targetOffMin) break;
                         continue;
                     case AND:
-                        if (leftMatch.getPossession() >= settings.possessionMin &&
-                                leftMatch.getTargetOn() >= settings.TargetOnMin &&
-                                leftMatch.getTargetOff() >= settings.TargetOffMin) break;
-                        if (rightMatch.getPossession() >= settings.possessionMin &&
-                                rightMatch.getTargetOn() >= settings.TargetOnMin &&
-                                rightMatch.getTargetOff() >= settings.TargetOffMin) break;
+                        if (leftMatch.getPossession() >= Settings.possessionMin &&
+                                leftMatch.getTargetOn() >= Settings.targetOnMin &&
+                                leftMatch.getTargetOff() >= Settings.targetOffMin) break;
+                        if (rightMatch.getPossession() >= Settings.possessionMin &&
+                                rightMatch.getTargetOn() >= Settings.targetOnMin &&
+                                rightMatch.getTargetOff() >= Settings.targetOffMin) break;
                         continue;
 
                 }
@@ -123,6 +128,7 @@ class Parser {
         while (doc == null){
             doc = getDoc(site);
         }
+        System.out.println(doc);
 
         Elements infoInTr = doc.select("table.table-sm tr");
         //remove <span class="sr-only"> because of repetition parameters with <div ... role="progressbar"...>
@@ -238,9 +244,9 @@ class Parser {
         while (true) {
             try {
                 response = Jsoup.connect(URL)
-                        .timeout(settings.timeout)
+                        .timeout(Settings.proxyTimeout)
                         .proxy(ip, port)
-                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36")
+                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36")
                         .referrer("http://www.google.com")
                         //.ignoreHttpErrors(true)
                         .execute();
@@ -248,7 +254,7 @@ class Parser {
                 break;
             } catch (IOException e) {
                 e.printStackTrace();
-                if (--numTries == 0) try {
+                if (--numTries <= 0) try {
                     throw e;
                 } catch (IOException e1) {
                     e1.printStackTrace();
@@ -256,7 +262,7 @@ class Parser {
                     ip = proxy.getIp();
                     port = proxy.getPort();
                     System.out.println("Status code "+statusCode);
-                    System.out.println("Proxy"+ip+":"+port);
+                    System.out.println("Proxy "+ip+":"+port);
                 }
             }
         }
@@ -288,7 +294,7 @@ class Parser {
 
         TelegramBot telegramBot = new TelegramBot();
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(settings.chatId).setParseMode("html").setText(stringBuilder.toString());
+        sendMessage.setChatId(Settings.tgChatID).setParseMode("html").setText(stringBuilder.toString());
         try {
             telegramBot.execute(sendMessage);
         } catch (TelegramApiException e) {

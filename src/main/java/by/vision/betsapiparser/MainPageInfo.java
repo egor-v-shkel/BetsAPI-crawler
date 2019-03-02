@@ -1,3 +1,5 @@
+package by.vision.betsapiparser;
+
 public class MainPageInfo {
 
 

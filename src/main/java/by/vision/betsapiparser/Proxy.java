@@ -1,3 +1,5 @@
+package by.vision.betsapiparser;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -15,6 +17,7 @@ class Proxy {
     public String getIp() {
         return ip;
     }
+
     public void setIp(String ip) {
         this.ip = ip;
     }
@@ -22,12 +25,13 @@ class Proxy {
     public int getPort() {
         return port;
     }
+
     public void setPort(int port) {
         this.port = port;
     }
 
     public void refresh() {
-        if(ipArray.isEmpty()){
+        if (ipArray.isEmpty()) {
             try {
                 getNewProxyArray();
             } catch (IOException e) {
@@ -43,10 +47,10 @@ class Proxy {
 
     public void getNewProxyArray() throws IOException {
         //TODO rewrite this part
-        URL url = new URL("http://pubproxy.com/api/proxy?format=json&type=http&https=true&last_check=60&speed=25&limit=20&user_agent=true&referer=true&country=RU");
+        URL url = new URL("http://pubproxy.com/api/proxy?format=json&type=http&https=true&last_check=60&speed=25&limit=20&user_agent=true&referer=true");//&country=US,RU
         Scanner scanner = new Scanner((InputStream) url.getContent());
         StringBuilder sb = new StringBuilder();
-        while (scanner.hasNext()){
+        while (scanner.hasNext()) {
             sb.append(scanner.nextLine());
         }
         String response = sb.toString();
