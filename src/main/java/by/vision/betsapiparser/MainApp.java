@@ -27,8 +27,11 @@ public class MainApp extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
+
         stage.setTitle("BetsAPI parser v.0.0.1");
         stage.setScene(scene);
+        stage.setMinHeight(480);
+        stage.setMinWidth(800);
         stage.show();
     }
 

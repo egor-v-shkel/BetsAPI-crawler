@@ -4,15 +4,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 public class FXMLController {
+    @FXML
+    public ListView linkList;
+    public static ObservableList<Hyperlink> hyperlinkObservableList = FXCollections.observableArrayList();
 
     @FXML
     public ChoiceBox<Settings.Logic> logicFX;
-    private ObservableList<Settings.Logic> logicFXList = FXCollections.observableArrayList(Settings.Logic.values());
+    public ObservableList<Settings.Logic> logicFXList = FXCollections.observableArrayList(Settings.Logic.values());
 
 
     @FXML
@@ -79,5 +80,9 @@ public class FXMLController {
         logicFX.setValue(logicFXList.get(0));
         logicFX.setItems(logicFXList);
         logicFX.setOnAction(event -> Settings.logic = logicFX.getValue());
+
+        linkList.setItems(hyperlinkObservableList);
+        hyperlinkObservableList.add(new Hyperlink("https://ru.betsapi.com/ci/soccer"));
+        System.out.println(hyperlinkObservableList.contains(new Hyperlink("https://ru.betsapi.com/ci/soccer")));
     }
 }

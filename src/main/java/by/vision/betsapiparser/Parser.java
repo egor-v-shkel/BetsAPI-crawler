@@ -1,5 +1,6 @@
 package by.vision.betsapiparser;
 
+import javafx.scene.control.Hyperlink;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -113,7 +114,12 @@ class Parser {
 
                 }
 
-                sendTelegramMessage(info, leftMatch, rightMatch);
+                //check, if successfully parsed link was sent already and sent it to telegram and list in GUI
+                Hyperlink hyperlink = new Hyperlink(info.getUrlMatch());
+                if (!FXMLController.hyperlinkObservableList.contains(hyperlink)){
+                    FXMLController.hyperlinkObservableList.add(hyperlink);
+                    sendTelegramMessage(info, leftMatch, rightMatch);
+                }
 
             }
         }
