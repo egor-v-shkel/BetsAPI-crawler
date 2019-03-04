@@ -1,12 +1,24 @@
 package by.vision.betsapiparser;
 
+import javafx.application.Application;
+import javafx.application.HostServices;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class FXMLController {
+
+    static volatile boolean bStop = true;
+
     @FXML
     public ListView linkList;
     public static ObservableList<Hyperlink> hyperlinkObservableList = FXCollections.observableArrayList();
@@ -43,10 +55,14 @@ public class FXMLController {
     @FXML
     private void handleButtonAction(ActionEvent event) {
         MyThread mt = null;
+        final String start = "Start";
+        final String stop = "Stop";
+
 
         switch (startStopBtn.getText()) {
-            case "Старт":
-                startStopBtn.setText("Пауза");
+            case start:
+                bStop = true;
+                startStopBtn.setText(stop);
                 //Settings.logic = Settings.Logic.AND;
                 Settings.tgChatID = Long.parseLong(tgChatIDFX.getText());
                 Settings.timeSelectMin = Integer.parseInt(timeMinFX.getText());
@@ -57,18 +73,11 @@ public class FXMLController {
                 Settings.proxyTimeout = Integer.parseInt(proxyTimeOutFX.getText());
 
                 mt = new MyThread("Thread_0");
+                mt.run();
                 break;
-            case "Пауза":
-                startStopBtn.setText("Продолжить");
-                try {
-                    mt.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case "Продолжить":
-                startStopBtn.setText("Пауза");
-                mt.notify();
+            case stop:
+                startStopBtn.setText(start);
+                bStop = false;
                 break;
         }
 
@@ -82,7 +91,5 @@ public class FXMLController {
         logicFX.setOnAction(event -> Settings.logic = logicFX.getValue());
 
         linkList.setItems(hyperlinkObservableList);
-        hyperlinkObservableList.add(new Hyperlink("https://ru.betsapi.com/ci/soccer"));
-        System.out.println(hyperlinkObservableList.contains(new Hyperlink("https://ru.betsapi.com/ci/soccer")));
     }
 }

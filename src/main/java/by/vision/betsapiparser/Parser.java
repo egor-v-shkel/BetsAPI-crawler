@@ -9,7 +9,10 @@ import org.jsoup.select.Elements;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,9 +117,20 @@ class Parser {
 
                 }
 
-                //check, if successfully parsed link was sent already and sent it to telegram and list in GUI
-                Hyperlink hyperlink = new Hyperlink(info.getUrlMatch());
+                //check, if successfully parsed link was sent already and send it to telegram and list in GUI
+                Hyperlink hyperlink = new Hyperlink(info.getUrlMatch());//.setOnAction(actionEvent -> Application.getHostServices().showDocument(info.getUrlMatch()));
                 if (!FXMLController.hyperlinkObservableList.contains(hyperlink)){
+                    hyperlink.setOnAction(actionEvent ->  {
+                        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)){
+                            try {
+                                Desktop.getDesktop().browse(new URI(hyperlink.getText()));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (URISyntaxException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                     FXMLController.hyperlinkObservableList.add(hyperlink);
                     sendTelegramMessage(info, leftMatch, rightMatch);
                 }

@@ -42,7 +42,7 @@ class MyThread implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        while (true) {
+        while (FXMLController.bStop) {
             Initialise.start(proxy);
         }
     }
