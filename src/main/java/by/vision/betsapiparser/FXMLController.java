@@ -17,7 +17,7 @@ import java.net.URISyntaxException;
 
 public class FXMLController {
 
-    static volatile boolean bStop = true;
+    static volatile boolean bStop = false;
 
     @FXML
     public ListView linkList;
@@ -55,13 +55,13 @@ public class FXMLController {
     @FXML
     private void handleButtonAction(ActionEvent event) {
         MyThread mt = null;
-        final String start = "Start";
-        final String stop = "Stop";
+        final String start = "Старт";
+        final String stop = "Стоп";
 
 
         switch (startStopBtn.getText()) {
             case start:
-                bStop = true;
+                bStop = false;
                 startStopBtn.setText(stop);
                 //Settings.logic = Settings.Logic.AND;
                 Settings.tgChatID = Long.parseLong(tgChatIDFX.getText());
@@ -73,11 +73,10 @@ public class FXMLController {
                 Settings.proxyTimeout = Integer.parseInt(proxyTimeOutFX.getText());
 
                 mt = new MyThread("Thread_0");
-                mt.run();
                 break;
             case stop:
                 startStopBtn.setText(start);
-                bStop = false;
+                bStop = true;
                 break;
         }
 

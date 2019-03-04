@@ -42,10 +42,15 @@ class MyThread implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        while (FXMLController.bStop) {
+        while (!FXMLController.bStop) {
             Initialise.start(proxy);
         }
     }
+
+    public  void stop(){
+        FXMLController.bStop = true;
+    }
+
     public static void disableWarning() {
         try {
             Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");

@@ -31,6 +31,16 @@ class Parser {
 
 
     void parseMainPage() {
+        if (FXMLController.bStop){
+            try {
+                System.out.println("Thread was pause");
+                Thread.currentThread().wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+
+        }
 
         final String HOST_SITE = "https://ru.betsapi.com";
         //read from url
@@ -142,6 +152,11 @@ class Parser {
     }
 
     public void parseMatchPage(String site) {
+
+        if (FXMLController.bStop){
+            Thread.currentThread().notify();
+            System.out.println("Thread was stoped");
+        }
 
         //handle NullPointerException
         Document doc = null;
