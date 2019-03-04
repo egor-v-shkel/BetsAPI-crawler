@@ -18,6 +18,9 @@ import java.net.URISyntaxException;
 public class FXMLController {
 
     static volatile boolean bStop = false;
+    private MyThread mt = null;
+    private final String start = "Старт";
+    private final String stop = "Стоп";
 
     @FXML
     public ListView linkList;
@@ -54,10 +57,6 @@ public class FXMLController {
 
     @FXML
     private void handleButtonAction(ActionEvent event) {
-        MyThread mt = null;
-        final String start = "Старт";
-        final String stop = "Стоп";
-
 
         switch (startStopBtn.getText()) {
             case start:
@@ -76,7 +75,7 @@ public class FXMLController {
                 break;
             case stop:
                 startStopBtn.setText(start);
-                bStop = true;
+                mt.stop();
                 break;
         }
 

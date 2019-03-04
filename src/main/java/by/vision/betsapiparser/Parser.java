@@ -154,8 +154,8 @@ class Parser {
     public void parseMatchPage(String site) {
 
         if (FXMLController.bStop){
-            Thread.currentThread().notify();
             System.out.println("Thread was stoped");
+            Thread.currentThread().notify();
         }
 
         //handle NullPointerException
