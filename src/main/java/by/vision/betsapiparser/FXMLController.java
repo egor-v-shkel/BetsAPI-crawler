@@ -17,7 +17,7 @@ import java.net.URISyntaxException;
 
 public class FXMLController {
 
-    static volatile boolean bStop = false;
+    public static volatile boolean bStop = false;
     private MyThread mt = null;
     private final String start = "Старт";
     private final String stop = "Стоп";

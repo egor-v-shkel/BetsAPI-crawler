@@ -54,6 +54,7 @@ class Proxy {
             sb.append(scanner.nextLine());
         }
         String response = sb.toString();
+
         System.out.println("New JSON was taken");
 
         JSONObject jsonObject = new JSONObject(response);

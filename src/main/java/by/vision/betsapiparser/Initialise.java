@@ -14,6 +14,8 @@ public class Initialise {
 
     public static void start(Proxy proxy) {
 
+        System.out.println("Star new parsing iteration");
+
         Parser ps = new Parser(proxy);
         ps.parseMainPage();
     }
