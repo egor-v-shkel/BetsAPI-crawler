@@ -3,6 +3,8 @@ package by.vision.betsapiparser;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.generics.BotSession;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import sun.misc.Unsafe;
 
 import java.io.IOException;
@@ -33,11 +35,8 @@ class MyThread implements Runnable {
 
     // Обязательный метод для интерфейса Runnable
     public void run() {
-        //disable warning "An illegal reflective access operation has occurred"
-        disableWarning();
 
-        initTelegBotsAPI();
-        //configure to repeat once a minute
+
         Proxy proxy = new Proxy();
         try {
             proxy.getNewProxyArray();
@@ -47,33 +46,13 @@ class MyThread implements Runnable {
         while (!FXMLController.bStop) {
             Initialise.start(proxy);
         }
+        System.out.println("Thread was stopped");
     }
 
     public  void stop(){
         FXMLController.bStop = true;
     }
 
-    public static void disableWarning() {
-        try {
-            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
-            theUnsafe.setAccessible(true);
-            Unsafe u = (Unsafe) theUnsafe.get(null);
-            Class cls = Class.forName("jdk.internal.module.IllegalAccessLogger");
-            Field logger = cls.getDeclaredField("logger");
-            u.putObjectVolatile(cls, u.staticFieldOffset(logger), null);
-        } catch (Exception e) {
-            // ignore
-        }
-    }
-    public static void initTelegBotsAPI() {
-        ApiContextInitializer.init();
 
-        TelegramBotsApi botsApi = new TelegramBotsApi();
 
-        try {
-            botsApi.registerBot(new TelegramBot());
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-    }
 }

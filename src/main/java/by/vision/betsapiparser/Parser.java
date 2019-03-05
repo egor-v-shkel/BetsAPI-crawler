@@ -8,6 +8,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.generics.BotSession;
 
 import java.awt.*;
 import java.io.IOException;
@@ -31,19 +32,8 @@ class Parser {
 
 
     void parseMainPage() {
-        if (FXMLController.bStop){
-            try {
-                System.out.println("Thread was pause");
-                Thread.currentThread().wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-
-        }
 
         final String HOST_SITE = "https://ru.betsapi.com";
-        //read from url
         final String MAIN_URL = "https://ru.betsapi.com/ci/soccer";
         System.out.println("proxy " + ip + ":" + port);
 
@@ -52,7 +42,7 @@ class Parser {
 
         //Setting up connection
         Document doc = null;
-        while (doc == null){
+        while (doc == null) {
             doc = getDoc(MAIN_URL);
         }
 
@@ -102,7 +92,9 @@ class Parser {
             ) {
                 //assemble url
                 info.setUrlMatch(HOST_SITE + info.getUrlMatch());
-                parseMatchPage(info.getUrlMatch());
+                if (!FXMLController.bStop) {
+                    parseMatchPage(info.getUrlMatch());
+                } else break;
 
                 MatchInfo leftMatch = MainPageInfo.getMatchInfoL();
                 MatchInfo rightMatch = MainPageInfo.getMatchInfoR();
@@ -129,9 +121,9 @@ class Parser {
 
                 //check, if successfully parsed link was sent already and send it to telegram and list in GUI
                 Hyperlink hyperlink = new Hyperlink(info.getUrlMatch());//.setOnAction(actionEvent -> Application.getHostServices().showDocument(info.getUrlMatch()));
-                if (!FXMLController.hyperlinkObservableList.contains(hyperlink)){
-                    hyperlink.setOnAction(actionEvent ->  {
-                        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)){
+                if (!FXMLController.hyperlinkObservableList.contains(hyperlink)) {
+                    hyperlink.setOnAction(actionEvent -> {
+                        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                             try {
                                 Desktop.getDesktop().browse(new URI(hyperlink.getText()));
                             } catch (IOException e) {
@@ -147,6 +139,7 @@ class Parser {
 
             }
         }
+
         System.out.println("Finish parsing");
 
 
@@ -154,14 +147,9 @@ class Parser {
 
     public void parseMatchPage(String site) {
 
-        if (FXMLController.bStop){
-            System.out.println("Thread was stoped");
-            Thread.currentThread().notify();
-        }
-
         //handle NullPointerException
         Document doc = null;
-        while (doc == null){
+        while (doc == null) {
             doc = getDoc(site);
         }
 
@@ -296,8 +284,8 @@ class Parser {
                     proxy.refresh();
                     ip = proxy.getIp();
                     port = proxy.getPort();
-                    System.out.println("Status code "+statusCode);
-                    System.out.println("Proxy "+ip+":"+port);
+                    System.out.println("Status code " + statusCode);
+                    System.out.println("Proxy " + ip + ":" + port);
                 }
             }
         }
@@ -335,6 +323,7 @@ class Parser {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+        telegramBot.onClosing();
     }
 
 }

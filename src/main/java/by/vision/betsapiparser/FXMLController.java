@@ -70,12 +70,12 @@ public class FXMLController {
                 Settings.targetOnMin = Integer.parseInt(targetOnFX.getText());
                 Settings.targetOffMin = Integer.parseInt(targetOffFX.getText());
                 Settings.proxyTimeout = Integer.parseInt(proxyTimeOutFX.getText());
-
-                mt = new MyThread("Thread_0");
+                //start parsing thread
+                new MyThread("Thread_0");
                 break;
             case stop:
                 startStopBtn.setText(start);
-                mt.stop();
+                bStop = true;
                 break;
         }
 
