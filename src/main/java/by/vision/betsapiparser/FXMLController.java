@@ -14,6 +14,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Optional;
 
 public class FXMLController {
 
@@ -89,5 +90,15 @@ public class FXMLController {
         logicFX.setOnAction(event -> Settings.logic = logicFX.getValue());
 
         linkList.setItems(hyperlinkObservableList);
+
+        Hyperlink hyperlink0 = new Hyperlink("https://docs.oracle.com/javase/8/docs/api/java/util/List.html#contains-java.lang.Object-");
+        Hyperlink hyperlink1 = new Hyperlink("https://docs.oracle.com/javase/8/docs/api/java/util/class-use/List.html");
+
+        hyperlinkObservableList.addAll(hyperlink0, hyperlink1);
+
+        Hyperlink hyperlink2 = new Hyperlink("https://docs.oracle.com/javase/8/docs/api/java/util/List.html#contains-java.lang.Object-");
+
+        boolean inList = hyperlinkObservableList.stream().anyMatch(hyperlink -> hyperlink.getText().equals(hyperlink2.getText()));
+        if (inList)
     }
 }
