@@ -1,10 +1,10 @@
 package by.vision.betsapiparser;
 
 import javafx.application.Application;
-import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -40,6 +40,7 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.setMinHeight(480);
         stage.setMinWidth(800);
+        stage.getIcons().add(new Image("file:..\\BetsAPI-parser\\src\\main\\resources\\images\\icon.png"));
         stage.show();
     }
 

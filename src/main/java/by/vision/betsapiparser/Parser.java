@@ -19,9 +19,10 @@ import java.util.List;
 
 class Parser {
     //static Settings settings = new Settings();
-    String ip;
-    int port;
-    Proxy proxy;
+    private String ip;
+    private int port;
+    private Proxy proxy;
+    private TelegramBot telegramBot = new TelegramBot();
 
     Parser(Proxy proxy) {
         this.proxy = proxy;
@@ -35,7 +36,7 @@ class Parser {
 
         final String HOST_SITE = "https://ru.betsapi.com";
         final String MAIN_URL = "https://ru.betsapi.com/ci/soccer";
-        System.out.println("proxy " + ip + ":" + port);
+        System.out.println("Using proxy to parse main page" + ip + ":" + port);
 
         Elements scopeElements;
         List<MainPageInfo> mainPageInfoList = new ArrayList<>();
@@ -99,22 +100,21 @@ class Parser {
                 MatchInfo leftMatch = MainPageInfo.getMatchInfoL();
                 MatchInfo rightMatch = MainPageInfo.getMatchInfoR();
 
+                boolean bPossess = leftMatch.getPossession() >= Settings.possessionMin;
+                boolean bTargetOn = leftMatch.getTargetOn() >= Settings.targetOnMin;
+                boolean bTargetOff = leftMatch.getTargetOff() >= Settings.targetOffMin;
+                boolean bRightPossess = rightMatch.getPossession() >= Settings.possessionMin;
+                boolean bRightTargetOn = rightMatch.getTargetOn() >= Settings.targetOnMin;
+                boolean bRightTargetOff = rightMatch.getTargetOff() >= Settings.targetOffMin;
                 switch (Settings.logic) {
+
                     case OR:
-                        if (leftMatch.getPossession() >= Settings.possessionMin ||
-                                leftMatch.getTargetOn() >= Settings.targetOnMin ||
-                                leftMatch.getTargetOff() >= Settings.targetOffMin) break;
-                        if (rightMatch.getPossession() >= Settings.possessionMin ||
-                                rightMatch.getTargetOn() >= Settings.targetOnMin ||
-                                rightMatch.getTargetOff() >= Settings.targetOffMin) break;
+                        if (bPossess || bTargetOn || bTargetOff) break;
+                        if (bRightPossess || bRightTargetOn || bRightTargetOff) break;
                         continue;
                     case AND:
-                        if (leftMatch.getPossession() >= Settings.possessionMin &&
-                                leftMatch.getTargetOn() >= Settings.targetOnMin &&
-                                leftMatch.getTargetOff() >= Settings.targetOffMin) break;
-                        if (rightMatch.getPossession() >= Settings.possessionMin &&
-                                rightMatch.getTargetOn() >= Settings.targetOnMin &&
-                                rightMatch.getTargetOff() >= Settings.targetOffMin) break;
+                        if (bPossess && bTargetOn && bTargetOff) break;
+                        if (bRightPossess && bRightTargetOn && bRightTargetOff) break;
                         continue;
 
                 }
@@ -145,7 +145,7 @@ class Parser {
 
     }
 
-    public void parseMatchPage(String site) {
+    private void parseMatchPage(String site) {
 
         //handle NullPointerException
         Document doc = null;
@@ -300,7 +300,7 @@ class Parser {
         }
     }
 
-    private static void sendTelegramMessage(MainPageInfo info, MatchInfo leftMatch, MatchInfo rightMatch) {
+    private void sendTelegramMessage(MainPageInfo info, MatchInfo leftMatch, MatchInfo rightMatch) {
         StringBuilder stringBuilder = new StringBuilder();
         String newLine = System.lineSeparator();
         stringBuilder.append("<b>").append(info.getLeague()).append("</b>").append(newLine)
@@ -315,7 +315,6 @@ class Parser {
                 .append("УМ (удары мимо ворот): [").append(leftMatch.getTargetOff()).append(", ").append(rightMatch.getTargetOff()).append("]").append(newLine)
                 .append(info.getUrlMatch());
 
-        TelegramBot telegramBot = new TelegramBot();
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(Settings.tgChatID).setParseMode("html").setText(stringBuilder.toString());
         try {
