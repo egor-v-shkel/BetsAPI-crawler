@@ -119,9 +119,10 @@ class Parser {
 
                 }
 
-                //check, if successfully parsed link was sent already and send it to telegram and list in GUI
-                Hyperlink hyperlink = new Hyperlink(info.getUrlMatch());//.setOnAction(actionEvent -> Application.getHostServices().showDocument(info.getUrlMatch()));
-                if (!FXMLController.hyperlinkObservableList.contains(hyperlink)) {
+                String url = info.getUrlMatch();
+                boolean inList = FXMLController.hyperlinkObservableList.stream().anyMatch(hyperlink -> hyperlink.getText().equals(url));
+                if (!inList) {
+                    Hyperlink hyperlink = new Hyperlink(url);
                     hyperlink.setOnAction(actionEvent -> {
                         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                             try {

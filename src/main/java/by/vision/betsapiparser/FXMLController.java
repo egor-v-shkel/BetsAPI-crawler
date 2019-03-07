@@ -98,7 +98,6 @@ public class FXMLController {
 
         Hyperlink hyperlink2 = new Hyperlink("https://docs.oracle.com/javase/8/docs/api/java/util/List.html#contains-java.lang.Object-");
 
-        boolean inList = hyperlinkObservableList.stream().anyMatch(hyperlink -> hyperlink.getText().equals(hyperlink2.getText()));
-        if (inList)
+
     }
 }

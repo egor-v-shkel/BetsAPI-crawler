@@ -18,7 +18,7 @@
         <Label layoutX="13.0" layoutY="147.0" text="Время (max)" />
         <Label layoutX="14.0" layoutY="77.0" text="ID телеграм чата" />
         <TextField fx:id="tgChatIDFX" layoutX="161.0" layoutY="73.0" prefHeight="25.0" prefWidth="93.0" text="-333530356" />
-        <TextField fx:id="possessionMinFX" layoutX="161.0" layoutY="185.0" text="57" />
+        <TextField fx:id="possessionMinFX" layoutX="161.0" layoutY="185.0" text="58" />
         <TextField fx:id="targetOnFX" layoutX="161.0" layoutY="226.0" text="1" />
         <TextField fx:id="targetOffFX" layoutX="161.0" layoutY="259.0" text="0" />
         <Label layoutX="11.0" layoutY="189.0" text="Владение мячом(min)" />
