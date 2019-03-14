@@ -42,7 +42,7 @@ class Parser {
 
         //Setting up connection
         Document doc = null;
-        while (doc == null) {
+        while (doc == null && !FXMLController.bStop) {
             doc = getDoc(MAIN_URL);
         }
 
@@ -158,7 +158,7 @@ class Parser {
 
         //handle NullPointerException
         Document doc = null;
-        while (doc == null) {
+        while (doc == null && !FXMLController.bStop) {
             doc = getDoc(site);
         }
 
@@ -273,7 +273,7 @@ class Parser {
         int statusCode = 0;
         int numTries = 5;
         Connection.Response response = null;
-        while (true) {
+        while (!FXMLController.bStop) {
             try {
                 response = Jsoup.connect(URL)
                         .timeout(Settings.proxyTimeout)

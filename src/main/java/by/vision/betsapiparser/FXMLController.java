@@ -72,11 +72,11 @@ public class FXMLController {
                 Settings.targetOffMin = Integer.parseInt(targetOffFX.getText());
                 Settings.proxyTimeout = Integer.parseInt(proxyTimeOutFX.getText());
                 //start parsing thread
-                new MyThread("Thread_0");
+                mt = new MyThread("Thread_0");
                 break;
             case stop:
-                startStopBtn.setText(start);
                 bStop = true;
+                startStopBtn.setText(start);
                 break;
         }
 
@@ -90,7 +90,6 @@ public class FXMLController {
         logicFX.setOnAction(event -> Settings.logic = logicFX.getValue());
 
         linkList.setItems(hyperlinkObservableList);
-
 
     }
 }
