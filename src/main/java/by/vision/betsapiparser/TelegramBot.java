@@ -22,18 +22,36 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
         }
 */
-        if (update.getMessage().getText().equals("/exit")){
-            System.exit(0);
+        switch (update.getMessage().getText()){
+            case "/id":
+            SendMessage sendMessage = new SendMessage()
+                        .setChatId(update.getMessage().getChatId())
+                        .setText(String.valueOf(update.getMessage().getChatId()));
+            try {
+                execute(sendMessage);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+            break;
+            case "pause":
+            break;
+            case "continue":
+            break;
+            case "/exit":
+                System.exit(0);
+                break;
         }
     }
 
     @Override
     public String getBotUsername() {
-        return "BetsAPI_bot";
+        /*return "BetsAPI_bot";*/
+        return "BetsAPI_2_bot";
     }
 
     @Override
     public String getBotToken() {
-        return "752131033:AAHymxVu8_nqPRvloTob3W30WkFl91jU9bQ";
+        /*return "752131033:AAHymxVu8_nqPRvloTob3W30WkFl91jU9bQ";//BetsAPI_bot*/
+        return "700196610:AAEplpWHPp7rUqOnp7BiYly3K_2dgbctL_I";//BetsAPI_2_bot
     }
 }

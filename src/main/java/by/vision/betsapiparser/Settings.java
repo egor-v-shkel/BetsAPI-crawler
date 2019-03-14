@@ -3,7 +3,8 @@ package by.vision.betsapiparser;
 class Settings {
 
     // ID чата в ТГ
-    public static long tgChatID = -333530356;
+    /*public static long tgChatID = -333530356;*/
+    public static long tgChatID = -149802553;
 
     // Минута матча, для отправки сообщения
     public static int timeSelectMin = 70;

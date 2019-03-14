@@ -8,7 +8,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.meta.generics.BotSession;
 
 import java.awt.*;
 import java.io.IOException;
@@ -55,13 +54,27 @@ class Parser {
         ) {
             MainPageInfo mainPageInfo = new MainPageInfo();
 
+            //time
+            Element timeElement = e.selectFirst("span[class=race-time]");
+            mainPageInfo.setTime(Integer.parseInt(timeElement.ownText().replace("\'", "")));
+            //do not add matches, that don't meet time value
+            int time = mainPageInfo.getTime();
+            if(time < Settings.timeSelectMin || time > Settings.timeSelectMax ) continue;
+
+            //URL
+            mainPageInfo.setUrlMatch(e.select("td[class=text-center] a").attr("href"));
+            //do not add matches, that already was sent to GUI/Telegram
+            String url = mainPageInfo.getUrlMatch();
+            boolean inList = FXMLController.hyperlinkObservableList.stream().anyMatch(hyperlink -> hyperlink.getText().endsWith(url));
+            if (inList) continue;
+
+            System.out.println(url);
+
             //league
             mainPageInfo.setLeague(e.selectFirst("td[class=league_n] a").ownText());
             //matchId
             mainPageInfo.setIdMatch(e.attr("id").replace("r_", ""));
-            //time
-            Element timeElement = e.selectFirst("span[class=race-time]");
-            mainPageInfo.setTime(Integer.parseInt(timeElement.ownText().replace("\'", "")));
+
             //timesup
             Element timeSupElement = timeElement.selectFirst("sup");
             if (timeSupElement != null) {
@@ -70,8 +83,7 @@ class Parser {
             //score
             Element scoreElement = e.selectFirst(String.format("td[id=o_%s_0]", mainPageInfo.getIdMatch()));
             mainPageInfo.setScore(scoreElement.ownText());
-            //URL
-            mainPageInfo.setUrlMatch(e.select("td[class=text-center] a").attr("href"));
+
             //rate
             mainPageInfo.setRateL(e.selectFirst(String.format("td[id=o_%s_0]", mainPageInfo.getIdMatch())).ownText());
             mainPageInfo.setRateC(e.selectFirst(String.format("td[id=o_%s_1]", mainPageInfo.getIdMatch())).ownText());
@@ -83,9 +95,6 @@ class Parser {
             mainPageInfoList.add(mainPageInfo);
 
         }
-
-        //remove matches from list , that don't meet time value
-        mainPageInfoList.removeIf(s -> (s.getTime() < Settings.timeSelectMin || s.getTime() > Settings.timeSelectMax));
 
         //parse all compatible matches sites
         if (mainPageInfoList.size() > 0) {
@@ -106,6 +115,7 @@ class Parser {
                 boolean bRightPossess = rightMatch.getPossession() >= Settings.possessionMin;
                 boolean bRightTargetOn = rightMatch.getTargetOn() >= Settings.targetOnMin;
                 boolean bRightTargetOff = rightMatch.getTargetOff() >= Settings.targetOffMin;
+
                 switch (Settings.logic) {
 
                     case OR:
@@ -119,24 +129,22 @@ class Parser {
 
                 }
 
+                //add link to GUI/Telegram
                 String url = info.getUrlMatch();
-                boolean inList = FXMLController.hyperlinkObservableList.stream().anyMatch(hyperlink -> hyperlink.getText().equals(url));
-                if (!inList) {
-                    Hyperlink hyperlink = new Hyperlink(url);
-                    hyperlink.setOnAction(actionEvent -> {
-                        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                            try {
-                                Desktop.getDesktop().browse(new URI(hyperlink.getText()));
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } catch (URISyntaxException e) {
-                                e.printStackTrace();
-                            }
+                Hyperlink hyperlink = new Hyperlink(url);
+                hyperlink.setOnAction(actionEvent -> {
+                    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                        try {
+                            Desktop.getDesktop().browse(new URI(hyperlink.getText()));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
                         }
-                    });
-                    FXMLController.hyperlinkObservableList.add(hyperlink);
-                    sendTelegramMessage(info, leftMatch, rightMatch);
-                }
+                    }
+                });
+                FXMLController.hyperlinkObservableList.add(hyperlink);
+                sendTelegramMessage(info, leftMatch, rightMatch);
 
             }
         }
