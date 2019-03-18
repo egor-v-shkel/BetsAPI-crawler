@@ -34,8 +34,15 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
             break;
             case "pause":
-            break;
+                try {
+                    FXMLController.getParserThread().wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Thread was paused");
+                break;
             case "continue":
+                FXMLController.getParserThread().notify();
             break;
             case "/exit":
                 System.exit(0);

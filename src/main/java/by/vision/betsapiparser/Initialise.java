@@ -1,16 +1,6 @@
 package by.vision.betsapiparser;
 
-import org.telegram.telegrambots.ApiContextInitializer;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.meta.generics.BotSession;
-import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
-import sun.misc.Unsafe;
-
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Initialise {
 
@@ -23,11 +13,11 @@ public class Initialise {
     }
 }
 
-class MyThread implements Runnable {
+class ParserThread implements Runnable {
     Thread thread;
 
     // Конструктор
-    MyThread(String name) {
+    ParserThread(String name) {
         // Создаём новый поток
         thread = new Thread(this, name);
         thread.start(); // Запускаем поток
@@ -39,7 +29,7 @@ class MyThread implements Runnable {
 
         Proxy proxy = new Proxy();
         try {
-            proxy.getNewProxyArray();
+            proxy.getProxyList();
         } catch (IOException e) {
             e.printStackTrace();
         }

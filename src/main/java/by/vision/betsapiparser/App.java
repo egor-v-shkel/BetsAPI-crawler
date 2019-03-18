@@ -6,15 +6,31 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import sun.misc.Unsafe;
 
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Field;
 
 
 public class App extends Application {
+    String artifactId;
+    String version;
+    static FileWriter fileWriter;
+    static {
+        try {
+            fileWriter = new FileWriter("c:/temp/samplefile1.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -24,8 +40,12 @@ public class App extends Application {
     public void init(){
         //disable warning "An illegal reflective access operation has occurred"
         disableWarning();
-
         initTelegBotsAPI();
+        try {
+            new FileWriter("c:/temp/proxy_list.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -36,12 +56,25 @@ public class App extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
-        stage.setTitle("BetsAPI parser v.0.0.1");
+        setTitle(stage);
+
         stage.setScene(scene);
         stage.setMinHeight(480);
         stage.setMinWidth(800);
         stage.getIcons().add(new Image("file:..\\BetsAPI-parser\\src\\main\\resources\\images\\icon.png"));
         stage.show();
+    }
+
+    public void setTitle(Stage stage) {
+        MavenXpp3Reader reader = new MavenXpp3Reader();
+        Model model = null;
+        try {
+            model = reader.read(new FileReader("pom.xml"));
+        } catch (IOException | XmlPullParserException e) {
+            e.printStackTrace();
+        }
+        assert model != null;
+        stage.setTitle(model.getArtifactId() + " " + model.getVersion());
     }
 
     @Override

@@ -1,7 +1,5 @@
 package by.vision.betsapiparser;
 
-import javafx.application.Application;
-import javafx.application.HostServices;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,18 +8,18 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-import java.awt.*;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Optional;
-
 public class FXMLController {
 
     public static volatile boolean bStop = false;
-    private MyThread mt = null;
+
+    private static ParserThread parserThread = null;
+
     private final String start = "Старт";
     private final String stop = "Стоп";
+
+    public static ParserThread getParserThread() {
+        return parserThread;
+    }
 
     @FXML
     public ListView linkList;
@@ -72,7 +70,7 @@ public class FXMLController {
                 Settings.targetOffMin = Integer.parseInt(targetOffFX.getText());
                 Settings.proxyTimeout = Integer.parseInt(proxyTimeOutFX.getText());
                 //start parsing thread
-                mt = new MyThread("Thread_0");
+                parserThread = new ParserThread("Thread_0");
                 break;
             case stop:
                 bStop = true;
