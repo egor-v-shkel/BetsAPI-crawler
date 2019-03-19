@@ -21,16 +21,6 @@ import java.lang.reflect.Field;
 
 
 public class App extends Application {
-    String artifactId;
-    String version;
-    static FileWriter fileWriter;
-    static {
-        try {
-            fileWriter = new FileWriter("c:/temp/samplefile1.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void main(String[] args) {
         launch(args);

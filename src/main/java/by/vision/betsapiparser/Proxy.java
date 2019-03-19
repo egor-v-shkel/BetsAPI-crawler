@@ -46,6 +46,8 @@ class Proxy {
 
         JSONObject jsonObject = new JSONObject(response);
         ipArray = jsonObject.getJSONArray("data");
+
+        writeProxyList(ipArray);
         setProxy();
     }
 
@@ -53,20 +55,14 @@ class Proxy {
         JSONObject proxyObj = ipArray.getJSONObject(0);
         ip = proxyObj.getString("ip");
         port = proxyObj.getInt("port");
-
-        try {
-            writeProxy();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         ipArray.remove(0);
     }
 
-    private void writeProxy() throws IOException {
-        String proxy = String.format("%s:%d\n", ip, port);
-        BufferedWriter writer = new BufferedWriter(App.fileWriter);
-        writer.write(proxy);
+    private void writeProxyList(JSONArray ipArray) throws IOException {
+        FileWriter fileWriter = new FileWriter("c:/temp/proxy_list.JSON", true);
+        int indentFactor = 2;
+        BufferedWriter writer = new BufferedWriter(fileWriter);
+        writer.write(ipArray.toString(indentFactor));
         writer.close();
     }
 }

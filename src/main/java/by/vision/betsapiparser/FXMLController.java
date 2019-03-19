@@ -61,7 +61,7 @@ public class FXMLController {
             case start:
                 bStop = false;
                 startStopBtn.setText(stop);
-                //Settings.logic = Settings.Logic.AND;
+                Settings.logic = logicFX.getValue();
                 Settings.tgChatID = Long.parseLong(tgChatIDFX.getText());
                 Settings.timeSelectMin = Integer.parseInt(timeMinFX.getText());
                 Settings.timeSelectMax = Integer.parseInt(timeMaxFX.getText());
@@ -70,7 +70,7 @@ public class FXMLController {
                 Settings.targetOffMin = Integer.parseInt(targetOffFX.getText());
                 Settings.proxyTimeout = Integer.parseInt(proxyTimeOutFX.getText());
                 //start parsing thread
-                parserThread = new ParserThread("Thread_0");
+                parserThread = new ParserThread("Parser thread");
                 break;
             case stop:
                 bStop = true;
@@ -85,7 +85,6 @@ public class FXMLController {
     public void initialize() {
         logicFX.setValue(logicFXList.get(0));
         logicFX.setItems(logicFXList);
-        logicFX.setOnAction(event -> Settings.logic = logicFX.getValue());
 
         linkList.setItems(hyperlinkObservableList);
 

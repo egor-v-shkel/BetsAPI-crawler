@@ -65,7 +65,8 @@ class Parser {
             mainPageInfo.setUrlMatch(e.select("td[class=text-center] a").attr("href"));
             //do not add matches, that already was sent to GUI/Telegram
             String url = mainPageInfo.getUrlMatch();
-            boolean inList = FXMLController.hyperlinkObservableList.stream().anyMatch(hyperlink -> hyperlink.getText().endsWith(url));
+            boolean inList = FXMLController.hyperlinkObservableList.stream()
+                    .anyMatch(hyperlink -> hyperlink.getText().endsWith(url));
             if (inList) continue;
 
             System.out.println(url);
@@ -130,21 +131,7 @@ class Parser {
                 }
 
                 //add link to GUI/Telegram
-                String url = info.getUrlMatch();
-                Hyperlink hyperlink = new Hyperlink(url);
-                hyperlink.setOnAction(actionEvent -> {
-                    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                        try {
-                            Desktop.getDesktop().browse(new URI(hyperlink.getText()));
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (URISyntaxException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                FXMLController.hyperlinkObservableList.add(hyperlink);
-                sendTelegramMessage(info, leftMatch, rightMatch);
+                notification(info, leftMatch, rightMatch);
 
             }
         }
@@ -152,6 +139,27 @@ class Parser {
         System.out.println("Finish parsing");
 
 
+    }
+
+    /**
+     * @param info
+     * @param leftMatch
+     * @param rightMatch
+     */
+    private void notification(MainPageInfo info, MatchInfo leftMatch, MatchInfo rightMatch) {
+        String url = info.getUrlMatch();
+        Hyperlink hyperlink = new Hyperlink(url);
+        hyperlink.setOnAction(actionEvent -> {
+            if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                try {
+                    Desktop.getDesktop().browse(new URI(hyperlink.getText()));
+                } catch (IOException | URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        FXMLController.hyperlinkObservableList.add(hyperlink);
+        sendTelegramMessage(info, leftMatch, rightMatch);
     }
 
     private void parseMatchPage(String site) {
