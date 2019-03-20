@@ -1,6 +1,8 @@
 package by.vision.betsapiparser;
 
 import javafx.scene.control.Hyperlink;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -22,6 +24,7 @@ class Parser {
     private int port;
     private Proxy proxy;
     private TelegramBot telegramBot = new TelegramBot();
+    private static final Logger LOGGER = LogManager.getLogger(Parser.class.getName());
 
     Parser(Proxy proxy) {
         this.proxy = proxy;
@@ -294,6 +297,7 @@ class Parser {
                 break;
             } catch (IOException e) {
                 e.printStackTrace();
+                LOGGER.debug("exception", e);
                 if (--numTries <= 0) try {
                     throw e;
                 } catch (IOException e1) {
@@ -312,6 +316,7 @@ class Parser {
             doc = response.parse();
         } catch (IOException e) {
             e.printStackTrace();
+            LOGGER.debug("another exception", e);
         } finally {
             return doc;
         }
