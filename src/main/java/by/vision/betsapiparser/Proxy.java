@@ -1,5 +1,6 @@
 package by.vision.betsapiparser;
 
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,6 +12,7 @@ class Proxy {
     private String ip;
     private int port;
     private JSONArray ipArray;
+    private static final Logger LOGGER = Logger.getLogger(Proxy.class);
 
     public String getIp() {
         return ip;
