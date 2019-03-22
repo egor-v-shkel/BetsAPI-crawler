@@ -8,7 +8,7 @@ import java.io.*;
 import java.net.URL;
 import java.util.Scanner;
 
-class Proxy {
+public class Proxy {
     private String ip;
     private int port;
     private JSONArray ipArray;
@@ -28,6 +28,7 @@ class Proxy {
                 getProxyList();
             } catch (IOException e) {
                 e.printStackTrace();
+                LOGGER.debug("Get proxy list exception", e);
             }
         } else {
             setProxy();
@@ -44,7 +45,15 @@ class Proxy {
         }
         String response = sb.toString();
 
-        System.out.println("New JSON was taken");
+        //check API request limit for free users
+
+        switch (response){
+            case response.endsWith("premium"):
+
+                break;
+                case
+
+        }
 
         JSONObject jsonObject = new JSONObject(response);
         ipArray = jsonObject.getJSONArray("data");

@@ -31,11 +31,6 @@ public class App extends Application {
         //disable warning "An illegal reflective access operation has occurred"
         disableWarning();
         initTelegBotsAPI();
-        try {
-            new FileWriter("c:/temp/proxy_list.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 
