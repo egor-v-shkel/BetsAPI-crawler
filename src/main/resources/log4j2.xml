@@ -23,7 +23,7 @@
         </Appender>-->
         <Appender type="File" name="File" fileName="${filename}">
             <Layout type="PatternLayout">
-                <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+                <Pattern>%d %p %C{1.} [%t]%n%m%n</Pattern>
             </Layout>
             <Policies>
                 <TimeBasedTriggeringPolicy />

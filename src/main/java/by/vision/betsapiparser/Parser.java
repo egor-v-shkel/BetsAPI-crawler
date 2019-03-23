@@ -281,7 +281,6 @@ class Parser {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
-        int statusCode = 0;
         int numTries = 5;
         Connection.Response response = null;
         while (!FXMLController.bStop) {
@@ -293,20 +292,17 @@ class Parser {
                         .referrer("http://www.google.com")
                         //.ignoreHttpErrors(true)
                         .execute();
-                statusCode = response.statusCode();
+
                 break;
             } catch (IOException e) {
-                e.printStackTrace();
-                LOGGER.debug("exception", e);
+                LOGGER.debug("Unsuccessful connection for proxy "+ip+port+"\n", e);
                 if (--numTries <= 0) try {
                     throw e;
                 } catch (IOException e1) {
-                    e1.printStackTrace();
+                    LOGGER.debug("Reconnection attempt №"+numTries);
                     proxy.refresh();
                     ip = proxy.getIp();
                     port = proxy.getPort();
-                    System.out.println("Status code " + statusCode);
-                    System.out.println("Proxy " + ip + ":" + port);
                 }
             }
         }
