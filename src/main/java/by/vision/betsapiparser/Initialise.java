@@ -1,12 +1,17 @@
 package by.vision.betsapiparser;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 
 public class Initialise {
 
+    private static final Logger LOGGER = LogManager.getLogger(Initialise.class.getName());
+
     public static void start(Proxy proxy) {
 
-        System.out.println("Star new parsing iteration");
+        LOGGER.debug("Start parsing");
 
         Parser ps = new Parser(proxy);
         ps.parseMainPage();
@@ -36,7 +41,7 @@ class ParserThread implements Runnable {
         while (!FXMLController.bStop) {
             Initialise.start(proxy);
         }
-        System.out.println("Thread was stopped");
+
     }
 
     public  void stop(){

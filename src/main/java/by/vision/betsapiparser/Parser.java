@@ -38,7 +38,7 @@ class Parser {
 
         final String HOST_SITE = "https://ru.betsapi.com";
         final String MAIN_URL = "https://ru.betsapi.com/ci/soccer";
-        System.out.println("Using proxy to parse main page" + ip + ":" + port);
+        LOGGER.debug("Using proxy "+ip+":"+port+" to parse main page");
 
         Elements scopeElements;
         List<MainPageInfo> mainPageInfoList = new ArrayList<>();
@@ -72,7 +72,7 @@ class Parser {
                     .anyMatch(hyperlink -> hyperlink.getText().endsWith(url));
             if (inList) continue;
 
-            System.out.println(url);
+            LOGGER.debug(url);
 
             //league
             mainPageInfo.setLeague(e.selectFirst("td[class=league_n] a").ownText());
@@ -139,7 +139,7 @@ class Parser {
             }
         }
 
-        System.out.println("Finish parsing");
+        LOGGER.debug("Finish parsing");
 
 
     }

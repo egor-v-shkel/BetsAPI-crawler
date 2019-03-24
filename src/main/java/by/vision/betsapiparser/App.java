@@ -51,6 +51,10 @@ public class App extends Application {
     }
 
     public void setTitle(Stage stage) {
+
+        stage.setTitle("BetsAPI parser v. 0.0.2");
+
+/*
         MavenXpp3Reader reader = new MavenXpp3Reader();
         Model model = null;
         try {
@@ -60,6 +64,7 @@ public class App extends Application {
         }
         assert model != null;
         stage.setTitle(model.getArtifactId() + " " + model.getVersion());
+*/
     }
 
     @Override

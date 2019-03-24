@@ -45,6 +45,13 @@
         <Logger name="by.vision.betsapiparser.Proxy" level="debug" additivity="false">
             <AppenderRef ref="File"/>
         </Logger>
+        <Logger name="by.vision.betsapiparser.Initialise" level="debug" additivity="false">
+            <AppenderRef ref="File"/>
+        </Logger>
+        <Logger name="by.vision.betsapiparser.Parser" level="debug" additivity="false">
+            <AppenderRef ref="File"/>
+        </Logger>
+
 
         <Root level="debug">
             <AppenderRef ref="RollingFile"/>

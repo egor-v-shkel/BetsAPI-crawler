@@ -52,13 +52,13 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        /*return "BetsAPI_bot";*/
-        return "BetsAPI_2_bot";
+        return "BetsAPI_bot";
+        //return "BetsAPI_2_bot";
     }
 
     @Override
     public String getBotToken() {
-        /*return "752131033:AAHymxVu8_nqPRvloTob3W30WkFl91jU9bQ";//BetsAPI_bot*/
-        return "700196610:AAEplpWHPp7rUqOnp7BiYly3K_2dgbctL_I";//BetsAPI_2_bot
+        return "752131033:AAHymxVu8_nqPRvloTob3W30WkFl91jU9bQ";//BetsAPI_bot
+        //return "700196610:AAEplpWHPp7rUqOnp7BiYly3K_2dgbctL_I";//BetsAPI_2_bot
     }
 }
