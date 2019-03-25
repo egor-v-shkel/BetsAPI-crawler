@@ -1,8 +1,6 @@
 package by.vision.betsapiparser;
 
 import javafx.scene.control.Hyperlink;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,7 +22,6 @@ class Parser {
     private int port;
     private Proxy proxy;
     private TelegramBot telegramBot = new TelegramBot();
-    private static final Logger LOGGER = LogManager.getLogger(Parser.class.getName());
 
     Parser(Proxy proxy) {
         this.proxy = proxy;
@@ -38,7 +35,7 @@ class Parser {
 
         final String HOST_SITE = "https://ru.betsapi.com";
         final String MAIN_URL = "https://ru.betsapi.com/ci/soccer";
-        LOGGER.debug("Using proxy "+ip+":"+port+" to parse main page");
+        MyLogger.ROOT_LOGGER.debug("Using proxy "+ip+":"+port+" to parse main page");
 
         Elements scopeElements;
         List<MainPageInfo> mainPageInfoList = new ArrayList<>();
@@ -72,7 +69,7 @@ class Parser {
                     .anyMatch(hyperlink -> hyperlink.getText().endsWith(url));
             if (inList) continue;
 
-            LOGGER.debug(url);
+            MyLogger.ROOT_LOGGER.debug(url);
 
             //league
             mainPageInfo.setLeague(e.selectFirst("td[class=league_n] a").ownText());
@@ -139,7 +136,7 @@ class Parser {
             }
         }
 
-        LOGGER.debug("Finish parsing");
+        MyLogger.ROOT_LOGGER.debug("Finish parsing");
 
 
     }
@@ -295,11 +292,11 @@ class Parser {
 
                 break;
             } catch (IOException e) {
-                LOGGER.debug("Unsuccessful connection for proxy "+ip+port+"\n", e);
+                MyLogger.ROOT_LOGGER.info("Unsuccessful connection for proxy "+ip+":"+port+"\n", e);
                 if (--numTries <= 0) try {
                     throw e;
                 } catch (IOException e1) {
-                    LOGGER.debug("Reconnection attempt №"+numTries);
+                    MyLogger.ROOT_LOGGER.info("Reconnection attempt №"+numTries);
                     proxy.refresh();
                     ip = proxy.getIp();
                     port = proxy.getPort();
@@ -312,7 +309,7 @@ class Parser {
             doc = response.parse();
         } catch (IOException e) {
             e.printStackTrace();
-            LOGGER.debug("another exception", e);
+            MyLogger.ROOT_LOGGER.info("Document was not created", e);
         } finally {
             return doc;
         }

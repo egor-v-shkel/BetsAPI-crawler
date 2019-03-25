@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
@@ -46,8 +48,9 @@ public class App extends Application {
         stage.setScene(scene);
         stage.setMinHeight(480);
         stage.setMinWidth(800);
-        stage.getIcons().add(new Image("file:..\\BetsAPI-parser\\src\\main\\resources\\images\\icon.png"));
+        stage.getIcons().add(new Image(App.class.getResourceAsStream("/images/icon.png")));
         stage.show();
+        MyLogger.ROOT_LOGGER.debug("Application launched");
     }
 
     public void setTitle(Stage stage) {
@@ -69,6 +72,7 @@ public class App extends Application {
 
     @Override
     public void stop(){
+        MyLogger.ROOT_LOGGER.debug("Application closed.");
         System.exit(0);
     }
 

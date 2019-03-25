@@ -1,6 +1,7 @@
 package by.vision.betsapiparser;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +14,6 @@ public class Proxy {
     private String ip;
     private int port;
     private JSONArray ipArray;
-    private static final Logger LOGGER = Logger.getLogger(Proxy.class.getName());
     private final String TOO_MUCH_REQUSTS = "We have to temporarily stop you. You're requesting proxies a little too fast (2+ requests per second). Get your API to remove this limit at http://pubproxy.com/#premium";
     private final String REQUEST_LIMIT = "You reached the maximum 60 requests for today. Get your API to make unlimited requests at http://pubproxy.com/#premium";
 
@@ -31,7 +31,7 @@ public class Proxy {
                 getProxyList();
             } catch (IOException e) {
                 e.printStackTrace();
-                LOGGER.debug("Get proxy list exception", e);
+                MyLogger.REQUESTS_LOGGER.info("Get proxy list exception", e);
             }
         } else {
             setProxy();
@@ -47,16 +47,16 @@ public class Proxy {
         //check API request limit for free users
         if (response.endsWith("premium")) {
             useURL = false;
-            LOGGER.debug("Reached request limit "+response);
+            MyLogger.REQUESTS_LOGGER.debug("Reached request limit\n"+response);
             response = responseFormat(getResponse("file://localhost/c:/temp/proxy_list.JSON"));
-            LOGGER.debug("Using local proxy list\n"+response);
-        }
+            MyLogger.REQUESTS_LOGGER.debug("Using local proxy list\n"+response);
+        } else MyLogger.REQUESTS_LOGGER.debug("Using parsed proxy list\n"+response);
 
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(response);
         } catch (JSONException e) {
-            LOGGER.debug("Not a JSON object:");
+            MyLogger.REQUESTS_LOGGER.warn("Not a JSON object:");
         }
         ipArray = jsonObject.getJSONArray("data");
 
@@ -64,6 +64,11 @@ public class Proxy {
         setProxy();
     }
 
+    /**
+     * This method concatenate all parsed arrays into single one
+     * @param resp
+     * @return
+     */
     private String responseFormat(String resp) {
         String s = resp.replaceAll("[]][\\[]", ",");
         return "{\"data\":  " + s + "}";
