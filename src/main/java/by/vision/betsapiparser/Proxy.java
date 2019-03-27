@@ -1,7 +1,5 @@
 package by.vision.betsapiparser;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +29,7 @@ public class Proxy {
                 getProxyList();
             } catch (IOException e) {
                 e.printStackTrace();
-                MyLogger.REQUESTS_LOGGER.info("Get proxy list exception", e);
+                MyLogger.RESPONSE_LOGGER.info("Get proxy list exception", e);
             }
         } else {
             setProxy();
@@ -42,21 +40,21 @@ public class Proxy {
         boolean useURL = true;
         final String defaultURL = "http://pubproxy.com/api/proxy?format=json&type=http&https=true&last_check=60&speed=25&limit=20&user_agent=true&referer=true&country=RU,PL,UA,BY,LT,LV";
         String response = getResponse(defaultURL);
-        //LOGGER.debug(response);
+        MyLogger.RESPONSE_LOGGER.debug(response);
 
         //check API request limit for free users
         if (response.endsWith("premium")) {
             useURL = false;
-            MyLogger.REQUESTS_LOGGER.debug("Reached request limit\n"+response);
+            MyLogger.RESPONSE_LOGGER.debug("Reached request limit\n"+response);
             response = responseFormat(getResponse("file://localhost/c:/temp/proxy_list.JSON"));
-            MyLogger.REQUESTS_LOGGER.debug("Using local proxy list\n"+response);
-        } else MyLogger.REQUESTS_LOGGER.debug("Using parsed proxy list\n"+response);
+            MyLogger.RESPONSE_LOGGER.debug("Using local proxy list\n"+response);
+        } else MyLogger.RESPONSE_LOGGER.debug("Using parsed proxy list\n"+response);
 
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(response);
         } catch (JSONException e) {
-            MyLogger.REQUESTS_LOGGER.warn("Not a JSON object:");
+            MyLogger.RESPONSE_LOGGER.warn("Not a JSON object:");
         }
         ipArray = jsonObject.getJSONArray("data");
 
@@ -75,7 +73,7 @@ public class Proxy {
     }
 
     public String getResponse(String defaultURL) throws IOException {
-        URL url = new URL(defaultURL);//&country=US,RU
+        URL url = new URL(defaultURL);
         Scanner scanner = new Scanner((InputStream) url.getContent());
         StringBuilder sb = new StringBuilder();
         while (scanner.hasNext()) {
@@ -92,6 +90,16 @@ public class Proxy {
     }
 
     private void writeProxyList(JSONArray ipArray) throws IOException {
+        File file = new File("c:/temp/proxy_list.JSON");
+        try {
+            if(file.createNewFile()) {
+                MyLogger.ROOT_LOGGER.debug("JSON file was created");
+            }
+        } catch (IOException e) {
+            MyLogger.ROOT_LOGGER.warn("Creating new file exception", e);
+        }
+
+        //ipArray.put();
         FileWriter fileWriter = new FileWriter("c:/temp/proxy_list.JSON", true);
         int indentFactor = 2;
         BufferedWriter writer = new BufferedWriter(fileWriter);
