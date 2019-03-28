@@ -45,10 +45,10 @@ public class Proxy {
         //check API request limit for free users
         if (response.endsWith("premium")) {
             useURL = false;
-            MyLogger.RESPONSE_LOGGER.debug("Reached request limit\n"+response);
+            MyLogger.RESPONSE_LOGGER.debug("Reached request limit\n" + response);
             response = responseFormat(getResponse("file://localhost/c:/temp/proxy_list.JSON"));
-            MyLogger.RESPONSE_LOGGER.debug("Using local proxy list\n"+response);
-        } else MyLogger.RESPONSE_LOGGER.debug("Using parsed proxy list\n"+response);
+            MyLogger.RESPONSE_LOGGER.debug("Using local proxy list\n" + response);
+        } else MyLogger.RESPONSE_LOGGER.debug("Using parsed proxy list\n" + response);
 
         JSONObject jsonObject = null;
         try {
@@ -58,12 +58,13 @@ public class Proxy {
         }
         ipArray = jsonObject.getJSONArray("data");
 
-        if (useURL)writeProxyList(ipArray);
+        if (useURL) writeProxyList(ipArray);
         setProxy();
     }
 
     /**
      * This method concatenate all parsed arrays into single one
+     *
      * @param resp
      * @return
      */
@@ -92,12 +93,23 @@ public class Proxy {
     private void writeProxyList(JSONArray ipArray) throws IOException {
         File file = new File("c:/temp/proxy_list.JSON");
         try {
-            if(file.createNewFile()) {
+            if (file.createNewFile()) {
                 MyLogger.ROOT_LOGGER.debug("JSON file was created");
+            } else {
+                //check if proxy already exist. if it is not - append it to saved proxy file
+                JSONArray jArr = new JSONArray(file);
+                jArr.forEach(savedProxy -> {
+                    JSONObject jObj = new JSONObject(savedProxy);
+                    int length = ipArray.length();
+                    for (int i = 0; i < length; i++) {
+                        if (ipArray.getJSONObject(i).equals(jObj)) ipArray.remove(i);
+                    }
+                });
             }
         } catch (IOException e) {
             MyLogger.ROOT_LOGGER.warn("Creating new file exception", e);
         }
+
 
         //ipArray.put();
         FileWriter fileWriter = new FileWriter("c:/temp/proxy_list.JSON", true);
