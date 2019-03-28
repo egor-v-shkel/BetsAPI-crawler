@@ -44,10 +44,9 @@ class ParserThread implements Runnable {
 
     }
 
-    public  void stop(){
+    public void stop() {
         FXMLController.bStop = true;
     }
-
 
 
 }
