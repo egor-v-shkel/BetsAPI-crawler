@@ -109,6 +109,12 @@ public class Proxy {
         } catch (IOException e) {
             MyLogger.ROOT_LOGGER.warn("Creating new file exception", e);
         }
+        JSONArray jsArr = new JSONArray(file);
+        /*for (JSONObject jObj:jsArr
+             ) {
+
+        }*/
+
 
 
         //ipArray.put();
