@@ -12,7 +12,7 @@ public class PubProxy implements ProxyService {
     }
 
     @Override
-    public void request() {
+    public void serviceConnect() {
 
     }
 

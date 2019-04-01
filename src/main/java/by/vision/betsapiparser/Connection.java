@@ -4,11 +4,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Proxy;
 
 public class Connection {
 
-    String request;
+    String request = "https://gimmeproxy.com/api/getProxy?ipPort=true&protocol=http";
     org.jsoup.Connection.Response response;
     Proxy proxy;
     boolean useProxy;
@@ -20,12 +21,12 @@ public class Connection {
             .referrer("http://www.google.com");
 
 
-    Connection(String request){
+    public Connection(String request) {
         this.request = request;
     }
 
 
-    private org.jsoup.Connection.Response connect(){
+    public void start() {
         while (!FXMLController.bStop) {
             try {
                 response = preset
@@ -33,68 +34,71 @@ public class Connection {
                         .execute();
                 break;
             } catch (IOException e) {
-                MyLogger.ROOT_LOGGER.info("Unsuccessful connection for proxy "+ip+":"+port+"\n", e);
-                if (--NUM_TRIES <= 0) try {
-                    throw e;
-                } catch (IOException e1) {
-                    MyLogger.ROOT_LOGGER.info("Reconnection attempt №"+ NUM_TRIES);
-                }
+                MyLogger.ROOT_LOGGER.info("Unsuccessful connection\n", e);
+                checkTry(e);
             }
         }
 
-
-
-
     }
 
-    private org.jsoup.Connection.Response connect(Proxy proxy){
+    public void start(Proxy proxy) {
+        String proxyStr = null;
+        int port = 0;
+        getProxy();
+        java.net.Proxy px = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("", port));
         while (!FXMLController.bStop) {
             try {
                 response = preset
                         //.ignoreHttpErrors(true)
-                        .proxy(ip, port)
+                        .proxy(proxyStr, port)
                         .execute();
-
                 break;
             } catch (IOException e) {
-                MyLogger.ROOT_LOGGER.info("Unsuccessful connection for proxy "+ip+":"+port+"\n", e);
-                if (--NUM_TRIES <= 0) try {
-                    throw e;
-                } catch (IOException e1) {
-                    MyLogger.ROOT_LOGGER.info("Reconnection attempt №"+ NUM_TRIES);
-                    proxy.refresh();
-                    ip = proxy.getIp();
-                    port = proxy.getPort();
-                }
+                MyLogger.ROOT_LOGGER.info("Unsuccessful connection for proxy ", e);
+                checkTry(e);
             }
         }
 
 
     }
 
-    private void connect(boolean autoProxy){
+    public void start(boolean autoProxy) {
         while (!FXMLController.bStop) {
-            response = autoProxy ? connect(getProxy()) : connect();
+            if (autoProxy) {
+                start(getProxy());
+            } else {
+                start();
+            }
+        }
+    }
+
+    private void checkTry(IOException e) {
+        if (--NUM_TRIES <= 0) try {
+            throw e;
+        } catch (IOException e1) {
+            MyLogger.ROOT_LOGGER.info("Reconnection attempt №" + NUM_TRIES);
         }
     }
 
     private Proxy getProxy() {
+        return null;
+    }
+
+    public String getResponse() {
+        return Integer.toString(response.statusCode());
+    }
+
+    private void respToDoc() {
 
     }
 
-    private String getResponse(){
-
-    }
-
-    private void respToDoc{
+    /*{
         try {
             doc = response.parse();
         } catch (IOException e) {
             e.printStackTrace();
             MyLogger.ROOT_LOGGER.info("Document was not created", e);
-        } finally {
-            return doc;
         }
-    }
+    }*/
 
 }

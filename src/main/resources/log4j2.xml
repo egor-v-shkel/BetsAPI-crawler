@@ -3,7 +3,7 @@
                packages="org.apache.logging.log4j.test">
     <Properties>
         <Property name="filename">c:\temp\betsapi.log</Property>
-        <Property name="requests">c:\temp\requests.log</Property>
+        <Property name="responses">c:\temp\responses.log</Property>
     </Properties>
     <!--<Filter type="ThresholdFilter" level="trace"/>-->
 
@@ -33,7 +33,7 @@
                 <SizeBasedTriggeringPolicy size="10 MB"/>
             </Policies>
         </Appender>
-        <Appender type="File" name="Requests" fileName="${requests}">
+        <Appender type="File" name="Responses" fileName="${responses}">
             <Layout type="PatternLayout">
                 <Pattern>%d %p %C{1.} [%t]%n%m%n</Pattern>
             </Layout>
@@ -56,7 +56,7 @@
 -->
 
         <Logger name="by.vision.betsapiparser.Proxy" level="debug" additivity="false">
-            <AppenderRef ref="Requests"/>
+            <AppenderRef ref="Responses"/>
         </Logger>
         <Logger name="by.vision.betsapiparser.Initialise" level="debug" additivity="false">
             <AppenderRef ref="File"/>

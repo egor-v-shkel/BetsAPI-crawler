@@ -38,14 +38,19 @@ public class Proxy {
 
     public void getProxyList() throws IOException {
         boolean useURL = true;
-        final String defaultURL = "http://pubproxy.com/api/proxy?format=json&type=http&https=true&last_check=60&speed=25&limit=20&user_agent=true&referer=true&country=RU,PL,UA,BY,LT,LV";
-        String response = getResponse(defaultURL);
+        String response = null;
+        final String defaultURL = "http://pubproxy.com/api/proxy?format=json&type=http&https=true&last_check=60&speed=25&limit=20&user_agent=true&referer=true";
+        try {
+            response = getResponse(defaultURL);
+        } catch (IOException e) {
+            e.printStackTrace();
+            useURL = false;
+        }
         MyLogger.RESPONSE_LOGGER.debug(response);
 
-        //check API request limit for free users
-        if (response.endsWith("premium")) {
-            useURL = false;
-            MyLogger.RESPONSE_LOGGER.debug("Reached request limit\n" + response);
+        //check API serviceConnect limit for free users
+        if (!useURL) {
+            MyLogger.RESPONSE_LOGGER.debug("Reached serviceConnect limit\n" + response);
             response = responseFormat(getResponse("file://localhost/c:/temp/proxy_list.JSON"));
             MyLogger.RESPONSE_LOGGER.debug("Using local proxy list\n" + response);
         } else MyLogger.RESPONSE_LOGGER.debug("Using parsed proxy list\n" + response);
@@ -91,25 +96,19 @@ public class Proxy {
     }
 
     private void writeProxyList(JSONArray ipArray) throws IOException {
-        File file = new File("c:/temp/proxy_list.JSON");
+        /*File file = new File("c:/temp/proxy_list.JSON");
         try {
             if (file.createNewFile()) {
                 MyLogger.ROOT_LOGGER.debug("JSON file was created");
             } else {
                 //check if proxy already exist. if it is not - append it to saved proxy file
-                JSONArray jArr = new JSONArray(file);
-                jArr.forEach(savedProxy -> {
-                    JSONObject jObj = new JSONObject(savedProxy);
-                    int length = ipArray.length();
-                    for (int i = 0; i < length; i++) {
-                        if (ipArray.getJSONObject(i).equals(jObj)) ipArray.remove(i);
-                    }
-                });
+                checkExist(ipArray, file);
+                append(ipArray, file);
             }
         } catch (IOException e) {
             MyLogger.ROOT_LOGGER.warn("Creating new file exception", e);
         }
-        JSONArray jsArr = new JSONArray(file);
+        JSONArray jsArr = new JSONArray(file);*/
         /*for (JSONObject jObj:jsArr
              ) {
 
@@ -123,5 +122,20 @@ public class Proxy {
         BufferedWriter writer = new BufferedWriter(fileWriter);
         writer.write(ipArray.toString(indentFactor));
         writer.close();
+    }
+
+    private void append(JSONArray ipArray, File file) {
+
+    }
+
+    private void checkExist(JSONArray ipArray, File file) {
+        JSONArray jArr = new JSONArray(file);
+        jArr.forEach(savedProxy -> {
+            JSONObject jObj = new JSONObject(savedProxy);
+            int length = ipArray.length();
+            for (int i = 0; i < length; i++) {
+                if (ipArray.getJSONObject(i).equals(jObj)) ipArray.remove(i);
+            }
+        });
     }
 }

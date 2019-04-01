@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface ProxyService {
     ArrayList<String> list();
-    void request();
+    void serviceConnect();
 }
