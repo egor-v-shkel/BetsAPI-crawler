@@ -2,15 +2,22 @@ package by.vision.betsapiparser.ProxyServices;
 
 import by.vision.betsapiparser.Connection;
 import java.util.ArrayList;
+import java.util.List;
 
-public class Gimmeproxy implements ProxyService {
+public class Gimmeproxy implements TextResponseService {
     String ip;
     int port;
-    private final String REQUEST = "https://gimmeproxy.com/api/getProxy?ipPort=true&protocol=http";
+    //this request consist of parameters:
+    // api key,
+    // proxy is support user-agent string,
+    // protocol is HTTP,
+    // response will be in format "ip:port"
+    private final String REQUEST = "https://gimmeproxy.com/api/getProxy?api_key=41162371-665a-42a7-abf6-23572bc9fe91&referer=true&user-agent=true&protocol=http&ipPort=true";
+    private ArrayList<String> proxyList;
 
     @Override
     public ArrayList<String> list() {
-        return null;
+        return proxyList;
     }
 
     @Override

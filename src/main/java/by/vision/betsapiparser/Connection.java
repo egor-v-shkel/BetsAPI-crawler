@@ -85,7 +85,11 @@ public class Connection {
     }
 
     public String getResponse() {
-        return Integer.toString(response.statusCode());
+        return statusCodeIsGood() ? response.body() : "";//TODO think about returning empty string
+    }
+
+    private boolean statusCodeIsGood() {
+        return (response.statusCode() == 200);
     }
 
     private void respToDoc() {
