@@ -1,16 +1,23 @@
 package by.vision.betsapiparser.ProxyServices;
 
-import java.net.Proxy;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public interface TextResponseService extends ProxyService {
-    default ArrayList<Proxy> toList(String response){
-        ArrayList<Proxy> proxyArrayList = new ArrayList<>();
-        proxyArrayList = Pattern.compile("your regex here")
-                .matcher(response)
+public class TextResponseService implements ProxyService {
+    String resp;
+    public TextResponseService response(String resp){
+        this.resp = resp;
+        return this;
+    }
+
+    @Override
+    public List<String> toList() {
+        List<String> proxyArrayList = new ArrayList<>();
+        proxyArrayList = Pattern.compile("((\\\\d+\\\\.){3}\\\\d+):(\\\\d+)")
+                .matcher(resp)
                 .results()
                 .map(MatchResult::group)
                 .collect(Collectors.toList());

@@ -29,7 +29,7 @@ public class Proxy {
                 getProxyList();
             } catch (IOException e) {
                 e.printStackTrace();
-                MyLogger.RESPONSE_LOGGER.info("Get proxy list exception", e);
+                MyLogger.RESPONSE_LOGGER.info("Get proxy toList exception", e);
             }
         } else {
             setProxy();
@@ -52,8 +52,8 @@ public class Proxy {
         if (!useURL) {
             MyLogger.RESPONSE_LOGGER.debug("Reached serviceConnect limit\n" + response);
             response = responseFormat(getResponse("file://localhost/c:/temp/proxy_list.JSON"));
-            MyLogger.RESPONSE_LOGGER.debug("Using local proxy list\n" + response);
-        } else MyLogger.RESPONSE_LOGGER.debug("Using parsed proxy list\n" + response);
+            MyLogger.RESPONSE_LOGGER.debug("Using local proxy toList\n" + response);
+        } else MyLogger.RESPONSE_LOGGER.debug("Using parsed proxy toList\n" + response);
 
         JSONObject jsonObject = null;
         try {
