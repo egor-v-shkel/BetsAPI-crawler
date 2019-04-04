@@ -9,7 +9,7 @@ import java.net.Proxy;
 
 public class Connection {
 
-    String request = "https://gimmeproxy.com/api/getProxy?ipPort=true&protocol=http";
+    String request;// = "https://gimmeproxy.com/api/getProxy?ipPort=true&protocol=http";
     org.jsoup.Connection.Response response;
     Proxy proxy;
     boolean useProxy;
@@ -21,8 +21,8 @@ public class Connection {
             .referrer("http://www.google.com");
 
 
-    public Connection(String request) {
-        this.request = request;
+    public Connection(String req) {
+        request = req;
     }
 
 
