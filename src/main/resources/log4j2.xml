@@ -33,6 +33,7 @@
                 <SizeBasedTriggeringPolicy size="10 MB"/>
             </Policies>
         </Appender>
+
         <Appender type="File" name="Responses" fileName="${responses}">
             <Layout type="PatternLayout">
                 <Pattern>%d %p %C{1.} [%t]%n%m%n</Pattern>
@@ -57,6 +58,9 @@
 
         <Logger name="by.vision.betsapiparser.Proxy" level="debug" additivity="false">
             <AppenderRef ref="Responses"/>
+        </Logger>
+        <Logger name="us.codecraft.webmagic.scheduler.QueueScheduler" level="debug" additivity="false">
+            <AppenderRef ref="File"/>
         </Logger>
         <Logger name="by.vision.betsapiparser.Initialise" level="debug" additivity="false">
             <AppenderRef ref="File"/>
