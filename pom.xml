@@ -73,24 +73,18 @@
     </build>
     <dependencies>
 
-        <!-- https://mvnrepository.com/artifact/us.codecraft/webmagic-core -->
+        <!-- https://mvnrepository.com/artifact/edu.uci.ics/crawler4j -->
         <dependency>
-            <groupId>us.codecraft</groupId>
-            <artifactId>webmagic-core</artifactId>
-            <version>0.7.3</version>
+            <groupId>edu.uci.ics</groupId>
+            <artifactId>crawler4j</artifactId>
+            <version>4.4.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/us.codecraft/webmagic-extension -->
+        <!-- https://mvnrepository.com/artifact/edu.uci.ics/crawler4j-examples-base -->
         <dependency>
-            <groupId>us.codecraft</groupId>
-            <artifactId>webmagic-extension</artifactId>
-            <version>0.7.3</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>edu.uci.ics</groupId>
+            <artifactId>crawler4j-examples-base</artifactId>
+            <version>4.4.0</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.maven/maven-model -->
