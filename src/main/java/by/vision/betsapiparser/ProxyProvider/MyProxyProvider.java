@@ -1,4 +1,4 @@
-package by.vision.betsapiparser.ProxyServices;
+package by.vision.betsapiparser.ProxyProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,9 +6,17 @@ import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class TextResponseService implements ProxyService {
+public class MyProxyProvider implements ProxyProvider {
+    private String currentIP;
+    private int currentPort;
+    private ArrayList<String> servicesList;
+
+    public void addService(String service){
+        servicesList.add(service);
+    }
+
     String resp;
-    public TextResponseService response(String resp){
+    public MyProxyProvider response(String resp){
         this.resp = resp;
         return this;
     }
@@ -23,5 +31,20 @@ public class TextResponseService implements ProxyService {
                 .collect(Collectors.toList());
 
         return proxyArrayList;
+    }
+
+    @Override
+    public void refresh() {
+
+    }
+
+    @Override
+    public String getIP() {
+        return currentIP;
+    }
+
+    @Override
+    public int getPort() {
+        return currentPort;
     }
 }

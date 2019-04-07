@@ -33,7 +33,7 @@ public class MyCrawler extends WebCrawler {
      * should be crawled or not (based on your crawling logic).
      */
     @Override
-    public boolean shouldVisit(Page referringPage, WebURL url) {
+    public boolean shouldVisit(Page referringPage, WebURL url) {/*
         String href = url.getURL().toLowerCase();
         // Ignore the url if it has an extension that matches our defined set of image extensions.
         if (IMAGE_EXTENSIONS.matcher(href).matches()) {
@@ -42,7 +42,10 @@ public class MyCrawler extends WebCrawler {
         }
 
         // Only accept the url if it is in the "www.ics.uci.edu" domain and protocol is "http".
-        return href.startsWith("https://www.ics.uci.edu/");
+        return href.startsWith("https://www.ics.uci.edu/");*/
+
+        String href = url.getURL().toLowerCase();
+        return href.startsWith("https://ru.betsapi.com/r/");
     }
 
     /**

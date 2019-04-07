@@ -1,9 +1,8 @@
-package by.vision.betsapiparser.ProxyServices;
+package by.vision.betsapiparser.ProxyProvider;
 
-import by.vision.betsapiparser.Connection;
 import java.util.ArrayList;
 
-public class Gimmeproxy implements ProxyService {
+public class Gimmeproxy implements ProxyProvider {
     String ip;
     int port;
     //this request consist of parameters:
@@ -19,11 +18,21 @@ public class Gimmeproxy implements ProxyService {
         return proxyList;
     }
 
-    private String getIp(){
+    @Override
+    public void refresh() {
+
+    }
+
+    @Override
+    public String getIP() {
+        return null;
+    }
+
+    public String getIp(){
         return ip;
     }
 
-    private int getPort(){
+    public int getPort(){
         return port;
     }
 }
