@@ -23,6 +23,10 @@ class Parser {
     private Proxy proxy;
     private TelegramBot telegramBot = new TelegramBot();
 
+    Parser(){
+        //do nothing
+    }
+
     Parser(Proxy proxy) {
         this.proxy = proxy;
         ip = proxy.getIp();
@@ -164,6 +168,7 @@ class Parser {
 
     private void parseMatchPage(String site) {
 
+/*
         //handle NullPointerException
         Document doc = null;
         while (doc == null && !FXMLController.bStop) {
@@ -269,6 +274,7 @@ class Parser {
 
             }
         }
+*/
 
     }
 
@@ -315,7 +321,7 @@ class Parser {
         }
     }
 
-    private void sendTelegramMessage(MainPageInfo info, MatchInfo leftMatch, MatchInfo rightMatch) {
+    public void sendTelegramMessage(MainPageInfo info, MatchInfo leftMatch, MatchInfo rightMatch) {
         StringBuilder stringBuilder = new StringBuilder();
         String newLine = System.lineSeparator();
         stringBuilder.append("<b>").append(info.getLeague()).append("</b>").append(newLine)
@@ -329,6 +335,31 @@ class Parser {
                 .append("УВ (удары в створ): [").append(leftMatch.getTargetOn()).append(", ").append(rightMatch.getTargetOn()).append("]").append(newLine)
                 .append("УМ (удары мимо ворот): [").append(leftMatch.getTargetOff()).append(", ").append(rightMatch.getTargetOff()).append("]").append(newLine)
                 .append(info.getUrlMatch());
+
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(Settings.tgChatID).setParseMode("html").setText(stringBuilder.toString());
+        try {
+            telegramBot.execute(sendMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+        telegramBot.onClosing();
+    }
+
+    public void sendTelegramMessage(String url, MatchInfo leftMatch, MatchInfo rightMatch) {
+        StringBuilder stringBuilder = new StringBuilder();
+        String newLine = System.lineSeparator();
+        stringBuilder//.append("<b>").append(info.getLeague()).append("</b>").append(newLine)
+                //.append(leftMatch.getClubName()).append(" (").append(info.getRateL()).append(") - ").append(rightMatch.getClubName()).append(" (").append(info.getRateR()).append(")").append(newLine)
+                //.append("<i>").append(info.getTime()).append(" мин.</i>").append(newLine)
+                //.append("<b>").append(info.getScore()).append("</b>").append(newLine)
+                .append("АТ (атаки): [").append(leftMatch.getAttacks()).append(", ").append(rightMatch.getAttacks()).append("]").append(newLine)
+                .append("ОАТ (опасные атаки): [").append(leftMatch.getAttacksDangerous()).append(", ").append(rightMatch.getAttacksDangerous()).append("]").append(newLine)
+                .append("В (владение мячем): [").append(leftMatch.getPossession()).append(", ").append(rightMatch.getPossession()).append("]").append(newLine)
+                .append("У (угловые): [").append(leftMatch.getCorners()).append(", ").append(rightMatch.getCorners()).append("]").append(newLine)
+                .append("УВ (удары в створ): [").append(leftMatch.getTargetOn()).append(", ").append(rightMatch.getTargetOn()).append("]").append(newLine)
+                .append("УМ (удары мимо ворот): [").append(leftMatch.getTargetOff()).append(", ").append(rightMatch.getTargetOff()).append("]").append(newLine)
+                .append(url);
 
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(Settings.tgChatID).setParseMode("html").setText(stringBuilder.toString());
