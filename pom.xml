@@ -9,6 +9,12 @@
     <version>0.0.2</version>
     <packaging>jar</packaging>
 
+    <repositories>
+    <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
     <build>
         <plugins>
 
@@ -73,18 +79,24 @@
     </build>
     <dependencies>
 
-        <!-- https://mvnrepository.com/artifact/edu.uci.ics/crawler4j -->
+        <!-- https://mvnrepository.com/artifact/edu.uci.ics/crawler4j
         <dependency>
             <groupId>edu.uci.ics</groupId>
             <artifactId>crawler4j</artifactId>
             <version>4.4.0</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/edu.uci.ics/crawler4j-examples-base -->
+        &lt;!&ndash; https://mvnrepository.com/artifact/edu.uci.ics/crawler4j-examples-base &ndash;&gt;
         <dependency>
             <groupId>edu.uci.ics</groupId>
             <artifactId>crawler4j-examples-base</artifactId>
             <version>4.4.0</version>
+        </dependency>-->
+
+        <dependency>
+            <groupId>com.github.Vision666</groupId>
+            <artifactId>crawler4j</artifactId>
+            <version>-SNAPSHOT</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.maven/maven-model -->
