@@ -77,7 +77,7 @@ public class MyCrawlerController {
         int numberOfCrawlers = 5;
 
         // The factory which creates instances of crawlers.
-        CrawlController.WebCrawlerFactory<MyCrawler> factory = () -> new MyCrawler();
+        CrawlController.WebCrawlerFactory<MyCrawler> factory = MyCrawler::new;
 
         // Start the crawl. This is a blocking operation, meaning that your code
         // will reach the line after this only when crawling is finished.

@@ -2,12 +2,6 @@ package by.vision.betsapiparser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Pattern;
-
-import edu.uci.ics.crawler4j.parser.TikaHtmlParser;
-import org.apache.http.Header;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
