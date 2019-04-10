@@ -1,6 +1,6 @@
 package by.vision.betsapiparser;
 
-class Settings {
+public class Settings {
 
     // ID чата в ТГ
     public static long tgChatID = -333530356;

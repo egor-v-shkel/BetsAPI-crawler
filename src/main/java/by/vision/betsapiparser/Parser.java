@@ -16,24 +16,23 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-class Parser {
+public class Parser {
     //static Settings settings = new Settings();
     private String ip;
     private int port;
     private Proxy proxy;
     private TelegramBot telegramBot = new TelegramBot();
 
-    Parser(){
+    public Parser(){
         //do nothing
     }
 
-    Parser(Proxy proxy) {
+    public Parser(Proxy proxy) {
         this.proxy = proxy;
         ip = proxy.getIp();
         port = proxy.getPort();
 
     }
-
 
     void parseMainPage() {
 
