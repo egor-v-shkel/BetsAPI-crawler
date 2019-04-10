@@ -10,6 +10,6 @@ public class MyHtmlParser extends TikaHtmlParser {
         super(config, tldList);
     }
     public HtmlParseData parse(){
-
-    };
+    return null;
+    }
 }
