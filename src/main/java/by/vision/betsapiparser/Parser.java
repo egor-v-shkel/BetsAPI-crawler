@@ -1,20 +1,12 @@
 package by.vision.betsapiparser;
 
-import javafx.scene.control.Hyperlink;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.awt.*;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Parser {
     //static Settings settings = new Settings();
@@ -34,18 +26,18 @@ public class Parser {
 
     }
 
-    void parseMainPage() {
+    /*void parseMainPage() {
 
         final String HOST_SITE = "https://ru.betsapi.com";
         final String MAIN_URL = "https://ru.betsapi.com/ci/soccer";
         MyLogger.ROOT_LOGGER.debug("Using proxy "+ip+":"+port+" to parse main page");
 
         Elements scopeElements;
-        List<MainPageInfo> mainPageInfoList = new ArrayList<>();
+        List<CommonInfo> mainPageInfoList = new ArrayList<>();
 
         //Setting up connection
         Document doc = null;
-        while (doc == null && !FXMLController.bStop) {
+        while (doc == null *//*&& !FXMLController.bStop*//*) {
             doc = getDoc(MAIN_URL);
         }
 
@@ -55,7 +47,7 @@ public class Parser {
         //parse values from scope and write it to mainPageInfoList
         for (Element e : scopeElements
         ) {
-            MainPageInfo mainPageInfo = new MainPageInfo();
+            CommonInfo mainPageInfo = new CommonInfo();
 
             //time
             Element timeElement = e.selectFirst("span[class=race-time]");
@@ -102,7 +94,7 @@ public class Parser {
 
         //parse all compatible matches sites
         if (mainPageInfoList.size() > 0) {
-            for (MainPageInfo info : mainPageInfoList
+            for (CommonInfo info : mainPageInfoList
             ) {
                 //assemble url
                 info.setUrlMatch(HOST_SITE + info.getUrlMatch());
@@ -110,8 +102,8 @@ public class Parser {
                     parseMatchPage(info.getUrlMatch());
                 } else break;
 
-                MatchInfo leftMatch = MainPageInfo.getMatchInfoL();
-                MatchInfo rightMatch = MainPageInfo.getMatchInfoR();
+                TeamInfo leftMatch = CommonInfo.getTeamInfoL();
+                TeamInfo rightMatch = CommonInfo.getTeamInfoR();
 
                 boolean bPossess = leftMatch.getPossession() >= Settings.possessionMin;
                 boolean bTargetOn = leftMatch.getTargetOn() >= Settings.targetOnMin;
@@ -142,14 +134,9 @@ public class Parser {
         MyLogger.ROOT_LOGGER.debug("Finish parsing");
 
 
-    }
+    }*/
 
-    /**
-     * @param info
-     * @param leftMatch
-     * @param rightMatch
-     */
-    private void notification(MainPageInfo info, MatchInfo leftMatch, MatchInfo rightMatch) {
+    /*private void notification(CommonInfo info, TeamInfo leftMatch, TeamInfo rightMatch) {
         String url = info.getUrlMatch();
         Hyperlink hyperlink = new Hyperlink(url);
         hyperlink.setOnAction(actionEvent -> {
@@ -163,7 +150,7 @@ public class Parser {
         });
         FXMLController.hyperlinkObservableList.add(hyperlink);
         sendTelegramMessage(info, leftMatch, rightMatch);
-    }
+    }*/
 
     private void parseMatchPage(String site) {
 
@@ -201,8 +188,8 @@ public class Parser {
             String leftTeamParam = param[0];
             String rightTeamParam = param[2];
 
-            MatchInfo leftMatch = MainPageInfo.getMatchInfoL();
-            MatchInfo rightMatch = MainPageInfo.getMatchInfoR();
+            TeamInfo leftMatch = CommonInfo.getTeamInfoL();
+            TeamInfo rightMatch = CommonInfo.getTeamInfoR();
 
             switch (header) {
                 case "":
@@ -285,7 +272,7 @@ public class Parser {
         }*/
         int numTries = 5;
         Connection.Response response = null;
-        while (!FXMLController.bStop) {
+        while (/*!FXMLController.bStop*/ true) {
             try {
                 response = Jsoup.connect(URL)
                         .timeout(Settings.proxyTimeout)
@@ -320,8 +307,8 @@ public class Parser {
         }
     }
 
-    public void sendTelegramMessage(MainPageInfo info, MatchInfo leftMatch, MatchInfo rightMatch) {
-        StringBuilder stringBuilder = new StringBuilder();
+    public void sendTelegramMessage(CommonInfo info, TeamInfo leftMatch, TeamInfo rightMatch) {
+        /*StringBuilder stringBuilder = new StringBuilder();
         String newLine = System.lineSeparator();
         stringBuilder.append("<b>").append(info.getLeague()).append("</b>").append(newLine)
                 .append(leftMatch.getClubName()).append(" (").append(info.getRateL()).append(") - ").append(rightMatch.getClubName()).append(" (").append(info.getRateR()).append(")").append(newLine)
@@ -342,32 +329,9 @@ public class Parser {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-        telegramBot.onClosing();
+        telegramBot.onClosing();*/
     }
 
-    public void sendTelegramMessage(String url, MatchInfo leftMatch, MatchInfo rightMatch) {
-        StringBuilder stringBuilder = new StringBuilder();
-        String newLine = System.lineSeparator();
-        stringBuilder//.append("<b>").append(info.getLeague()).append("</b>").append(newLine)
-                //.append(leftMatch.getClubName()).append(" (").append(info.getRateL()).append(") - ").append(rightMatch.getClubName()).append(" (").append(info.getRateR()).append(")").append(newLine)
-                //.append("<i>").append(info.getTime()).append(" мин.</i>").append(newLine)
-                //.append("<b>").append(info.getScore()).append("</b>").append(newLine)
-                .append("АТ (атаки): [").append(leftMatch.getAttacks()).append(", ").append(rightMatch.getAttacks()).append("]").append(newLine)
-                .append("ОАТ (опасные атаки): [").append(leftMatch.getAttacksDangerous()).append(", ").append(rightMatch.getAttacksDangerous()).append("]").append(newLine)
-                .append("В (владение мячем): [").append(leftMatch.getPossession()).append(", ").append(rightMatch.getPossession()).append("]").append(newLine)
-                .append("У (угловые): [").append(leftMatch.getCorners()).append(", ").append(rightMatch.getCorners()).append("]").append(newLine)
-                .append("УВ (удары в створ): [").append(leftMatch.getTargetOn()).append(", ").append(rightMatch.getTargetOn()).append("]").append(newLine)
-                .append("УМ (удары мимо ворот): [").append(leftMatch.getTargetOff()).append(", ").append(rightMatch.getTargetOff()).append("]").append(newLine)
-                .append(url);
 
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(Settings.tgChatID).setParseMode("html").setText(stringBuilder.toString());
-        try {
-            telegramBot.execute(sendMessage);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-        telegramBot.onClosing();
-    }
 
 }

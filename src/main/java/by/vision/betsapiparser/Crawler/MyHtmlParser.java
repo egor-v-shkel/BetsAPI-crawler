@@ -7,7 +7,7 @@ import edu.uci.ics.crawler4j.url.TLDList;
 
 public class MyHtmlParser extends TikaHtmlParser {
     public MyHtmlParser(CrawlConfig config, TLDList tldList) throws InstantiationException, IllegalAccessException {
-        super(config, tldList);
+        super(config);
     }
     public HtmlParseData parse(){
     return null;

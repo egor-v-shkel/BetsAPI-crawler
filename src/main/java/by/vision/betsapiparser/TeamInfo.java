@@ -1,6 +1,6 @@
 package by.vision.betsapiparser;
 
-public class MatchInfo {
+public class TeamInfo extends CommonInfo {
 
 
     // Название клуба

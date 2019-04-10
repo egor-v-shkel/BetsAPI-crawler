@@ -1,5 +1,6 @@
 package by.vision.betsapiparser;
 
+import by.vision.betsapiparser.Crawler.CrawlerStarter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,16 +11,9 @@ import javafx.scene.control.TextField;
 
 public class FXMLController {
 
-    public static volatile boolean bStop = false;
-
-    private static ParserThread parserThread = null;
-
     private final String start = "Старт";
     private final String stop = "Стоп";
-
-    public static ParserThread getParserThread() {
-        return parserThread;
-    }
+    private CrawlerStarter crawlerStarter = new CrawlerStarter();
 
     @FXML
     public ListView linkList;
@@ -59,8 +53,6 @@ public class FXMLController {
 
         switch (startStopBtn.getText()) {
             case start:
-                bStop = false;
-                startStopBtn.setText(stop);
                 Settings.logic = logicFX.getValue();
                 Settings.tgChatID = Long.parseLong(tgChatIDFX.getText());
                 Settings.timeSelectMin = Integer.parseInt(timeMinFX.getText());
@@ -69,11 +61,17 @@ public class FXMLController {
                 Settings.targetOnMin = Integer.parseInt(targetOnFX.getText());
                 Settings.targetOffMin = Integer.parseInt(targetOffFX.getText());
                 Settings.proxyTimeout = Integer.parseInt(proxyTimeOutFX.getText());
-                //start parsing thread
-                parserThread = new ParserThread("Parser thread");
+
+                try {
+                    crawlerStarter.start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                startStopBtn.setText(stop);
                 break;
             case stop:
-                bStop = true;
+                crawlerStarter.stop();
                 startStopBtn.setText(start);
                 break;
         }

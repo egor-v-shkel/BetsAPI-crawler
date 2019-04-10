@@ -1,7 +1,6 @@
 package by.vision.betsapiparser;
 
-public class MainPageInfo {
-
+public class CommonInfo {
 
     // Лига
     private String League;
@@ -35,20 +34,6 @@ public class MainPageInfo {
 
     // HTML страница с данными матча
     private String Response;
-
-    // Спарсенная инфа по матчу (левая колонка)
-    private static MatchInfo matchInfoL = new MatchInfo();
-
-    // Спарсенная инфа по матчу (правая колонка)
-    private static MatchInfo matchInfoR = new MatchInfo();
-
-    public static MatchInfo getMatchInfoL() {
-        return matchInfoL;
-    }
-
-    public static MatchInfo getMatchInfoR() {
-        return matchInfoR;
-    }
 
     public String getLeague() {
         return League;

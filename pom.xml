@@ -79,25 +79,25 @@
     </build>
     <dependencies>
 
-        <!-- https://mvnrepository.com/artifact/edu.uci.ics/crawler4j
-        <dependency>
-            <groupId>edu.uci.ics</groupId>
-            <artifactId>crawler4j</artifactId>
-            <version>4.4.0</version>
-        </dependency>
+        <!-- https://mvnrepository.com/artifact/edu.uci.ics/crawler4j -->
+       <dependency>
+           <groupId>edu.uci.ics</groupId>
+           <artifactId>crawler4j</artifactId>
+           <version>4.4.0</version>
+       </dependency>
 
-        &lt;!&ndash; https://mvnrepository.com/artifact/edu.uci.ics/crawler4j-examples-base &ndash;&gt;
+       <!-- https://mvnrepository.com/artifact/edu.uci.ics/crawler4j-examples-base -->
         <dependency>
             <groupId>edu.uci.ics</groupId>
             <artifactId>crawler4j-examples-base</artifactId>
             <version>4.4.0</version>
-        </dependency>-->
+        </dependency>
 
-        <dependency>
+        <!--<dependency>
             <groupId>com.github.Vision666</groupId>
             <artifactId>crawler4j</artifactId>
             <version>-SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
 
         <!-- https://mvnrepository.com/artifact/org.apache.maven/maven-model -->
         <dependency>

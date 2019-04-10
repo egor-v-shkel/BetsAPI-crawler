@@ -28,7 +28,7 @@ public class Connection {
 
 
     public void start() {
-        while (!FXMLController.bStop) {
+        while (/*!FXMLController.bStop*/ true) {
             try {
                 response = preset
                         //.ignoreHttpErrors(true)
@@ -47,7 +47,7 @@ public class Connection {
         int port = 0;
         getProxy();
         java.net.Proxy px = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("", port));
-        while (!FXMLController.bStop) {
+        while (/*!FXMLController.bStop*/true) {
             try {
                 response = preset
                         //.ignoreHttpErrors(true)
@@ -64,7 +64,7 @@ public class Connection {
     }
 
     public void start(boolean autoProxy) {
-        while (!FXMLController.bStop) {
+        while (/*!FXMLController.bStop*/true) {
             if (autoProxy) {
                 start(getProxy());
             } else {

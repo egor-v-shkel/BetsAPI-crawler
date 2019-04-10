@@ -14,7 +14,7 @@ public class Initialise {
         LOGGER.debug("Start parsing");
 
         Parser ps = new Parser(proxy);
-        ps.parseMainPage();
+        /*ps.parseMainPage();*/
     }
 }
 
@@ -38,14 +38,14 @@ class ParserThread implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        while (!FXMLController.bStop) {
+        while (/*!FXMLController.bStop*/true) {
             Initialise.start(proxy);
         }
 
     }
 
     public void stop() {
-        FXMLController.bStop = true;
+        /*FXMLController.bStop = true;*/
     }
 
 

@@ -11,17 +11,11 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 
 public class CrawlerStarter {
+    private CrawlController controller;
+    //private boolean stopFlag;
 
-    public static void main(String[] args) throws Exception {
+    public void start() throws Exception {
 
-        new App().init();
-
-        while (true){
-            start();
-        }
-    }
-
-    public static void start() throws Exception {
         File jarDir = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath());
         String jarAbsPath = jarDir.getAbsolutePath();
 
@@ -63,9 +57,13 @@ public class CrawlerStarter {
         PageFetcher pageFetcher = new PageFetcher(config);
         RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
         RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
-        MyHtmlParser myHtmlParser = new MyHtmlParser(config, null);
-        Parser parser = new Parser(config, myHtmlParser, null);
-        CrawlController controller = new CrawlController(config, pageFetcher,parser, robotstxtServer, null);
+        controller = new CrawlController(config, pageFetcher, robotstxtServer);
+            /*PageFetcher pageFetcher = new PageFetcher(config);
+            RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
+            RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
+            MyHtmlParser myHtmlParser = new MyHtmlParser(config, null);
+            Parser parser = new Parser(config, myHtmlParser, null);
+            controller = new CrawlController(config, pageFetcher,parser, robotstxtServer, null);*/
 
         // For each crawl, you need to add some seed urls. These are the first
         // URLs that are fetched and then the crawler starts following links
@@ -82,8 +80,14 @@ public class CrawlerStarter {
 
         // Start the crawl. This is a blocking operation, meaning that your code
         // will reach the line after this only when crawling is finished.
-        controller.start(factory, numberOfCrawlers);
-        System.out.println("Finish crawling");
+        controller.startNonBlocking(factory, numberOfCrawlers);
+        System.out.println("!!!Crawler started!!!");
+    }
+
+    public void stop(){
+        controller.shutdown();
+        controller.waitUntilFinish();
+        System.out.println("!!!Crawler stopped!!!");
     }
 
 }
