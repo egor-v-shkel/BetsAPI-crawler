@@ -1,17 +1,16 @@
-package by.vision.betsapiparser;
+package by.vision.betsapiparser.Crawler;
 
 import java.io.File;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.util.concurrent.atomic.AtomicInteger;
 
+import by.vision.betsapiparser.App;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
+import edu.uci.ics.crawler4j.parser.Parser;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 
-public class MyCrawlerController {
+public class CrawlerStarter {
 
     public static void main(String[] args) throws Exception {
 
@@ -64,7 +63,9 @@ public class MyCrawlerController {
         PageFetcher pageFetcher = new PageFetcher(config);
         RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
         RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
-        CrawlController controller = new CrawlController(config, pageFetcher, robotstxtServer);
+        MyHtmlParser myHtmlParser = new MyHtmlParser(config, null);
+        Parser parser = new Parser(config, myHtmlParser, null);
+        CrawlController controller = new CrawlController(config, pageFetcher,parser, robotstxtServer, null);
 
         // For each crawl, you need to add some seed urls. These are the first
         // URLs that are fetched and then the crawler starts following links

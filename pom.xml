@@ -10,12 +10,11 @@
     <packaging>jar</packaging>
 
     <repositories>
-        <repository>
+    <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
     </repositories>
-
     <build>
         <plugins>
 
@@ -68,13 +67,6 @@
                 </executions>
             </plugin>
 
-            <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-dependency-plugin
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.1.1</version>
-            </plugin>-->
-
 
         </plugins>
 
@@ -86,6 +78,20 @@
         </resources>
     </build>
     <dependencies>
+
+        <!-- https://mvnrepository.com/artifact/edu.uci.ics/crawler4j
+        <dependency>
+            <groupId>edu.uci.ics</groupId>
+            <artifactId>crawler4j</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+
+        &lt;!&ndash; https://mvnrepository.com/artifact/edu.uci.ics/crawler4j-examples-base &ndash;&gt;
+        <dependency>
+            <groupId>edu.uci.ics</groupId>
+            <artifactId>crawler4j-examples-base</artifactId>
+            <version>4.4.0</version>
+        </dependency>-->
 
         <dependency>
             <groupId>com.github.Vision666</groupId>
@@ -140,11 +146,11 @@
             <version>11.0.2</version>
         </dependency>
 
-        <!--<dependency>
+        <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>1.11.3</version>
-        </dependency>-->
+        </dependency>
 
         <dependency>
             <groupId>org.telegram</groupId>

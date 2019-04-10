@@ -1,7 +1,17 @@
-package by.vision.betsapiparser;
+package by.vision.betsapiparser.Crawler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Pattern;
+
+import by.vision.betsapiparser.MainPageInfo;
+import by.vision.betsapiparser.MatchInfo;
+import by.vision.betsapiparser.Parser;
+import by.vision.betsapiparser.Settings;
+import edu.uci.ics.crawler4j.parser.TikaHtmlParser;
+import org.apache.http.Header;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
