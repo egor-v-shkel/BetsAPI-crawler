@@ -205,14 +205,14 @@ public class MyCrawler extends WebCrawler {
         }
 
         //rate
-        commonInfo.setRateL(e.selectFirst(String.format("td[id=o_%s_0]", commonInfo.getIdMatch())).ownText());
-        commonInfo.setRateC(e.selectFirst(String.format("td[id=o_%s_1]", commonInfo.getIdMatch())).ownText());
-        commonInfo.setRateR(e.selectFirst(String.format("td[id=o_%s_2]", commonInfo.getIdMatch())).ownText());
+        commonInfo.setRateL(doc.selectFirst(String.format("td[id=o_%s_0]", commonInfo.getIdMatch())).ownText());
+        commonInfo.setRateC(doc.selectFirst(String.format("td[id=o_%s_1]", commonInfo.getIdMatch())).ownText());
+        commonInfo.setRateR(doc.selectFirst(String.format("td[id=o_%s_2]", commonInfo.getIdMatch())).ownText());
         //clubs names
-        commonInfo.setClubL(e.selectFirst("td[class=text-right text-truncate] a").ownText());
-        commonInfo.setClubR(e.selectFirst("td[class=text-truncate] a").ownText());
+        commonInfo.setClubL(doc.selectFirst("td[class=text-right text-truncate] a").ownText());
+        commonInfo.setClubR(doc.selectFirst("td[class=text-truncate] a").ownText());
 
-        mainPageInfoList.add(commonInfo);
+        //mainPageInfoList.add(commonInfo);
     }
 
     private void notification(Page page, TeamInfo leftMatch, TeamInfo rightMatch, String url) {
