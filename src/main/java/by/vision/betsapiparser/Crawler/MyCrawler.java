@@ -24,6 +24,7 @@ public class MyCrawler extends WebCrawler {
     TelegramBot telegramBot = new TelegramBot();
     CommonInfo commonInfo = new CommonInfo();
     TeamInfo leftTeamInfo = new TeamInfo();
+    TeamInfo rightTeamInfo = new TeamInfo();
 
     /**
      * You should implement this function to specify whether the given url
@@ -32,7 +33,7 @@ public class MyCrawler extends WebCrawler {
     @Override
     public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
-
+        if (!href.startsWith("https://ru.betsapi.com/r/")) return false;
         HtmlParseData htmlParseData = (HtmlParseData) referringPage.getParseData();
         Document doc = Jsoup.parse(htmlParseData.getHtml());
 
@@ -71,9 +72,6 @@ public class MyCrawler extends WebCrawler {
                 }
             }
 
-            TeamInfo leftMatch = new TeamInfo();
-            TeamInfo rightMatch = new TeamInfo();
-
             for (String[] param : paramList
             ) {
                 String header = param[1];
@@ -82,150 +80,154 @@ public class MyCrawler extends WebCrawler {
 
                 switch (header) {
                     case "":
-                        leftMatch.setClubName(param[0]);
-                        rightMatch.setClubName(param[2]);
+                        leftTeamInfo.setClubName(param[0]);
+                        rightTeamInfo.setClubName(param[2]);
                         break;
 
                     case "Goals":
-                        leftMatch.setGoals(Integer.parseInt(leftTeamParam));
-                        rightMatch.setGoals(Integer.parseInt(rightTeamParam));
+                        leftTeamInfo.setGoals(Integer.parseInt(leftTeamParam));
+                        rightTeamInfo.setGoals(Integer.parseInt(rightTeamParam));
                         break;
 
                     case "Corners":
-                        leftMatch.setCorners(Integer.parseInt(leftTeamParam));
-                        rightMatch.setCorners(Integer.parseInt(rightTeamParam));
+                        leftTeamInfo.setCorners(Integer.parseInt(leftTeamParam));
+                        rightTeamInfo.setCorners(Integer.parseInt(rightTeamParam));
                         break;
 
                     case "Corners (Half)":
-                        leftMatch.setCornersHalf(Integer.parseInt(leftTeamParam));
-                        rightMatch.setCornersHalf(Integer.parseInt(rightTeamParam));
+                        leftTeamInfo.setCornersHalf(Integer.parseInt(leftTeamParam));
+                        rightTeamInfo.setCornersHalf(Integer.parseInt(rightTeamParam));
                         break;
 
                     case "Желтые карточки":
-                        leftMatch.setCardYellow(Integer.parseInt(leftTeamParam));
-                        rightMatch.setCardYellow(Integer.parseInt(rightTeamParam));
+                        leftTeamInfo.setCardYellow(Integer.parseInt(leftTeamParam));
+                        rightTeamInfo.setCardYellow(Integer.parseInt(rightTeamParam));
                         break;
 
                     case "Красные карточки":
-                        leftMatch.setCardRed(Integer.parseInt(leftTeamParam));
-                        rightMatch.setCardRed(Integer.parseInt(rightTeamParam));
+                        leftTeamInfo.setCardRed(Integer.parseInt(leftTeamParam));
+                        rightTeamInfo.setCardRed(Integer.parseInt(rightTeamParam));
                         break;
 
                     case "Пенальти":
-                        leftMatch.setPenalties(Integer.parseInt(leftTeamParam));
-                        rightMatch.setPenalties(Integer.parseInt(rightTeamParam));
+                        leftTeamInfo.setPenalties(Integer.parseInt(leftTeamParam));
+                        rightTeamInfo.setPenalties(Integer.parseInt(rightTeamParam));
                         break;
 
                     case "Замены":
-                        leftMatch.setSubstitutions(Integer.parseInt(leftTeamParam));
-                        rightMatch.setSubstitutions(Integer.parseInt(rightTeamParam));
+                        leftTeamInfo.setSubstitutions(Integer.parseInt(leftTeamParam));
+                        rightTeamInfo.setSubstitutions(Integer.parseInt(rightTeamParam));
                         break;
 
                     case "Атака":
-                        leftMatch.setAttacks(Integer.parseInt(leftTeamParam));
-                        rightMatch.setAttacks(Integer.parseInt(rightTeamParam));
+                        leftTeamInfo.setAttacks(Integer.parseInt(leftTeamParam));
+                        rightTeamInfo.setAttacks(Integer.parseInt(rightTeamParam));
                         break;
 
                     case "Опасная Атака":
-                        leftMatch.setAttacksDangerous(Integer.parseInt(leftTeamParam));
-                        rightMatch.setAttacksDangerous(Integer.parseInt(rightTeamParam));
+                        leftTeamInfo.setAttacksDangerous(Integer.parseInt(leftTeamParam));
+                        rightTeamInfo.setAttacksDangerous(Integer.parseInt(rightTeamParam));
                         break;
 
                     case "Удары в створ ворот":
-                        leftMatch.setTargetOn(Integer.parseInt(leftTeamParam));
-                        rightMatch.setTargetOn(Integer.parseInt(rightTeamParam));
+                        leftTeamInfo.setTargetOn(Integer.parseInt(leftTeamParam));
+                        rightTeamInfo.setTargetOn(Integer.parseInt(rightTeamParam));
                         break;
 
                     case "Удары мимо ворот":
-                        leftMatch.setTargetOff(Integer.parseInt(leftTeamParam));
-                        rightMatch.setTargetOff(Integer.parseInt(rightTeamParam));
+                        leftTeamInfo.setTargetOff(Integer.parseInt(leftTeamParam));
+                        rightTeamInfo.setTargetOff(Integer.parseInt(rightTeamParam));
                         break;
 
                     case "Владение мячом":
-                        leftMatch.setPossession(Integer.parseInt(leftTeamParam));
-                        rightMatch.setPossession(Integer.parseInt(rightTeamParam));
+                        leftTeamInfo.setPossession(Integer.parseInt(leftTeamParam));
+                        rightTeamInfo.setPossession(Integer.parseInt(rightTeamParam));
                         break;
 
                 }
             }
 
 
-            boolean possess = leftMatch.getPossession() >= Settings.possessionMin;
-            boolean targetOn = leftMatch.getTargetOn() >= Settings.targetOnMin;
-            boolean targetOff = leftMatch.getTargetOff() >= Settings.targetOffMin;
-            boolean rightPossess = rightMatch.getPossession() >= Settings.possessionMin;
-            boolean rightTargetOn = rightMatch.getTargetOn() >= Settings.targetOnMin;
-            boolean rightTargetOff = rightMatch.getTargetOff() >= Settings.targetOffMin;
+            boolean possessL = leftTeamInfo.getPossession() >= Settings.possessionMin;
+            boolean targetOnL = leftTeamInfo.getTargetOn() >= Settings.targetOnMin;
+            boolean targetOffL = leftTeamInfo.getTargetOff() >= Settings.targetOffMin;
+            boolean rightPossess = rightTeamInfo.getPossession() >= Settings.possessionMin;
+            boolean rightTargetOn = rightTeamInfo.getTargetOn() >= Settings.targetOnMin;
+            boolean rightTargetOff = rightTeamInfo.getTargetOff() >= Settings.targetOffMin;
 
             switch (Settings.logic) {
 
                 case OR:
-                    if (possess || targetOn || targetOff) break;
+                    if (possessL || targetOnL || targetOffL) break;
                     if (rightPossess || rightTargetOn || rightTargetOff) break;
                     break;
                 case AND:
-                    if (possess && targetOn && targetOff) break;
+                    if (possessL && targetOnL && targetOffL) break;
                     if (rightPossess && rightTargetOn && rightTargetOff) break;
                     break;
 
             }
 
-            //add link to GUI/Telegram
-            notification(page, leftMatch, rightMatch, url);
+            //add link to GUI and send message to Telegram
+            notify(page, leftTeamInfo, rightTeamInfo, url);
         }
 
         logger.debug("=============");
     }
 
+    //TODO split in two methods
     public boolean getCommonInfoAndDecide(Document doc, String url) {
 
-        //selecting scope of elements, where needed information located
-        Elements elementsScope = doc.select("div table tbody tr");
-        //time
-        Element timeElement = doc.selectFirst("span.race-time");
-        commonInfo.setTime(Integer.parseInt(timeElement.ownText().replace("\'", "")));
-        //do not add matches, that don't meet time value
-        int time = commonInfo.getTime();
-        if(time < Settings.timeSelectMin || time > Settings.timeSelectMax ) return false;
+        //link example https://ru.betsapi.com/r/1554160/Leixlip-United-v-Hartstown-Huntstown
+        String href = url.replace("https://ru.betsapi.com", "");
+        String CSSPattern = String.format("tr:has(a[href=%s])", href);
 
-        //URL
-        commonInfo.setUrlMatch(doc.select("td.text-center a").attr("href"));
+        logger.debug("CSS pattern "+CSSPattern);
+
+        //selecting node , where needed information located
+        Element node = doc.selectFirst(CSSPattern);
+        //time
+        //get time value and rid of unneeded '\'' character
+        String timeStr = node.selectFirst("span.race-time").ownText().replace("'", "");
+        int time = Integer.parseInt(timeStr);
+        //do not add matches, that don't meet time value
+        if(time < Settings.timeSelectMin || time > Settings.timeSelectMax ) return false;
+        commonInfo.setTime(time);
+
+        String coefLStr = node.selectFirst("td[id$=_0]").ownText();
+        String coefRStr = node.selectFirst("td[id$=_2]").ownText();
+        double coefL = Double.parseDouble(coefLStr);
+        double coefR = Double.parseDouble(coefRStr);
+        //do not add matches, that don't meet min coefficient value
+        if(coefL < Settings.coefMin || coefR < Settings.coefMin ) return false;
+        commonInfo.setTime(time);
+
         //do not add matches, that already was sent to GUI/Telegram
-        url = commonInfo.getUrlMatch();
-        String finalUrl = url;
         boolean inList = FXMLController.hyperlinkObservableList.stream()
-                .anyMatch(hyperlink -> hyperlink.getText().endsWith(finalUrl));
+                .anyMatch(hyperlink -> hyperlink.getText().endsWith(url));
         if (inList) return false;
 
         MyLogger.ROOT_LOGGER.debug(url);
 
         //league
-        commonInfo.setLeague(doc.selectFirst("td[class=league_n] a").ownText());
+        commonInfo.setLeague(node.selectFirst("td.league_n a").ownText());
         //matchId
-        commonInfo.setIdMatch(doc.attr("id").replace("r_", ""));
 
         //timesup
-        Element timeSupElement = timeElement.selectFirst("sup");
-        if (timeSupElement != null) {
-            timeSupElement.remove();
-        }
+
         //score
-        Element scoreElement = doc.selectFirst(String.format("td[id=o_%s_0]", commonInfo.getIdMatch()));
-        commonInfo.setScore(scoreElement.ownText());
 
         //rate
-        commonInfo.setRateL(doc.selectFirst(String.format("td[id=o_%s_0]", commonInfo.getIdMatch())).ownText());
-        commonInfo.setRateC(doc.selectFirst(String.format("td[id=o_%s_1]", commonInfo.getIdMatch())).ownText());
-        commonInfo.setRateR(doc.selectFirst(String.format("td[id=o_%s_2]", commonInfo.getIdMatch())).ownText());
+
         //clubs names
-        commonInfo.setClubL(doc.selectFirst("td[class=text-right text-truncate] a").ownText());
-        commonInfo.setClubR(doc.selectFirst("td[class=text-truncate] a").ownText());
+        commonInfo.setClubL(doc.selectFirst("td.text-right a").ownText());
+        commonInfo.setClubR(doc.selectFirst("td.text-truncate a").ownText());
 
         //mainPageInfoList.add(commonInfo);
         return true;
     }
 
-    private void notification(Page page, TeamInfo leftMatch, TeamInfo rightMatch, String url) {
+    private void notify(Page page, TeamInfo leftMatch, TeamInfo rightMatch, String url) {
 
         Hyperlink hyperlink = new Hyperlink(url);
         hyperlink.setOnAction(actionEvent -> {
