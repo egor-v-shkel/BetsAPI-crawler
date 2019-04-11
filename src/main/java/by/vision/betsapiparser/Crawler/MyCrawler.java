@@ -22,6 +22,8 @@ import org.jsoup.select.Elements;
 public class MyCrawler extends WebCrawler {
 
     TelegramBot telegramBot = new TelegramBot();
+    CommonInfo commonInfo = new CommonInfo();
+    TeamInfo leftTeamInfo = new TeamInfo();
 
     /**
      * You should implement this function to specify whether the given url
@@ -30,7 +32,12 @@ public class MyCrawler extends WebCrawler {
     @Override
     public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
-        return href.startsWith("https://ru.betsapi.com/r/");
+
+        HtmlParseData htmlParseData = (HtmlParseData) referringPage.getParseData();
+        Document doc = Jsoup.parse(htmlParseData.getHtml());
+
+        //TODO split this method
+        return getCommonInfoAndDecide(doc, href);
     }
 
     /**
@@ -44,9 +51,6 @@ public class MyCrawler extends WebCrawler {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
             String url = page.getWebURL().toString();
             Document doc = Jsoup.parse(htmlParseData.getHtml());
-
-            CommonInfo commonInfo = new CommonInfo();
-            getCommonInfo(commonInfo, doc, url);
 
             Elements infoInTr = doc.select("table.table-sm tr");
             //remove <span class="sr-only"> because of repetition parameters with <div ... role="progressbar"...>
@@ -173,36 +177,41 @@ public class MyCrawler extends WebCrawler {
         logger.debug("=============");
     }
 
-    public void getCommonInfo(CommonInfo commonInfo, Document doc, String url) {
+    public boolean getCommonInfoAndDecide(Document doc, String url) {
+
+        //selecting scope of elements, where needed information located
+        Elements elementsScope = doc.select("div table tbody tr");
         //time
-        int time;
-        Element timeElement = doc.selectFirst("div div h4 span[class=race-time]");
-        time = Integer.parseInt(timeElement.ownText().replace("\'", ""));
-        commonInfo.setTime(time);
+        Element timeElement = doc.selectFirst("span.race-time");
+        commonInfo.setTime(Integer.parseInt(timeElement.ownText().replace("\'", "")));
         //do not add matches, that don't meet time value
-        if(time < Settings.timeSelectMin || time > Settings.timeSelectMax ) return;
+        int time = commonInfo.getTime();
+        if(time < Settings.timeSelectMin || time > Settings.timeSelectMax ) return false;
 
+        //URL
+        commonInfo.setUrlMatch(doc.select("td.text-center a").attr("href"));
         //do not add matches, that already was sent to GUI/Telegram
+        url = commonInfo.getUrlMatch();
+        String finalUrl = url;
         boolean inList = FXMLController.hyperlinkObservableList.stream()
-                .anyMatch(hyperlink -> hyperlink.getText().endsWith(url));
-        if (inList) return;
-
-        //do not add matches, that don't meet score param
-        Element scoreElement = doc.selectFirst("div div h4 span[class=text-danger]");
-        commonInfo.setScore(scoreElement.ownText());
+                .anyMatch(hyperlink -> hyperlink.getText().endsWith(finalUrl));
+        if (inList) return false;
 
         MyLogger.ROOT_LOGGER.debug(url);
 
         //league
-        commonInfo.setLeague(doc.selectFirst("nav ol li a").ownText());
+        commonInfo.setLeague(doc.selectFirst("td[class=league_n] a").ownText());
         //matchId
-        commonInfo.setIdMatch(doc.selectFirst("").ownText());
+        commonInfo.setIdMatch(doc.attr("id").replace("r_", ""));
 
         //timesup
         Element timeSupElement = timeElement.selectFirst("sup");
         if (timeSupElement != null) {
             timeSupElement.remove();
         }
+        //score
+        Element scoreElement = doc.selectFirst(String.format("td[id=o_%s_0]", commonInfo.getIdMatch()));
+        commonInfo.setScore(scoreElement.ownText());
 
         //rate
         commonInfo.setRateL(doc.selectFirst(String.format("td[id=o_%s_0]", commonInfo.getIdMatch())).ownText());
@@ -213,6 +222,7 @@ public class MyCrawler extends WebCrawler {
         commonInfo.setClubR(doc.selectFirst("td[class=text-truncate] a").ownText());
 
         //mainPageInfoList.add(commonInfo);
+        return true;
     }
 
     private void notification(Page page, TeamInfo leftMatch, TeamInfo rightMatch, String url) {

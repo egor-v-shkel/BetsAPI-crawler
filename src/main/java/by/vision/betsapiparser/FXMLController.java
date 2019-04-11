@@ -23,6 +23,8 @@ public class FXMLController {
     public ChoiceBox<Settings.Logic> logicFX;
     public ObservableList<Settings.Logic> logicFXList = FXCollections.observableArrayList(Settings.Logic.values());
 
+    @FXML
+    private TextField coefMinFX;
 
     @FXML
     public TextField tgChatIDFX;
@@ -61,6 +63,7 @@ public class FXMLController {
                 Settings.targetOnMin = Integer.parseInt(targetOnFX.getText());
                 Settings.targetOffMin = Integer.parseInt(targetOffFX.getText());
                 Settings.proxyTimeout = Integer.parseInt(proxyTimeOutFX.getText());
+                Settings.coefMin = Double.parseDouble(coefMinFX.getText());
 
                 try {
                     crawlerStarter.start();

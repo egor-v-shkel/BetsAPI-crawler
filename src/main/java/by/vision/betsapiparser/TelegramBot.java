@@ -57,22 +57,33 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     public void interestingMatch(String url, TeamInfo leftMatch, TeamInfo rightMatch) {
-        StringBuilder stringBuilder = new StringBuilder();
-        String newLine = System.lineSeparator();
-        stringBuilder.append("<b>").append(leftMatch.getLeague()).append("</b>").append(newLine)
-                .append(leftMatch.getClubName()).append(" (").append(leftMatch.getRateL()).append(") - ").append(rightMatch.getClubName()).append(" (").append(leftMatch.getRateR()).append(")").append(newLine)
-                .append("<i>").append(leftMatch.getTime()).append(" мин.</i>").append(newLine)
-                .append("<b>").append(leftMatch.getScore()).append("</b>").append(newLine)
-                .append("АТ (атаки): [").append(leftMatch.getAttacks()).append(", ").append(rightMatch.getAttacks()).append("]").append(newLine)
-                .append("ОАТ (опасные атаки): [").append(leftMatch.getAttacksDangerous()).append(", ").append(rightMatch.getAttacksDangerous()).append("]").append(newLine)
-                .append("В (владение мячем): [").append(leftMatch.getPossession()).append(", ").append(rightMatch.getPossession()).append("]").append(newLine)
-                .append("У (угловые): [").append(leftMatch.getCorners()).append(", ").append(rightMatch.getCorners()).append("]").append(newLine)
-                .append("УВ (удары в створ): [").append(leftMatch.getTargetOn()).append(", ").append(rightMatch.getTargetOn()).append("]").append(newLine)
-                .append("УМ (удары мимо ворот): [").append(leftMatch.getTargetOff()).append(", ").append(rightMatch.getTargetOff()).append("]").append(newLine)
+        StringBuilder message = new StringBuilder();
+        String end = "]\n";
+        String league = leftMatch.getLeague();
+        String clubL = leftMatch.getClubName();
+        String rateL = leftMatch.getRateL();
+        String clubR = rightMatch.getClubName();
+        String rateR = leftMatch.getRateR();
+        int timeL = leftMatch.getTime();
+        int attacksL = leftMatch.getAttacks();
+        int attacksR = rightMatch.getAttacks();
+        int atkDngL = leftMatch.getAttacksDangerous();
+        int atkDngR = rightMatch.getAttacksDangerous();
+
+        //TODO make better method construction for readability
+        message.append("<b>").append(league).append("</b>\n")
+                .append(clubL).append(" (").append(rateL).append(") - ").append(clubR).append(" (").append(rateR).append(")\n")
+                .append("<i>").append(timeL).append(" мин.</i>\n")
+                .append("<b>").append(leftMatch.getScore()).append("</b>").append("АТ (атаки): [").append(attacksL).append(", ").append(attacksR).append(end)
+                .append("ОАТ (опасные атаки): [").append(atkDngL).append(", ").append(atkDngR).append(end)
+                .append("В (владение мячем): [").append(leftMatch.getPossession()).append(", ").append(rightMatch.getPossession()).append(end)
+                .append("У (угловые): [").append(leftMatch.getCorners()).append(", ").append(rightMatch.getCorners()).append(end)
+                .append("УВ (удары в створ): [").append(leftMatch.getTargetOn()).append(", ").append(rightMatch.getTargetOn()).append(end)
+                .append("УМ (удары мимо ворот): [").append(leftMatch.getTargetOff()).append(", ").append(rightMatch.getTargetOff()).append(end)
                 .append(url);
 
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(Settings.tgChatID).setParseMode("html").setText(stringBuilder.toString());
+        sendMessage.setChatId(Settings.tgChatID).setParseMode("html").setText(message.toString());
         try {
             this.execute(sendMessage);
         } catch (TelegramApiException e) {
