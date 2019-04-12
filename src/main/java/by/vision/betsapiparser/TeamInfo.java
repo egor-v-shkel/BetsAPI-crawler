@@ -2,6 +2,13 @@ package by.vision.betsapiparser;
 
 public class TeamInfo extends CommonInfo {
 
+    public TeamInfo(CommonInfo cmn){
+        this.setLeague(cmn.getLeague());
+        this.setRateL(cmn.getRateL());
+        this.setRateR(cmn.getRateR());
+        this.setTime(cmn.getTime());
+    }
+
 
     // Название клуба
     private String ClubName;

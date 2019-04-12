@@ -6,7 +6,7 @@ public class CommonInfo {
     private String League;
 
     // ID матча
-    //private String IdMatch;
+    private String IdMatch;
 
     // Время матча
     private int Time;
@@ -21,7 +21,7 @@ public class CommonInfo {
     private String Score;
 
     // Ссылка на матч
-    //private String UrlMatch;
+    private String UrlMatch;
 
     // Ставка слева
     private String RateL;
@@ -40,13 +40,13 @@ public class CommonInfo {
         League = league;
     }
 
-    /*public String getIdMatch() {
+    public String getIdMatch() {
         return IdMatch;
     }
 
     public void setIdMatch(String idMatch) {
         IdMatch = idMatch;
-    }*/
+    }
 
     public int getTime() {
         return Time;
@@ -80,13 +80,13 @@ public class CommonInfo {
         Score = score;
     }
 
-    /*public String getUrlMatch() {
+    public String getUrlMatch() {
         return UrlMatch;
     }
 
     public void setUrlMatch(String urlMatch) {
         UrlMatch = urlMatch;
-    }*/
+    }
 
     public String getRateL() {
         return RateL;

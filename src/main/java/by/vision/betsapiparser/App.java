@@ -55,7 +55,7 @@ public class App extends Application {
 
     public void setTitle(Stage stage) {
 
-        stage.setTitle("BetsAPI parser v. 0.0.2");
+        stage.setTitle("BetsAPI parser v. 0.1.0");
 
 /*
         MavenXpp3Reader reader = new MavenXpp3Reader();

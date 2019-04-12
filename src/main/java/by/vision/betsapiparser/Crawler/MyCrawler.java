@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import by.vision.betsapiparser.*;
 
@@ -22,9 +25,10 @@ import org.jsoup.select.Elements;
 public class MyCrawler extends WebCrawler {
 
     TelegramBot telegramBot = new TelegramBot();
-    CommonInfo commonInfo = new CommonInfo();
-    TeamInfo leftTeamInfo = new TeamInfo();
-    TeamInfo rightTeamInfo = new TeamInfo();
+    //List<CommonInfo> list = new ArrayList<>();
+    static HashMap<String, CommonInfo> hashMap = new HashMap<>();
+    TeamInfo leftTeamInfo;
+    TeamInfo rightTeamInfo;
 
     /**
      * You should implement this function to specify whether the given url
@@ -41,6 +45,72 @@ public class MyCrawler extends WebCrawler {
         return getCommonInfoAndDecide(doc, href);
     }
 
+    //TODO split in two methods
+
+    public boolean getCommonInfoAndDecide(Document doc, String url) {
+
+        //link example https://ru.betsapi.com/r/1554160/Leixlip-United-v-Hartstown-Huntstown
+        String href = url.replace("https://ru.betsapi.com", "");
+        String CSSPattern = String.format("tr:has(a[href=%s])", href);
+
+        logger.debug("CSS pattern "+CSSPattern);
+
+        //selecting node , where needed information located
+        Element node = doc.selectFirst(CSSPattern);
+        //time
+        //get time value and rid of unneeded '\'' character
+        String timeStr = node.selectFirst("span.race-time").ownText().replace("'", "");
+        int time = Integer.parseInt(timeStr);
+        //do not add matches, that don't meet time value
+        if(time < Settings.timeSelectMin || time > Settings.timeSelectMax ) return false;
+
+        //TODO process case, when dont need to get rate param
+        String rateLStr = node.selectFirst("td[id$=_0]").ownText();
+        String rateRStr = node.selectFirst("td[id$=_2]").ownText();
+        if (rateLStr.equals("-") || rateRStr.equals("-")){
+            rateLStr = "100";
+            rateRStr = rateLStr;
+        }
+        double rateL = Double.parseDouble(rateLStr);
+        double rateR = Double.parseDouble(rateRStr);
+
+        //do not add matches, that don't meet min coefficient value
+        if(rateL < Settings.coefMin || rateR < Settings.coefMin ) return false;
+
+        //do not add matches, that already was sent to GUI/Telegram
+        boolean inList = FXMLController.hyperlinkObservableList.stream()
+                .anyMatch(hyperlink -> hyperlink.getText().endsWith(url));
+        if (inList) return false;
+
+        MyLogger.ROOT_LOGGER.debug(url);
+
+        //if match meet settings add them to hashmap
+        CommonInfo cmn = new CommonInfo();
+        //rate
+        cmn.setRateL(rateLStr);
+        cmn.setRateR(rateRStr);
+        //time
+        cmn.setTime(time);
+        //league
+        cmn.setLeague(node.selectFirst("td.league_n a").ownText());
+        //matchId
+        String id = getID(url);
+        cmn.setIdMatch(id);
+        //URL
+        cmn.setUrlMatch(url);
+        //score
+        cmn.setScore(node.selectFirst("td.text-center a").ownText());
+        //clubs names
+        cmn.setClubL(node.selectFirst("td.text-right a").ownText());
+        cmn.setClubR(node.selectFirst("td.text-truncate a").ownText());
+
+        //list.add(cmn);
+        hashMap.put(id, cmn);
+
+        logger.debug("URL: "+url);
+        return true;
+    }
+
     /**
      * This function is called when a page is fetched and ready to be processed
      * by your program.
@@ -48,7 +118,12 @@ public class MyCrawler extends WebCrawler {
     @Override
     public void visit(Page page) {
 
-        if (page.getParseData() instanceof HtmlParseData && !page.getWebURL().getURL().toLowerCase().startsWith("https://ru.betsapi.com/r/")) {
+        if (page.getWebURL().getURL().toLowerCase().startsWith("https://ru.betsapi.com/r/")) {
+            String id = getID(page.getWebURL().getURL());
+            CommonInfo cmn = hashMap.get(id);
+            leftTeamInfo = new TeamInfo(cmn);
+            rightTeamInfo = new TeamInfo(cmn);
+
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
             String url = page.getWebURL().toString();
             Document doc = Jsoup.parse(htmlParseData.getHtml());
@@ -175,57 +250,13 @@ public class MyCrawler extends WebCrawler {
         logger.debug("=============");
     }
 
-    //TODO split in two methods
-    public boolean getCommonInfoAndDecide(Document doc, String url) {
-
-        //link example https://ru.betsapi.com/r/1554160/Leixlip-United-v-Hartstown-Huntstown
-        String href = url.replace("https://ru.betsapi.com", "");
-        String CSSPattern = String.format("tr:has(a[href=%s])", href);
-
-        logger.debug("CSS pattern "+CSSPattern);
-
-        //selecting node , where needed information located
-        Element node = doc.selectFirst(CSSPattern);
-        logger.info(node.toString());
-        //time
-        //get time value and rid of unneeded '\'' character
-        String timeStr = node.selectFirst("span.race-time").ownText().replace("'", "");
-        int time = Integer.parseInt(timeStr);
-        //do not add matches, that don't meet time value
-        if(time < Settings.timeSelectMin || time > Settings.timeSelectMax ) return false;
-        commonInfo.setTime(time);
-
-        String coefLStr = node.selectFirst("td[id$=_0]").ownText();
-        String coefRStr = node.selectFirst("td[id$=_2]").ownText();
-        double coefL = Double.parseDouble(coefLStr);
-        double coefR = Double.parseDouble(coefRStr);
-        //do not add matches, that don't meet min coefficient value
-        if(coefL < Settings.coefMin || coefR < Settings.coefMin ) return false;
-        commonInfo.setTime(time);
-
-        //do not add matches, that already was sent to GUI/Telegram
-        boolean inList = FXMLController.hyperlinkObservableList.stream()
-                .anyMatch(hyperlink -> hyperlink.getText().endsWith(url));
-        if (inList) return false;
-
-        MyLogger.ROOT_LOGGER.debug(url);
-
-        //league
-        commonInfo.setLeague(node.selectFirst("td.league_n a").ownText());
-        //matchId
-
-        //timesup
-
-        //score
-
-        //rate
-
-        //clubs names
-        commonInfo.setClubL(doc.selectFirst("td.text-right a").ownText());
-        commonInfo.setClubR(doc.selectFirst("td.text-truncate a").ownText());
-
-        //mainPageInfoList.add(commonInfo);
-        return true;
+    public String getID(String url) {
+        Pattern pattern = Pattern.compile(".+/r/(\\d+).+");
+        Matcher matcher = pattern.matcher(url);
+        while (matcher.find()) {
+            return matcher.group(1);
+        }
+        return null;
     }
 
     private void notify(Page page, TeamInfo leftMatch, TeamInfo rightMatch, String url) {
