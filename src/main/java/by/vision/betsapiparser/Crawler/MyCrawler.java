@@ -48,7 +48,7 @@ public class MyCrawler extends WebCrawler {
     @Override
     public void visit(Page page) {
 
-        if (page.getParseData() instanceof HtmlParseData) {
+        if (page.getParseData() instanceof HtmlParseData && !page.getWebURL().getURL().toLowerCase().startsWith("https://ru.betsapi.com/r/")) {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
             String url = page.getWebURL().toString();
             Document doc = Jsoup.parse(htmlParseData.getHtml());
@@ -186,6 +186,7 @@ public class MyCrawler extends WebCrawler {
 
         //selecting node , where needed information located
         Element node = doc.selectFirst(CSSPattern);
+        logger.info(node.toString());
         //time
         //get time value and rid of unneeded '\'' character
         String timeStr = node.selectFirst("span.race-time").ownText().replace("'", "");
