@@ -1,24 +1,28 @@
 package by.vision.betsapiparser.Crawler;
 
 import java.io.File;
+import java.util.Objects;
 
 import by.vision.betsapiparser.App;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
+import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.parser.Parser;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class CrawlerStarter {
+class CrawlerStarter {
+    private static final Logger logger = LoggerFactory.getLogger(WebCrawler.class);
     private CrawlController controller;
     //private boolean stopFlag;
 
-    public void start() throws Exception {
+    void start() throws Exception {
 
-        File jarDir = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath());
+        File jarDir = new File(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResource(".")).getPath());
         String jarAbsPath = jarDir.getAbsolutePath();
-
 
         CrawlConfig config = new CrawlConfig();
 
@@ -80,14 +84,15 @@ public class CrawlerStarter {
 
         // Start the crawl. This is a blocking operation, meaning that your code
         // will reach the line after this only when crawling is finished.
-        controller.startNonBlocking(factory, numberOfCrawlers);
-        System.out.println("!!!Crawler started!!!");
+        controller.start(factory, numberOfCrawlers);
+        logger.debug("============== Crawler was stopped ==============");
+
     }
 
-    public void stop(){
+    void stop(){
+        logger.debug("============== Initialize a stop of a crawler ==============");
         controller.shutdown();
         controller.waitUntilFinish();
-        System.out.println("!!!Crawler stopped!!!");
     }
 
 }

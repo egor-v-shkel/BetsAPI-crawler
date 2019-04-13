@@ -7,6 +7,7 @@ public class TeamInfo extends CommonInfo {
         this.setRateL(cmn.getRateL());
         this.setRateR(cmn.getRateR());
         this.setTime(cmn.getTime());
+        this.setScore(cmn.getScore());
     }
 
 

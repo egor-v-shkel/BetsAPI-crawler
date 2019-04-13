@@ -1,6 +1,7 @@
 package by.vision.betsapiparser;
 
-import by.vision.betsapiparser.Crawler.CrawlerStarter;
+import by.vision.betsapiparser.Crawler.CrawlerThread;
+import edu.uci.ics.crawler4j.crawler.CrawlController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,7 +14,9 @@ public class FXMLController {
 
     private final String start = "Старт";
     private final String stop = "Стоп";
-    private CrawlerStarter crawlerStarter = new CrawlerStarter();
+    CrawlController controller;
+    private CrawlerThread crawlerThread;
+    public static volatile boolean bStop = false;
 
     @FXML
     public ListView linkList;
@@ -21,7 +24,7 @@ public class FXMLController {
 
     @FXML
     public ChoiceBox<Settings.Logic> logicFX;
-    public ObservableList<Settings.Logic> logicFXList = FXCollections.observableArrayList(Settings.Logic.values());
+    private ObservableList<Settings.Logic> logicFXList = FXCollections.observableArrayList(Settings.Logic.values());
 
     @FXML
     private TextField coefMinFX;
@@ -65,16 +68,12 @@ public class FXMLController {
                 Settings.proxyTimeout = Integer.parseInt(proxyTimeOutFX.getText());
                 Settings.coefMin = Double.parseDouble(coefMinFX.getText());
 
-                try {
-                    crawlerStarter.start();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                crawlerThread = new CrawlerThread("Crawler thread");
 
                 startStopBtn.setText(stop);
                 break;
             case stop:
-                crawlerStarter.stop();
+                crawlerThread.stop();
                 startStopBtn.setText(start);
                 break;
         }

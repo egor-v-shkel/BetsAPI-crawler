@@ -74,7 +74,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         message.append("<b>").append(league).append("</b>\n")
                 .append(clubL).append(" (").append(rateL).append(") - ").append(clubR).append(" (").append(rateR).append(")\n")
                 .append("<i>").append(timeL).append(" мин.</i>\n")
-                .append("<b>").append(leftMatch.getScore()).append("</b>").append(end)
+                .append("<b>").append(leftMatch.getScore()).append("</b>\n")
                 .append("АТ (атаки): [").append(attacksL).append(", ").append(attacksR).append(end)
                 .append("ОАТ (опасные атаки): [").append(atkDngL).append(", ").append(atkDngR).append(end)
                 .append("В (владение мячем): [").append(leftMatch.getPossession()).append(", ").append(rightMatch.getPossession()).append(end)

@@ -24,11 +24,11 @@ import org.jsoup.select.Elements;
 
 public class MyCrawler extends WebCrawler {
 
-    TelegramBot telegramBot = new TelegramBot();
+    private TelegramBot telegramBot = new TelegramBot();
     //List<CommonInfo> list = new ArrayList<>();
-    static HashMap<String, CommonInfo> hashMap = new HashMap<>();
-    TeamInfo leftTeamInfo;
-    TeamInfo rightTeamInfo;
+    private static HashMap<String, CommonInfo> hashMap = new HashMap<>();
+    private TeamInfo leftTeamInfo;
+    private TeamInfo rightTeamInfo;
 
     /**
      * You should implement this function to specify whether the given url
@@ -47,7 +47,7 @@ public class MyCrawler extends WebCrawler {
 
     //TODO split in two methods
 
-    public boolean getCommonInfoAndDecide(Document doc, String url) {
+    private boolean getCommonInfoAndDecide(Document doc, String url) {
 
         //link example https://ru.betsapi.com/r/1554160/Leixlip-United-v-Hartstown-Huntstown
         String href = url.replace("https://ru.betsapi.com", "");
@@ -79,7 +79,7 @@ public class MyCrawler extends WebCrawler {
 
         //do not add matches, that already was sent to GUI/Telegram
         boolean inList = FXMLController.hyperlinkObservableList.stream()
-                .anyMatch(hyperlink -> hyperlink.getText().endsWith(url));
+                .anyMatch(hyperlink -> hyperlink.getText().toLowerCase().endsWith(url));
         if (inList) return false;
 
         MyLogger.ROOT_LOGGER.debug(url);
@@ -233,24 +233,21 @@ public class MyCrawler extends WebCrawler {
             switch (Settings.logic) {
 
                 case OR:
-                    if (possessL || targetOnL || targetOffL) break;
-                    if (rightPossess || rightTargetOn || rightTargetOff) break;
+                    if (possessL || targetOnL || targetOffL) notify(leftTeamInfo, rightTeamInfo, url);
+                    if (rightPossess || rightTargetOn || rightTargetOff) notify(leftTeamInfo, rightTeamInfo, url);
                     break;
                 case AND:
-                    if (possessL && targetOnL && targetOffL) break;
-                    if (rightPossess && rightTargetOn && rightTargetOff) break;
+                    if (possessL && targetOnL && targetOffL) notify(leftTeamInfo, rightTeamInfo, url);
+                    if (rightPossess && rightTargetOn && rightTargetOff) notify(leftTeamInfo, rightTeamInfo, url);
                     break;
 
             }
-
-            //add link to GUI and send message to Telegram
-            notify(page, leftTeamInfo, rightTeamInfo, url);
         }
 
         logger.debug("=============");
     }
 
-    public String getID(String url) {
+    private String getID(String url) {
         Pattern pattern = Pattern.compile(".+/r/(\\d+).+");
         Matcher matcher = pattern.matcher(url);
         while (matcher.find()) {
@@ -259,7 +256,7 @@ public class MyCrawler extends WebCrawler {
         return null;
     }
 
-    private void notify(Page page, TeamInfo leftMatch, TeamInfo rightMatch, String url) {
+    private void notify(TeamInfo leftMatch, TeamInfo rightMatch, String url) {
 
         Hyperlink hyperlink = new Hyperlink(url);
         hyperlink.setOnAction(actionEvent -> {
