@@ -1,14 +1,10 @@
 package by.vision.betsapiparser.Crawler;
 
-import java.io.File;
-import java.util.Objects;
-
 import by.vision.betsapiparser.App;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
-import edu.uci.ics.crawler4j.parser.Parser;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import org.slf4j.Logger;
@@ -21,14 +17,11 @@ class CrawlerStarter {
 
     void start() throws Exception {
 
-        File jarDir = new File(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResource(".")).getPath());
-        String jarAbsPath = jarDir.getAbsolutePath();
-
         CrawlConfig config = new CrawlConfig();
 
         // Set the folder where intermediate crawl data is stored (e.g. list of urls that are extracted from previously
         // fetched pages and need to be crawled later).
-        config.setCrawlStorageFolder(jarAbsPath);
+        config.setCrawlStorageFolder(App.getPath());
 
         // Be polite: Make sure that we don't send more than 1 request per second (1000 milliseconds between requests).
         // Otherwise it may overload the target servers.

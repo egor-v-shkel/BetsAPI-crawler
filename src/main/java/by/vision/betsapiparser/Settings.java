@@ -1,33 +1,35 @@
 package by.vision.betsapiparser;
 
-public class Settings {
+import java.io.Serializable;
 
-    // ID чата в ТГ
-    public static long tgChatID = -333530356;
+public class Settings implements Serializable {
 
-    //coefficient
-    public static double coefMin;
+    // Telegram chat ID
+    private long tgChatID = -333530356;
 
-    // Минута матча, для отправки сообщения
-    public static int timeSelectMin;
-    public static int timeSelectMax;
+    //Minimal rate of any team
+    private double rateMin = 1.0;
 
-    // Владение мячом, минимум
-    public static int possessionMin = 55;
+    //Time range of match
+    private int timeSelectMin = 5;
+    private int timeSelectMax = 35;
 
-    // Удар по воротам, минимум
-    public static int targetOnMin = 1;
+    // Minimal possession of any team
+    private int possessionMin = 55;
 
-    // Удар мимо ворот, минимум
-    public static int targetOffMin = 3;
+    // On Target
+    private int onTargetMin = 2;
 
-    // И/ИЛИ
-    public static Logic logic = Logic.AND;
+    // Off Target
+    private int offTargetMin = 1;
 
-    //Тайм-аут прокси, мс
-    public static int proxyTimeout;
+    // Logic
+    private Logic logic = Logic.AND;
 
-    // Логика условий
+    //Proxy timeout
+    private int proxyTimeout = 15000;
+
+    // Logic options
     public enum Logic {
         AND,
         OR
@@ -39,13 +41,85 @@ public class Settings {
         String end = "\n";
         StringBuffer settings = sb.append("Settings: \n")
                 .append("ID чата в ТГ - ").append(tgChatID).append(end)
-                .append("Минимальный коэффициент - ").append(coefMin).append(end)
+                .append("Минимальный коэффициент - ").append(rateMin).append(end)
                 .append("Минута матча, для отправки сообщения - min(").append(timeSelectMin).append("), max(").append(timeSelectMax).append(")\n")
                 .append("Владение мячом, минимум - ").append(possessionMin).append(end)
-                .append("Удар по воротам, минимум - ").append(targetOnMin).append(end)
-                .append("Удар мимо ворот, минимум - ").append(targetOffMin).append(end)
+                .append("Удар по воротам, минимум - ").append(onTargetMin).append(end)
+                .append("Удар мимо ворот, минимум - ").append(offTargetMin).append(end)
                 .append("Логика - ").append(logic).append(end)
                 .append("Тайм-аут прокси, мс - ").append(proxyTimeout).append(end);
         return settings.toString();
+    }
+
+    public long getTgChatID() {
+        return tgChatID;
+    }
+
+    public void setTgChatID(long tgChatID) {
+        this.tgChatID = tgChatID;
+    }
+
+    public double getRateMin() {
+        return rateMin;
+    }
+
+    public void setRateMin(double rateMin) {
+        this.rateMin = rateMin;
+    }
+
+    public int getTimeSelectMin() {
+        return timeSelectMin;
+    }
+
+    public void setTimeSelectMin(int timeSelectMin) {
+        this.timeSelectMin = timeSelectMin;
+    }
+
+    public int getTimeSelectMax() {
+        return timeSelectMax;
+    }
+
+    public void setTimeSelectMax(int timeSelectMax) {
+        this.timeSelectMax = timeSelectMax;
+    }
+
+    public int getPossessionMin() {
+        return possessionMin;
+    }
+
+    public void setPossessionMin(int possessionMin) {
+        this.possessionMin = possessionMin;
+    }
+
+    public int getOnTargetMin() {
+        return onTargetMin;
+    }
+
+    public void setOnTargetMin(int onTargetMin) {
+        this.onTargetMin = onTargetMin;
+    }
+
+    public int getOffTargetMin() {
+        return offTargetMin;
+    }
+
+    public void setOffTargetMin(int offTargetMin) {
+        this.offTargetMin = offTargetMin;
+    }
+
+    public Logic getLogic() {
+        return logic;
+    }
+
+    public void setLogic(Logic logic) {
+        this.logic = logic;
+    }
+
+    public int getProxyTimeout() {
+        return proxyTimeout;
+    }
+
+    public void setProxyTimeout(int proxyTimeout) {
+        this.proxyTimeout = proxyTimeout;
     }
 }

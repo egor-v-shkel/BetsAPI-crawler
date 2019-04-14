@@ -84,7 +84,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 .append(url);
 
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(Settings.tgChatID).setParseMode("html").setText(message.toString());
+        sendMessage.setChatId(App.settings.getTgChatID()).setParseMode("html").setText(message.toString());
         try {
             this.execute(sendMessage);
         } catch (TelegramApiException e) {

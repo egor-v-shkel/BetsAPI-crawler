@@ -50,19 +50,6 @@
         <Logger name="STDOUT" level="debug" additivity="false">
             <AppenderRef ref="STDOUT"/>
         </Logger>
-
-        <Logger name="by.vision.betsapiparser.Proxy" level="debug" additivity="false">
-            <AppenderRef ref="Responses"/>
-        </Logger>
-        <Logger name="us.codecraft.webmagic.scheduler.QueueScheduler" level="debug" additivity="false">
-            <AppenderRef ref="File"/>
-        </Logger>
-        <Logger name="by.vision.betsapiparser.Initialise" level="debug" additivity="false">
-            <AppenderRef ref="File"/>
-        </Logger>
-        <Logger name="by.vision.betsapiparser.Parser" level="debug" additivity="false">
-            <AppenderRef ref="File"/>
-        </Logger>
         <Root level="debug">
             <AppenderRef ref="File"/>
             <!--<AppenderRef ref="STDOUT"/>-->

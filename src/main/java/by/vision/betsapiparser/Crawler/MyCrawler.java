@@ -62,7 +62,9 @@ public class MyCrawler extends WebCrawler {
         String timeStr = node.selectFirst("span.race-time").ownText().replace("'", "");
         int time = Integer.parseInt(timeStr);
         //do not add matches, that don't meet time value
-        if(time < Settings.timeSelectMin || time > Settings.timeSelectMax ) return false;
+        int settingsTimeMin = App.settings.getTimeSelectMin();
+        int settingsTimeMax = App.settings.getTimeSelectMax();
+        if(time < settingsTimeMin || time > settingsTimeMax) return false;
 
         //TODO process case, when dont need to get rate param
         String rateLStr = node.selectFirst("td[id$=_0]").ownText();
@@ -75,7 +77,8 @@ public class MyCrawler extends WebCrawler {
         double rateR = Double.parseDouble(rateRStr);
 
         //do not add matches, that don't meet min coefficient value
-        if(rateL < Settings.coefMin || rateR < Settings.coefMin ) return false;
+        double settingsRate = App.settings.getRateMin();
+        if(rateL < settingsRate || rateR < settingsRate) return false;
 
         //do not add matches, that already was sent to GUI/Telegram
         boolean inList = FXMLController.hyperlinkObservableList.stream()
@@ -223,22 +226,25 @@ public class MyCrawler extends WebCrawler {
             }
 
 
-            boolean possessL = leftTeamInfo.getPossession() >= Settings.possessionMin;
-            boolean targetOnL = leftTeamInfo.getTargetOn() >= Settings.targetOnMin;
-            boolean targetOffL = leftTeamInfo.getTargetOff() >= Settings.targetOffMin;
-            boolean rightPossess = rightTeamInfo.getPossession() >= Settings.possessionMin;
-            boolean rightTargetOn = rightTeamInfo.getTargetOn() >= Settings.targetOnMin;
-            boolean rightTargetOff = rightTeamInfo.getTargetOff() >= Settings.targetOffMin;
+            int settingsOnTargetMin = App.settings.getOnTargetMin();
+            int settingsOffTargetMin = App.settings.getOffTargetMin();
+            int settingsPossessionMin = App.settings.getPossessionMin();
+            boolean possessL = leftTeamInfo.getPossession() >= settingsPossessionMin;
+            boolean onTargetL = leftTeamInfo.getTargetOn() >= settingsOnTargetMin;
+            boolean offTargetL = leftTeamInfo.getTargetOff() >= settingsOffTargetMin;
+            boolean possessionR = rightTeamInfo.getPossession() >= settingsPossessionMin;
+            boolean onTargetR = rightTeamInfo.getTargetOn() >= settingsOnTargetMin;
+            boolean offTargetR = rightTeamInfo.getTargetOff() >= settingsOffTargetMin;
 
-            switch (Settings.logic) {
+            switch (App.settings.getLogic()) {
 
                 case OR:
-                    if (possessL || targetOnL || targetOffL) notify(leftTeamInfo, rightTeamInfo, url);
-                    if (rightPossess || rightTargetOn || rightTargetOff) notify(leftTeamInfo, rightTeamInfo, url);
+                    if ((possessL || onTargetL || offTargetL) || (possessionR || onTargetR || offTargetR))
+                        notify(leftTeamInfo, rightTeamInfo, url);
                     break;
                 case AND:
-                    if (possessL && targetOnL && targetOffL) notify(leftTeamInfo, rightTeamInfo, url);
-                    if (rightPossess && rightTargetOn && rightTargetOff) notify(leftTeamInfo, rightTeamInfo, url);
+                    if ((possessL && onTargetL && offTargetL) || (possessionR && onTargetR && offTargetR))
+                        notify(leftTeamInfo, rightTeamInfo, url);
                     break;
 
             }
