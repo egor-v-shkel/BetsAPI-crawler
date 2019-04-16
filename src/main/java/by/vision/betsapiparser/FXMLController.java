@@ -81,7 +81,7 @@ public class FXMLController {
             out.writeObject(App.settings);
             out.close();
             fileOut.close();
-            System.out.printf("Serialized data is saved in /tmp/employee.ser");
+            MyLogger.STDOUT_LOGGER.info("Serialized data is saved in /tmp/employee.ser");
         } catch (IOException i) {
             i.printStackTrace();
         }

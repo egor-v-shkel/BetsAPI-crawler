@@ -1,5 +1,8 @@
 package by.vision.betsapiparser;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 public class Settings implements Serializable {
@@ -49,6 +52,30 @@ public class Settings implements Serializable {
                 .append("Логика - ").append(logic).append(end)
                 .append("Тайм-аут прокси, мс - ").append(proxyTimeout).append(end);
         return settings.toString();
+    }
+
+
+
+    //deserialize object near jar file location
+    private Settings deserialize(){
+        return this.deserialize(App.getPath()+App.SETTINGS_FILE_NAME);
+    }
+
+    //deserialize object to selected path
+    private Settings deserialize(String path) {
+        Settings s = new Settings();
+        try {
+            FileInputStream fileIn = new FileInputStream(path);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            s = (Settings) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (IOException | ClassNotFoundException e) {
+            MyLogger.STDOUT_LOGGER.info("No local settings was found");
+            e.printStackTrace();
+        } finally {
+            return s;
+        }
     }
 
     public long getTgChatID() {

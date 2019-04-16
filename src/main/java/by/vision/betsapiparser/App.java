@@ -21,7 +21,7 @@ import java.net.URISyntaxException;
 
 public class App extends Application {
 
-    public static Settings settings;
+    public static Settings settings = new Settings();
     public static final String SETTINGS_FILE_NAME = "Settings.ser";
     public static final String title = "BetsAPI parser v. 0.1.0";
 
@@ -39,8 +39,11 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("scene.fxml"));
-
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("scene.fxml"));
+        Parent root = (Parent)fxmlLoader.load();
+        FXMLController controller = fxmlLoader.<FXMLController>getController();
+        settings.serial
+        //setSettings(controller, settings);
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
@@ -49,32 +52,13 @@ public class App extends Application {
         stage.setMinHeight(480);
         stage.setMinWidth(800);
         stage.getIcons().add(new Image(App.class.getResourceAsStream("/images/icon.png")));
-        settings = readSettings();
-        setSettings();
         stage.show();
         MyLogger.ROOT_LOGGER.debug("Application launched");
     }
 
-    private void setSettings() {
+    private void setSettings(FXMLController controller, Settings settings) {
+        controller.logicFX.setValue(settings.getLogic());
 
-    }
-
-    private Settings readSettings() {
-        Settings s = null;
-        try {
-            FileInputStream fileIn = new FileInputStream(getPath()+App.SETTINGS_FILE_NAME);
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            s = (Settings) in.readObject();
-            in.close();
-            fileIn.close();
-        } catch (IOException | ClassNotFoundException e) {
-            MyLogger.STDOUT_LOGGER.info("No local settings was found");
-            e.printStackTrace();
-            //set default settings
-            s = new Settings();
-        } finally {
-            return s;
-        }
     }
 
     public void setTitle(Stage stage) {
