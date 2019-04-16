@@ -32,8 +32,8 @@ public class App extends Application {
     @Override
     public void init(){
         //disable warning "An illegal reflective access operation has occurred"
-        disableWarning();
-        //initTelegBotsAPI();
+        //disableWarning();
+        initTelegBotsAPI();
     }
 
 
