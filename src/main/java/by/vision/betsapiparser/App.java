@@ -42,7 +42,7 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("scene.fxml"));
         Parent root = (Parent)fxmlLoader.load();
         FXMLController controller = fxmlLoader.<FXMLController>getController();
-        settings.serial
+        //settings.serialise();
         //setSettings(controller, settings);
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
