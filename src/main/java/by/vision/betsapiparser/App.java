@@ -40,7 +40,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("scene.fxml"));
-        Parent root = (Parent)fxmlLoader.load();
+        Parent root = fxmlLoader.load();
         FXMLController controller = fxmlLoader.<FXMLController>getController();
         //settings.serialise();
         //setSettings(controller, settings);
