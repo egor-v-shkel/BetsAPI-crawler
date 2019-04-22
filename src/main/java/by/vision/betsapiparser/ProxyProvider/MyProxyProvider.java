@@ -23,12 +23,12 @@ public class MyProxyProvider implements ProxyProvider {
 
     @Override
     public List<String> toList() {
-        List<String> proxyArrayList = new ArrayList<>();
+        List<String> proxyArrayList = new ArrayList<>();/*
         proxyArrayList = Pattern.compile("((\\d{1,3}\\.){3}\\d{1,3}):(\\d{1,5})")
                 .matcher(resp)
                 .results()
                 .map(MatchResult::group)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
 
         return proxyArrayList;
     }

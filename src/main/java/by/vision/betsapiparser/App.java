@@ -12,18 +12,14 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import sun.misc.Unsafe;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 
 
 public class App extends Application {
 
-    public static Settings settings = new Settings();
-    public static final String SETTINGS_FILE_NAME = "Settings.ser";
-    public static final String title = "BetsAPI parser v. 0.1.0";
+    public static Settings settings;
+    public static final String title = "BetsAPI parser v. 0.1.1";
 
     public static void main(String[] args) {
         launch(args);
@@ -31,19 +27,20 @@ public class App extends Application {
 
     @Override
     public void init(){
-        //disable warning "An illegal reflective access operation has occurred"
-        disableWarning();
-        //initTelegBotsAPI();
+        //disable Java 11 warning "An illegal reflective access operation has occurred"
+        //disableWarning();
+        initTelegBotsAPI();
     }
 
 
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("scene.fxml"));
-        Parent root = (Parent)fxmlLoader.load();
+        Parent root = fxmlLoader.load();
         FXMLController controller = fxmlLoader.<FXMLController>getController();
-        //settings.serialise();
-        //setSettings(controller, settings);
+        settings = new Settings();
+        settings.deserialize();
+        setSettings(controller, settings);
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
@@ -58,7 +55,14 @@ public class App extends Application {
 
     private void setSettings(FXMLController controller, Settings settings) {
         controller.logicFX.setValue(settings.getLogic());
-
+        controller.tgChatIDFX.setText(String.valueOf(settings.getTgChatID()));
+        controller.timeMinFX.setText(String.valueOf(settings.getTimeSelectMin()));
+        controller.timeMaxFX.setText(String.valueOf(settings.getTimeSelectMax()));
+        controller.onTargetMinFx.setText(String.valueOf(settings.getOnTargetMin()));
+        controller.offTargetMinFX.setText(String.valueOf(settings.getOffTargetMin()));
+        controller.rateMinFx.setText(String.valueOf(settings.getRateMin()));
+        controller.possessionMinFX.setText(String.valueOf(settings.getPossessionMin()));
+        controller.proxyTimeOutFX.setText(String.valueOf(settings.getProxyTimeout()));
     }
 
     public void setTitle(Stage stage) {
@@ -96,8 +100,9 @@ public class App extends Application {
         }
     }
 
+    //TODO make this method work
     public static String getPath() {
-        String jarDir = null;
+        /*String jarDir = null;
         try {
             jarDir = new File(Main.class.getProtectionDomain().getCodeSource().getLocation()
                     .toURI()).getPath();
@@ -105,7 +110,8 @@ public class App extends Application {
             e.printStackTrace();
         }
         int index = jarDir.indexOf(App.title);
-        return jarDir.substring(index);
+        return jarDir.substring(index);*/
+        return "c:\\temp\\";
     }
 
 }

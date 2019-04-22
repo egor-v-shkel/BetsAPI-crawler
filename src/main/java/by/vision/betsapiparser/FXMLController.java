@@ -27,7 +27,7 @@ public class FXMLController {
     private ObservableList<Settings.Logic> logicFXList = FXCollections.observableArrayList(Settings.Logic.values());
 
     @FXML
-    private TextField rateMinFx;
+    public TextField rateMinFx;
 
     @FXML
     public TextField tgChatIDFX;
@@ -61,30 +61,16 @@ public class FXMLController {
         switch (startStopBtn.getText()) {
             case START:
                 applySettings();
-                //crawlerThread = new CrawlerThread("Crawler thread");
-                writeSettings();
+                crawlerThread = new CrawlerThread("Crawler thread");
+                App.settings.serialize();
                 startStopBtn.setText(STOP);
                 break;
             case STOP:
-                //crawlerThread.stop();
+                crawlerThread.stop();
                 startStopBtn.setText(START);
                 break;
         }
 
-    }
-
-    private void writeSettings() {
-        try {
-            FileOutputStream fileOut =
-                    new FileOutputStream(App.getPath()+App.SETTINGS_FILE_NAME);
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(App.settings);
-            out.close();
-            fileOut.close();
-            MyLogger.STDOUT_LOGGER.info("Serialized data is saved in /tmp/employee.ser");
-        } catch (IOException i) {
-            i.printStackTrace();
-        }
     }
 
     private void applySettings() {

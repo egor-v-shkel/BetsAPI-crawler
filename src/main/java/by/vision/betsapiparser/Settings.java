@@ -1,42 +1,35 @@
 package by.vision.betsapiparser;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
+import java.io.*;
 
 public class Settings implements Serializable {
+    //TODO define serialVersionUID
+    //static final long serialVersionUID =
 
     // Telegram chat ID
     private long tgChatID = -333530356;
-
     //Minimal rate of any team
     private double rateMin = 1.0;
-
     //Time range of match
     private int timeSelectMin = 5;
     private int timeSelectMax = 35;
-
     // Minimal possession of any team
     private int possessionMin = 55;
-
     // On Target
     private int onTargetMin = 2;
-
     // Off Target
     private int offTargetMin = 1;
-
     // Logic
     private Logic logic = Logic.AND;
-
     //Proxy timeout
     private int proxyTimeout = 15000;
-
     // Logic options
     public enum Logic {
         AND,
         OR
     }
+
+    private final String DEFAULT_PATH_TO_FILE = App.getPath() + "Settings.ser";
 
     @Override
     public String toString() {
@@ -54,15 +47,33 @@ public class Settings implements Serializable {
         return settings.toString();
     }
 
-
-
-    //deserialize object near jar file location
-    private Settings deserialize(){
-        return this.deserialize(App.getPath()+App.SETTINGS_FILE_NAME);
+    //serialize object to jar file location
+    public void serialize(){
+        serialize(DEFAULT_PATH_TO_FILE);
     }
 
-    //deserialize object to selected path
-    private Settings deserialize(String path) {
+    //serialize object to defined path
+    public void serialize(String path){
+        try {
+            FileOutputStream fileOut =
+                    new FileOutputStream(path);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(this);
+            out.close();
+            fileOut.close();
+            MyLogger.ROOT_LOGGER.info("Serialized data saved as"+path);
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+    }
+
+    //deserialize object from jar file location
+    public void deserialize(){
+        this.deserialize(DEFAULT_PATH_TO_FILE);
+    }
+
+    //deserialize object from defined path
+    public void deserialize(String path) {
         Settings s = new Settings();
         try {
             FileInputStream fileIn = new FileInputStream(path);
@@ -74,7 +85,15 @@ public class Settings implements Serializable {
             MyLogger.STDOUT_LOGGER.info("No local settings was found");
             e.printStackTrace();
         } finally {
-            return s;
+            this.logic = s.logic;
+            this.onTargetMin = s.onTargetMin;
+            this.offTargetMin = s.offTargetMin;
+            this.possessionMin = s.possessionMin;
+            this.rateMin = s.rateMin;
+            this.proxyTimeout = s.proxyTimeout;
+            this.tgChatID = s.tgChatID;
+            this.timeSelectMax = s.timeSelectMax;
+            this.timeSelectMin = s.timeSelectMin;
         }
     }
 
