@@ -1,2 +1,2 @@
-# BetsAPI-parser
-App made to parse football matches from betsapi.com and notify user of matched events to telegram and desktop GUI.
+# BetsAPI-crawler
+App made for crawl football matches from betsapi.com and notify user about matched events via telegram and desktop GUI.
