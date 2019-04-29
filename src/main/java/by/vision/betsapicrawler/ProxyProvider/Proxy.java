@@ -1,5 +1,6 @@
-package by.vision.betsapicrawler;
+package by.vision.betsapicrawler.ProxyProvider;
 
+import by.vision.betsapicrawler.MyLogger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

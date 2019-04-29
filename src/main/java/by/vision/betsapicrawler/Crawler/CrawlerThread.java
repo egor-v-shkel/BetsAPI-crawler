@@ -1,6 +1,6 @@
 package by.vision.betsapicrawler.Crawler;
 
-import by.vision.betsapicrawler.FXMLController;
+import by.vision.betsapicrawler.FXMLControllers.FXMLController;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import org.slf4j.Logger;

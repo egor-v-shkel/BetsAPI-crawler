@@ -46,14 +46,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "BetsAPI_bot";
-        //return "BetsAPI_2_bot";
+        return Main.settings.getBotName();
     }
 
     @Override
     public String getBotToken() {
-        return "752131033:AAHymxVu8_nqPRvloTob3W30WkFl91jU9bQ";//BetsAPI_bot
-        //return "700196610:AAEplpWHPp7rUqOnp7BiYly3K_2dgbctL_I";//BetsAPI_2_bot
+        return Main.settings.getToken();
     }
 
     public void interestingMatch(String url, TeamInfo leftMatch, TeamInfo rightMatch) {
@@ -84,7 +82,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 .append(url);
 
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(App.settings.getTgChatID()).setParseMode("html").setText(message.toString());
+        sendMessage.setChatId(Main.settings.getChatID()).setParseMode("html").setText(message.toString());
         try {
             this.execute(sendMessage);
         } catch (TelegramApiException e) {

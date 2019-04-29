@@ -6,8 +6,11 @@
 
     <groupId>by.vision.betsapi_parser</groupId>
     <artifactId>BetsAPI-crawler</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <packaging>jar</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
 <!--
     <repositories>

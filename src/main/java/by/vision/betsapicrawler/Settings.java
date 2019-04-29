@@ -6,8 +6,8 @@ public class Settings implements Serializable {
     //TODO define serialVersionUID
     //static final long serialVersionUID =
 
-    // Telegram chat ID
-    private long tgChatID = -333530356;
+    private final String DEFAULT_PATH_TO_FILE = Main.getPath() + "Settings.ser";
+
     //Minimal rate of any team
     private double rateMin = 1.0;
     //Time range of match
@@ -27,16 +27,19 @@ public class Settings implements Serializable {
     public enum Logic {
         AND,
         OR
-    }
 
-    private final String DEFAULT_PATH_TO_FILE = App.getPath() + "Settings.ser";
+    }
+    //Telegram settings
+    private String token;
+    private long chatID;
+    private String botName;
 
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
         String end = "\n";
         StringBuffer settings = sb.append("Settings: \n")
-                .append("ID чата в ТГ - ").append(tgChatID).append(end)
+                .append("ID чата в ТГ - ").append(chatID).append(end)
                 .append("Минимальный коэффициент - ").append(rateMin).append(end)
                 .append("Минута матча, для отправки сообщения - min(").append(timeSelectMin).append("), max(").append(timeSelectMax).append(")\n")
                 .append("Владение мячом, минимум - ").append(possessionMin).append(end)
@@ -46,6 +49,7 @@ public class Settings implements Serializable {
                 .append("Тайм-аут прокси, мс - ").append(proxyTimeout).append(end);
         return settings.toString();
     }
+
 
     //serialize object to jar file location
     public void serialize(){
@@ -91,18 +95,35 @@ public class Settings implements Serializable {
             this.possessionMin = s.possessionMin;
             this.rateMin = s.rateMin;
             this.proxyTimeout = s.proxyTimeout;
-            this.tgChatID = s.tgChatID;
+            this.chatID = s.chatID;
             this.timeSelectMax = s.timeSelectMax;
             this.timeSelectMin = s.timeSelectMin;
         }
     }
 
-    public long getTgChatID() {
-        return tgChatID;
+    public String getToken() {
+        return token;
     }
 
-    public void setTgChatID(long tgChatID) {
-        this.tgChatID = tgChatID;
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+
+    public long getChatID() {
+        return chatID;
+    }
+
+    public void setChatID(long chatID) {
+        this.chatID = chatID;
+    }
+
+    public String getBotName() {
+        return botName;
+    }
+
+    public void setBotName(String botName) {
+        this.botName = botName;
     }
 
     public double getRateMin() {

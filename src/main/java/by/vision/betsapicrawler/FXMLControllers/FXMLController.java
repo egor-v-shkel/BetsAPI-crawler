@@ -1,6 +1,9 @@
-package by.vision.betsapicrawler;
+package by.vision.betsapicrawler.FXMLControllers;
 
 import by.vision.betsapicrawler.Crawler.CrawlerThread;
+import by.vision.betsapicrawler.Main;
+import by.vision.betsapicrawler.Settings;
+import by.vision.betsapicrawler.TelegramBot;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,6 +16,24 @@ public class FXMLController {
 
     private CrawlerThread crawlerThread;
     public static volatile boolean bStop = false;
+
+    @FXML
+    private MenuBar menuBar;
+
+    @FXML
+    private MenuItem saveSet;
+
+    @FXML
+    private MenuItem loadSet;
+
+    @FXML
+    private MenuItem exit;
+
+    @FXML
+    private MenuItem tgBotSetup;
+
+    @FXML
+    private MenuItem about;
 
     @FXML
     public ListView linkList;
@@ -58,11 +79,17 @@ public class FXMLController {
             case START:
                 applySettings();
                 crawlerThread = new CrawlerThread("Crawler thread");
-                App.settings.serialize();
+                //save settings
+                Main.settings.serialize();
+                //start new bot session
+                Main.startBotSession(new TelegramBot());
                 startStopBtn.setText(STOP);
                 break;
             case STOP:
                 crawlerThread.stop();
+
+                Main.botSession.stop();
+
                 startStopBtn.setText(START);
                 break;
         }
@@ -70,15 +97,16 @@ public class FXMLController {
     }
 
     private void applySettings() {
-        App.settings.setLogic(logicFX.getValue());
-        App.settings.setTgChatID(Long.parseLong(tgChatIDFX.getText()));
-        App.settings.setTimeSelectMin(Integer.parseInt(timeMinFX.getText()));
-        App.settings.setTimeSelectMax(Integer.parseInt(timeMaxFX.getText()));
-        App.settings.setPossessionMin(Integer.parseInt(possessionMinFX.getText()));
-        App.settings.setOnTargetMin(Integer.parseInt(onTargetMinFx.getText()));
-        App.settings.setOffTargetMin(Integer.parseInt(offTargetMinFX.getText()));
-        App.settings.setProxyTimeout(Integer.parseInt(proxyTimeOutFX.getText()));
-        App.settings.setRateMin(Double.parseDouble(rateMinFx.getText()));
+        Main.settings.setLogic(logicFX.getValue());
+        Main.settings.setChatID(Long.parseLong(tgChatIDFX.getText()));
+        Main.settings.setTimeSelectMin(Integer.parseInt(timeMinFX.getText()));
+        Main.settings.setTimeSelectMax(Integer.parseInt(timeMaxFX.getText()));
+        Main.settings.setPossessionMin(Integer.parseInt(possessionMinFX.getText()));
+        Main.settings.setOnTargetMin(Integer.parseInt(onTargetMinFx.getText()));
+        Main.settings.setOffTargetMin(Integer.parseInt(offTargetMinFX.getText()));
+        Main.settings.setProxyTimeout(Integer.parseInt(proxyTimeOutFX.getText()));
+        Main.settings.setRateMin(Double.parseDouble(rateMinFx.getText()));
+        //TODO add here fields for telegram bot settings apply
     }
 
     public void initialize() {
@@ -88,4 +116,6 @@ public class FXMLController {
         linkList.setItems(hyperlinkObservableList);
 
     }
+
+
 }

@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 import by.vision.betsapicrawler.*;
 
+import by.vision.betsapicrawler.FXMLControllers.FXMLController;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
@@ -62,8 +63,8 @@ public class MyCrawler extends WebCrawler {
         String timeStr = node.selectFirst("span.race-time").ownText().replace("'", "");
         int time = Integer.parseInt(timeStr);
         //do not add matches, that don't meet time value
-        int settingsTimeMin = App.settings.getTimeSelectMin();
-        int settingsTimeMax = App.settings.getTimeSelectMax();
+        int settingsTimeMin = Main.settings.getTimeSelectMin();
+        int settingsTimeMax = Main.settings.getTimeSelectMax();
         if(time < settingsTimeMin || time > settingsTimeMax) return false;
 
         //TODO process case, when dont need to get rate param
@@ -77,7 +78,7 @@ public class MyCrawler extends WebCrawler {
         double rateR = Double.parseDouble(rateRStr);
 
         //do not add matches, that don't meet min coefficient value
-        double settingsRate = App.settings.getRateMin();
+        double settingsRate = Main.settings.getRateMin();
         if(rateL < settingsRate || rateR < settingsRate) return false;
 
         //do not add matches, that already was sent to GUI/Telegram
@@ -226,9 +227,9 @@ public class MyCrawler extends WebCrawler {
             }
 
 
-            int settingsOnTargetMin = App.settings.getOnTargetMin();
-            int settingsOffTargetMin = App.settings.getOffTargetMin();
-            int settingsPossessionMin = App.settings.getPossessionMin();
+            int settingsOnTargetMin = Main.settings.getOnTargetMin();
+            int settingsOffTargetMin = Main.settings.getOffTargetMin();
+            int settingsPossessionMin = Main.settings.getPossessionMin();
             boolean possessL = leftTeamInfo.getPossession() >= settingsPossessionMin;
             boolean onTargetL = leftTeamInfo.getTargetOn() >= settingsOnTargetMin;
             boolean offTargetL = leftTeamInfo.getTargetOff() >= settingsOffTargetMin;
@@ -236,7 +237,7 @@ public class MyCrawler extends WebCrawler {
             boolean onTargetR = rightTeamInfo.getTargetOn() >= settingsOnTargetMin;
             boolean offTargetR = rightTeamInfo.getTargetOff() >= settingsOffTargetMin;
 
-            switch (App.settings.getLogic()) {
+            switch (Main.settings.getLogic()) {
 
                 case OR:
                     if ((possessL || onTargetL || offTargetL) || (possessionR || onTargetR || offTargetR))
