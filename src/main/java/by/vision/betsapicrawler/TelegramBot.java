@@ -1,4 +1,4 @@
-package by.vision.betsapiparser;
+package by.vision.betsapicrawler;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

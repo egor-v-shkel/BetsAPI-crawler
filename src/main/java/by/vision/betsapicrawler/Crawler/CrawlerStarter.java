@@ -1,6 +1,6 @@
-package by.vision.betsapiparser.Crawler;
+package by.vision.betsapicrawler.Crawler;
 
-import by.vision.betsapiparser.App;
+import by.vision.betsapicrawler.App;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;

@@ -1,6 +1,6 @@
-package by.vision.betsapiparser;
+package by.vision.betsapicrawler;
 
-import by.vision.betsapiparser.Crawler.CrawlerThread;
+import by.vision.betsapicrawler.Crawler.CrawlerThread;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,10 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 public class FXMLController {
 

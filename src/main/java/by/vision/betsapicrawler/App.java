@@ -1,4 +1,4 @@
-package by.vision.betsapiparser;
+package by.vision.betsapicrawler;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,9 +11,7 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import sun.misc.Unsafe;
 
-import java.io.File;
 import java.lang.reflect.Field;
-import java.net.URISyntaxException;
 
 
 public class App extends Application {

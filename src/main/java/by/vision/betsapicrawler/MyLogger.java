@@ -1,4 +1,4 @@
-package by.vision.betsapiparser;
+package by.vision.betsapicrawler;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

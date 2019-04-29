@@ -1,4 +1,4 @@
-package by.vision.betsapiparser.ProxyProvider;
+package by.vision.betsapicrawler.ProxyProvider;
 
 import java.util.List;
 

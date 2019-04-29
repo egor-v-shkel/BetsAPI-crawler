@@ -5,16 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>by.vision.betsapi_parser</groupId>
-    <artifactId>BetsAPI-parser</artifactId>
+    <artifactId>BetsAPI-crawler</artifactId>
     <version>0.1.1</version>
     <packaging>jar</packaging>
 
+<!--
     <repositories>
     <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
     </repositories>
+-->
     <build>
         <plugins>
 
@@ -40,7 +42,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>by.vision.betsapiparser.Main</mainClass>
+                    <mainClass>by.vision.betsapicrawler.Main</mainClass>
                 </configuration>
             </plugin>
 
@@ -59,7 +61,7 @@
                             <transformers>
                                 <transformer implementation=
                                                      "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>by.vision.betsapiparser.Main</mainClass>
+                                    <mainClass>by.vision.betsapicrawler.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
@@ -118,33 +120,7 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>2.11.2</version>
-        </dependency><!--
-
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>11.0.2</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-media</artifactId>
-            <version>11.0.2</version>
-            <classifier>win</classifier>
-        </dependency>
-
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-graphics</artifactId>
-            <version>11.0.2</version>
-            <classifier>win</classifier>
-        </dependency>
-
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>11.0.2</version>
-        </dependency>-->
 
         <dependency>
             <groupId>org.jsoup</groupId>

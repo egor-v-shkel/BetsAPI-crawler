@@ -1,4 +1,4 @@
-package by.vision.betsapiparser.Crawler;
+package by.vision.betsapicrawler.Crawler;
 
 import java.awt.*;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import by.vision.betsapiparser.*;
+import by.vision.betsapicrawler.*;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;

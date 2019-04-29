@@ -1,4 +1,4 @@
-package by.vision.betsapiparser;
+package by.vision.betsapicrawler;
 
 import org.json.JSONArray;
 import org.json.JSONException;

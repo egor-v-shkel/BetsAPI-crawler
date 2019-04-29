@@ -1,4 +1,4 @@
-package by.vision.betsapiparser;
+package by.vision.betsapicrawler;
 
 public class Main {
 

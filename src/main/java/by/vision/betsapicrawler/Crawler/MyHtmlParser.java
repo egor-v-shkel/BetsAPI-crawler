@@ -1,4 +1,4 @@
-package by.vision.betsapiparser.Crawler;
+package by.vision.betsapicrawler.Crawler;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;

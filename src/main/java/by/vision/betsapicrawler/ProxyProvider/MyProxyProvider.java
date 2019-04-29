@@ -1,10 +1,7 @@
-package by.vision.betsapiparser.ProxyProvider;
+package by.vision.betsapicrawler.ProxyProvider;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.MatchResult;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class MyProxyProvider implements ProxyProvider {
     private String currentIP;
