@@ -6,7 +6,7 @@ public class Settings implements Serializable {
     //TODO define serialVersionUID
     //static final long serialVersionUID =
 
-    private final String DEFAULT_PATH_TO_FILE = Main.getPath() + "Settings.ser";
+    private final String PATH_TO_SETTINGS = Main.jarDir() + "\\Settings.ser";
 
     //Minimal rate of any team
     private double rateMin = 1.0;
@@ -53,7 +53,7 @@ public class Settings implements Serializable {
 
     //serialize object to jar file location
     public void serialize(){
-        serialize(DEFAULT_PATH_TO_FILE);
+        serialize(PATH_TO_SETTINGS);
     }
 
     //serialize object to defined path
@@ -73,7 +73,7 @@ public class Settings implements Serializable {
 
     //deserialize object from jar file location
     public void deserialize(){
-        this.deserialize(DEFAULT_PATH_TO_FILE);
+        this.deserialize(PATH_TO_SETTINGS);
     }
 
     //deserialize object from defined path

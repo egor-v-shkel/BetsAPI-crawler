@@ -12,7 +12,9 @@ import java.util.regex.Pattern;
 
 import by.vision.betsapicrawler.*;
 
-import by.vision.betsapicrawler.FXMLControllers.FXMLController;
+import by.vision.betsapicrawler.FXMLControllers.MainFXMLController;
+import by.vision.betsapicrawler.MatchInfo.CommonInfo;
+import by.vision.betsapicrawler.MatchInfo.TeamInfo;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
@@ -82,7 +84,7 @@ public class MyCrawler extends WebCrawler {
         if(rateL < settingsRate || rateR < settingsRate) return false;
 
         //do not add matches, that already was sent to GUI/Telegram
-        boolean inList = FXMLController.hyperlinkObservableList.stream()
+        boolean inList = MainFXMLController.hyperlinkObservableList.stream()
                 .anyMatch(hyperlink -> hyperlink.getText().toLowerCase().endsWith(url));
         if (inList) return false;
 
@@ -275,7 +277,7 @@ public class MyCrawler extends WebCrawler {
                 }
             }
         });
-        FXMLController.hyperlinkObservableList.add(hyperlink);
+        MainFXMLController.hyperlinkObservableList.add(hyperlink);
         telegramBot.interestingMatch(url, leftMatch, rightMatch);
     }
 }

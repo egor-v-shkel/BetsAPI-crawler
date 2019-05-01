@@ -10,7 +10,7 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class CrawlerStarter {
+class Crawler {
     private static final Logger logger = LoggerFactory.getLogger(WebCrawler.class);
     private CrawlController controller;
     //private boolean stopFlag;
@@ -21,7 +21,7 @@ class CrawlerStarter {
 
         // Set the folder where intermediate crawl data is stored (e.g. list of urls that are extracted from previously
         // fetched pages and need to be crawled later).
-        config.setCrawlStorageFolder(Main.getPath());
+        config.setCrawlStorageFolder(Main.jarDir());
 
         // Be polite: Make sure that we don't send more than 1 request per second (1000 milliseconds between requests).
         // Otherwise it may overload the target servers.

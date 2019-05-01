@@ -1,4 +1,4 @@
-package by.vision.betsapicrawler;
+package by.vision.betsapicrawler.MatchInfo;
 
 public class TeamInfo extends CommonInfo {
 

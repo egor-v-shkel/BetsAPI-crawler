@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="by.vision.betsapicrawler.FXMLControllers.TgSettingsFXMLController">
+   <children>
+      <Label layoutX="10.0" layoutY="29.0" text="ChatId" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="29.0" />
+      <Label layoutX="6.0" layoutY="59.0" text="Токен бота" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="59.0" />
+      <Label layoutX="11.0" layoutY="89.0" text="Имя бота" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="89.0" />
+      <Button fx:id="OK" layoutX="99.0" layoutY="154.0" mnemonicParsing="false" onAction="#ok" text="OK" AnchorPane.rightAnchor="170.0" />
+      <Button fx:id="Apply" layoutX="86.0" layoutY="154.0" mnemonicParsing="false" onAction="#apply" text="Применить" AnchorPane.rightAnchor="80.0" />
+      <Button fx:id="Cancel" layoutX="172.0" layoutY="154.0" mnemonicParsing="false" onAction="#cancel" text="Отмена" AnchorPane.rightAnchor="10.0" />
+      <TextField fx:id="chatId" layoutX="88.0" layoutY="25.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="25.0" />
+      <TextField fx:id="botToken" layoutX="88.0" layoutY="53.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="55.0" />
+      <TextField fx:id="botName" layoutX="88.0" layoutY="78.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="85.0" />
+   </children>
+</AnchorPane>
