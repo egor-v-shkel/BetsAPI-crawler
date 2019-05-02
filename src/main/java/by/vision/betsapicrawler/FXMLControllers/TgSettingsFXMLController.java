@@ -46,9 +46,11 @@ public class TgSettingsFXMLController {
     }
 
     private boolean checkInput() {
-        return (chatIdText.matches("") ||
-                botTokenText.matches("") ||
-                botNameText.matches(""));
+        return (chatIdText.matches("[-]\\d+") ||
+                //700196610:AAEplpWHPp7rUqOnp7BiYly3K_2dgbctL_I
+                //752131033:AAHymxVu8_nqPRvloTob3W30WkFl91jU9bQ
+                botTokenText.matches("\\d{9}[:]\\w{35}") ||
+                botNameText.matches("(?i).+(_bot)$"));
     }
 
     @FXML
