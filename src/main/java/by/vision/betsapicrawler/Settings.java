@@ -7,6 +7,8 @@ public class Settings implements Serializable {
     //static final long serialVersionUID =
 
     private final String PATH_TO_SETTINGS = Main.jarDir() + "\\Settings.ser";
+    // flag var, which shows deserialization status
+    private boolean serStat = true;
 
     //Minimal rate of any team
     private double rateMin = 1.0;
@@ -86,18 +88,23 @@ public class Settings implements Serializable {
             in.close();
             fileIn.close();
         } catch (IOException | ClassNotFoundException e) {
-            MyLogger.STDOUT_LOGGER.info("No local settings was found");
-            e.printStackTrace();
+            serStat = false;
+            MyLogger.STDOUT_LOGGER.warn("No local settings was found");
         } finally {
+            //TODO split this class in Settings.class (which will contain only fields) and SettingsApplier(which will
+            // provide all actions with Settings object)
             this.logic = s.logic;
             this.onTargetMin = s.onTargetMin;
             this.offTargetMin = s.offTargetMin;
             this.possessionMin = s.possessionMin;
             this.rateMin = s.rateMin;
-            this.proxyTimeout = s.proxyTimeout;
-            this.chatID = s.chatID;
             this.timeSelectMax = s.timeSelectMax;
             this.timeSelectMin = s.timeSelectMin;
+            if(serStat){
+                this.botName = s.botName;
+                this.chatID = s.chatID;
+                this.token = s.token;
+            }
         }
     }
 
@@ -182,11 +189,14 @@ public class Settings implements Serializable {
         this.logic = logic;
     }
 
-    public int getProxyTimeout() {
+    public boolean getSetStat() {
+        return serStat;
+    }
+/* public int getProxyTimeout() {
         return proxyTimeout;
     }
 
     public void setProxyTimeout(int proxyTimeout) {
         this.proxyTimeout = proxyTimeout;
-    }
+    }*/
 }

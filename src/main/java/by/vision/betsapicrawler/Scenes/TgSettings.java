@@ -1,6 +1,7 @@
 package by.vision.betsapicrawler.Scenes;
 
 import by.vision.betsapicrawler.FXMLControllers.TgSettingsFXMLController;
+import by.vision.betsapicrawler.Main;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,16 +24,19 @@ public class TgSettings {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        TgSettingsFXMLController controller = fxmlLoader.<TgSettingsFXMLController>getController();
+        TgSettingsFXMLController tgController = fxmlLoader.getController();
         Scene scene = new Scene(root);
         stage.setTitle("Настройки телеграм");
         stage.setScene(scene);
         // Specifies the modality for new window.
         stage.initModality(Modality.WINDOW_MODAL);
-        // Specifies the owner Window (parent) for new window
+        // Specifies the owner Window (parent) for new window.
         stage.initOwner(primaryStage);
         stage.centerOnScreen();
         stage.initStyle(StageStyle.UNDECORATED);
+        if (Main.settings.getSetStat()){
+            tgController.
+        }
     }
 
     public static void hide() {

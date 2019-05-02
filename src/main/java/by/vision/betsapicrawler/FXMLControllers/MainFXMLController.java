@@ -110,13 +110,11 @@ public class MainFXMLController {
 
     private void applySettings() {
         Main.settings.setLogic(logicFX.getValue());
-        Main.settings.setChatID(Long.parseLong(tgChatIDFX.getText()));
         Main.settings.setTimeSelectMin(Integer.parseInt(timeMinFX.getText()));
         Main.settings.setTimeSelectMax(Integer.parseInt(timeMaxFX.getText()));
         Main.settings.setPossessionMin(Integer.parseInt(possessionMinFX.getText()));
         Main.settings.setOnTargetMin(Integer.parseInt(onTargetMinFx.getText()));
         Main.settings.setOffTargetMin(Integer.parseInt(offTargetMinFX.getText()));
-        Main.settings.setProxyTimeout(Integer.parseInt(proxyTimeOutFX.getText()));
         Main.settings.setRateMin(Double.parseDouble(rateMinFx.getText()));
     }
 
