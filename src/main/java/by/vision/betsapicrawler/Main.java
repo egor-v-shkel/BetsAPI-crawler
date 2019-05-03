@@ -63,7 +63,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Scenes/Main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Main.fxml"));
         Parent root = fxmlLoader.load();
         MainFXMLController controller = fxmlLoader.getController();
         settings = new Settings();
