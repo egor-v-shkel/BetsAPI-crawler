@@ -17,7 +17,7 @@ import javafx.scene.control.TextField;
 public class MainFXMLController {
     //flag var which used for stopping crawl session
     public static volatile boolean bStop = false;
-    TgSettings tgSettings = new TgSettings();
+    //TgSettings tgSettings = new TgSettings();
 
     public static ObservableList<Hyperlink> hyperlinkObservableList = FXCollections.observableArrayList();
     @FXML
@@ -26,8 +26,6 @@ public class MainFXMLController {
     public ChoiceBox<Settings.Logic> logicFX;
     @FXML
     public TextField rateMinFx;
-    @FXML
-    public TextField tgChatIDFX;
     @FXML
     public TextField timeMinFX;
     @FXML
@@ -38,8 +36,6 @@ public class MainFXMLController {
     public TextField onTargetMinFx;
     @FXML
     public TextField offTargetMinFX;
-    @FXML
-    public TextField proxyTimeOutFX;
     @FXML
     public Button startStopBtn;
     private CrawlerThread crawlerThread;
@@ -92,7 +88,7 @@ public class MainFXMLController {
 
     @FXML
     void openTgSettings(ActionEvent event) {
-        tgSettings.show();
+        //tgSettings.show();
     }
 
     private void startCrawlSession() {
@@ -110,13 +106,11 @@ public class MainFXMLController {
 
     private void applySettings() {
         Main.settings.setLogic(logicFX.getValue());
-        Main.settings.setChatID(Long.parseLong(tgChatIDFX.getText()));
         Main.settings.setTimeSelectMin(Integer.parseInt(timeMinFX.getText()));
         Main.settings.setTimeSelectMax(Integer.parseInt(timeMaxFX.getText()));
         Main.settings.setPossessionMin(Integer.parseInt(possessionMinFX.getText()));
         Main.settings.setOnTargetMin(Integer.parseInt(onTargetMinFx.getText()));
         Main.settings.setOffTargetMin(Integer.parseInt(offTargetMinFX.getText()));
-        Main.settings.setProxyTimeout(Integer.parseInt(proxyTimeOutFX.getText()));
         Main.settings.setRateMin(Double.parseDouble(rateMinFx.getText()));
     }
 

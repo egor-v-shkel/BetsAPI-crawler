@@ -52,7 +52,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return Main.settings.getToken();
+        return Main.settings.getBotToken();
     }
 
     public void interestingMatch(String url, TeamInfo leftMatch, TeamInfo rightMatch) {

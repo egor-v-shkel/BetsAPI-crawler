@@ -1,23 +1,16 @@
 package by.vision.betsapicrawler.FXMLControllers;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import by.vision.betsapicrawler.Main;
+import by.vision.betsapicrawler.MyLogger;
 import by.vision.betsapicrawler.Scenes.TgSettings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 
 public class TgSettingsFXMLController {
-
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
     @FXML
     private Button OK;
 
@@ -28,29 +21,47 @@ public class TgSettingsFXMLController {
     private Button Cancel;
 
     @FXML
-    private TextField chatId;
-    private String chatIdText = chatId.getText();
+    public TextField chatId;
     @FXML
-    private TextField botToken;
-    private String botTokenText = botToken.getText();
+    public TextField botToken;
     @FXML
-    private TextField botName;
-    private String botNameText = botName.getText();
+    public TextField botName;
+    @FXML
+    private Label notification;
+
+    private String chatIdText;
+    private String botTokenText;
+    private String botNameText;
+
 
     @FXML
     void apply(ActionEvent event) {
-        checkInput();
-        Main.settings.setTimeSelectMax(Integer.parseInt(chatIdText));
-        Main.settings.setTimeSelectMax(Integer.parseInt(botTokenText));
-        Main.settings.setTimeSelectMax(Integer.parseInt(botNameText));
+        getUserInput();
+        if (checkInput()){
+            //apply settings
+            Main.settings.setChatID(Integer.parseInt(chatIdText));
+            Main.settings.setBotToken(botTokenText);
+            Main.settings.setBotName(botNameText);
+            notification.setText("Настройки применены");
+            notification.setTextFill(Color.GREEN);
+            MyLogger.ROOT_LOGGER.debug("TgSettings was applied");
+        } else {
+            notification.setText("Неправильно введены настройки");
+            notification.setTextFill(Color.RED);
+            MyLogger.ROOT_LOGGER.debug("Wrong input in TgSettings");
+        }
     }
 
     private boolean checkInput() {
-        return (chatIdText.matches("[-]\\d+") ||
-                //700196610:AAEplpWHPp7rUqOnp7BiYly3K_2dgbctL_I
-                //752131033:AAHymxVu8_nqPRvloTob3W30WkFl91jU9bQ
-                botTokenText.matches("\\d{9}[:]\\w{35}") ||
+        return (chatIdText.matches("[-]\\d+") &&
+                botTokenText.matches("\\d{9}[:]\\w{35}") &&
                 botNameText.matches("(?i).+(_bot)$"));
+    }
+
+    private void getUserInput(){
+        chatIdText = chatId.getText();
+        botTokenText = botToken.getText();
+        botNameText = botName.getText();
     }
 
     @FXML
