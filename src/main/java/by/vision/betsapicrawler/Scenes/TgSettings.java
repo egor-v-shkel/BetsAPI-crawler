@@ -34,8 +34,11 @@ public class TgSettings {
         stage.initOwner(primaryStage);
         stage.centerOnScreen();
         stage.initStyle(StageStyle.UNDECORATED);
+        //if settings was successfully loaded, show Telegram bot settings in GUI
         if (Main.settings.getSetStat()){
-            tgController.
+            tgController.chatId.setText(String.valueOf(Main.settings.getChatID()));
+            tgController.botName.setText(String.valueOf(Main.settings.getBotName()));
+            tgController.botToken.setText(String.valueOf(Main.settings.getBotToken()));
         }
     }
 

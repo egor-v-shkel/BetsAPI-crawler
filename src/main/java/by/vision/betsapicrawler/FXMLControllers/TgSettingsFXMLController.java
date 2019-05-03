@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 
 public class TgSettingsFXMLController {
     @FXML
@@ -22,11 +21,11 @@ public class TgSettingsFXMLController {
     private Button Cancel;
 
     @FXML
-    private TextField chatId;
+    public TextField chatId;
     @FXML
-    private TextField botToken;
+    public TextField botToken;
     @FXML
-    private TextField botName;
+    public TextField botName;
     @FXML
     private Label notification;
 
@@ -41,7 +40,7 @@ public class TgSettingsFXMLController {
         if (checkInput()){
             //apply settings
             Main.settings.setChatID(Integer.parseInt(chatIdText));
-            Main.settings.setToken(botTokenText);
+            Main.settings.setBotToken(botTokenText);
             Main.settings.setBotName(botNameText);
             notification.setText("Настройки применены");
             notification.setTextFill(Color.GREEN);

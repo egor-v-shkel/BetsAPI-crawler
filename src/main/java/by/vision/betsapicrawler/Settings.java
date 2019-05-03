@@ -32,7 +32,7 @@ public class Settings implements Serializable {
 
     }
     //Telegram settings
-    private String token;
+    private String botToken;
     private long chatID;
     private String botName;
 
@@ -103,17 +103,17 @@ public class Settings implements Serializable {
             if(serStat){
                 this.botName = s.botName;
                 this.chatID = s.chatID;
-                this.token = s.token;
+                this.botToken = s.botToken;
             }
         }
     }
 
-    public String getToken() {
-        return token;
+    public String getBotToken() {
+        return botToken;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setBotToken(String botToken) {
+        this.botToken = botToken;
     }
 
 

@@ -27,8 +27,6 @@ public class MainFXMLController {
     @FXML
     public TextField rateMinFx;
     @FXML
-    public TextField tgChatIDFX;
-    @FXML
     public TextField timeMinFX;
     @FXML
     public TextField timeMaxFX;
@@ -38,8 +36,6 @@ public class MainFXMLController {
     public TextField onTargetMinFx;
     @FXML
     public TextField offTargetMinFX;
-    @FXML
-    public TextField proxyTimeOutFX;
     @FXML
     public Button startStopBtn;
     private CrawlerThread crawlerThread;
