@@ -22,10 +22,13 @@ public class TgSettingsFXMLController {
 
     @FXML
     public TextField chatId;
+
     @FXML
     public TextField botToken;
+
     @FXML
     public TextField botName;
+
     @FXML
     private Label notification;
 
@@ -83,6 +86,7 @@ public class TgSettingsFXMLController {
         assert chatId != null : "fx:id=\"chatId\" was not injected: check your FXML file 'TgSettings.fxml'.";
         assert botToken != null : "fx:id=\"botToken\" was not injected: check your FXML file 'TgSettings.fxml'.";
         assert botName != null : "fx:id=\"botName\" was not injected: check your FXML file 'TgSettings.fxml'.";
+        assert notification != null : "fx:id=\"notification\" was not injected: check your FXML file 'TgSettings.fxml'.";
 
     }
 }

@@ -13,11 +13,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 public class MainFXMLController {
     //flag var which used for stopping crawl session
     public static volatile boolean bStop = false;
-    //TgSettings tgSettings = new TgSettings();
+    private Stage primaryStage;
 
     public static ObservableList<Hyperlink> hyperlinkObservableList = FXCollections.observableArrayList();
     @FXML
@@ -88,7 +90,8 @@ public class MainFXMLController {
 
     @FXML
     void openTgSettings(ActionEvent event) {
-        //tgSettings.show();
+        TgSettings tgSettings = new TgSettings();
+        tgSettings.show();
     }
 
     private void startCrawlSession() {
@@ -122,5 +125,20 @@ public class MainFXMLController {
 
     }
 
+    @FXML
+    public void handleAbout(ActionEvent actionEvent) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("About");
+        alert.setHeaderText("Object Graph Visualizer");
+        alert.setContentText("Version:\t3.1"
+                + "\nAuthors:\tSimon Gwerder, Adrian Rieser"
+                + "\nRelease:\t12.06.2015\n"
+                + "\nBachelor Thesis"
+                + "\nHSR University of Applied Sciences Rapperswil");
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("file:resources/images/OGV.gif")); // add a custom icon
+        alert.initOwner(this.primaryStage);
+        alert.showAndWait();
 
+    }
 }

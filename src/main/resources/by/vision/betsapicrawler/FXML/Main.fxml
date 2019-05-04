@@ -28,7 +28,7 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Помощь">
                     <items>
-                        <MenuItem fx:id="about" mnemonicParsing="false" text="О программе" />
+                        <MenuItem fx:id="about" mnemonicParsing="false" onAction="#handleAbout" text="О программе" />
                     </items>
                 </Menu>
             </menus>

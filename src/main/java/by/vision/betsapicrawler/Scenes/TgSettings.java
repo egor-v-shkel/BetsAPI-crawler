@@ -17,7 +17,7 @@ public class TgSettings {
     private static Stage stage = new Stage();
 
     public TgSettings() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXML/TgSettings.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("TgSettings.fxml"));
         Parent root = null;
         try {
             root = fxmlLoader.load();
