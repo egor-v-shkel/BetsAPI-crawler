@@ -19,7 +19,6 @@ import javafx.stage.Stage;
 public class MainFXMLController {
     //flag var which used for stopping crawl session
     public static volatile boolean bStop = false;
-    private Stage primaryStage;
 
     public static ObservableList<Hyperlink> hyperlinkObservableList = FXCollections.observableArrayList();
     @FXML
@@ -128,16 +127,14 @@ public class MainFXMLController {
     @FXML
     public void handleAbout(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("About");
-        alert.setHeaderText("Object Graph Visualizer");
-        alert.setContentText("Version:\t3.1"
-                + "\nAuthors:\tSimon Gwerder, Adrian Rieser"
-                + "\nRelease:\t12.06.2015\n"
-                + "\nBachelor Thesis"
-                + "\nHSR University of Applied Sciences Rapperswil");
+        alert.setTitle("О программе");
+        alert.setHeaderText("BetsApi crawler");
+        alert.setContentText("Версия:\t0.1.2\n"
+                + "Автор:\tVision_606\n"
+                + "Дата релиза:\t04.05.2019\n");
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(new Image("file:resources/images/OGV.gif")); // add a custom icon
-        alert.initOwner(this.primaryStage);
+        stage.getIcons().add(Main.getIcon()); // add a custom icon
+        alert.initOwner(Main.getPrimaryStage());
         alert.showAndWait();
 
     }

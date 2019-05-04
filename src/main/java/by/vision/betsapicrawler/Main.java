@@ -17,12 +17,9 @@ import java.net.URISyntaxException;
 
 
 public class Main extends Application {
-
-    public static final String title = "BetsAPI crawler v. 0.1.2";
-    public static Settings settings;
+    public static final String JAR_DIR = jarDir();
     public static TelegramBotsApi botsApi;
     public static BotSession botSession;
-    public static Stage primaryStage;
 
     public static void main(String[] args) {
         launch(args);
@@ -33,7 +30,7 @@ public class Main extends Application {
         botsApi = new TelegramBotsApi();
     }
 
-    public static void startBotSession(TelegramBot tgBot){
+    public static void startBotSession(TelegramBot tgBot) {
         try {
             botSession = botsApi.registerBot(tgBot);
         } catch (TelegramApiException e) {
@@ -41,7 +38,7 @@ public class Main extends Application {
         }
     }
 
-    public static String jarDir() {
+    private static String jarDir() {
         String jarDir = null;
         try {
             jarDir = new File(Main.class.getProtectionDomain().getCodeSource().getLocation()
@@ -50,51 +47,22 @@ public class Main extends Application {
             e.printStackTrace();
         }
         MyLogger.STDOUT_LOGGER.debug("Jar dir: " + jarDir);
-        //"C:\Users\Vision-PC\IdeaProjects\BetsAPI-crawler\target\classes"
         return jarDir;
-        //return "c:\\temp\\";
     }
 
     @Override
-    public void init(){
+    public void init() {
         initTgBotsAPI();
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-        primaryStage = stage;
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXML/Main.FXML"));
-        Parent root = fxmlLoader.load();
-        MainFXMLController controller = fxmlLoader.getController();
-        settings = new Settings();
-        settings.deserialize();
-        setSettings(controller, settings);
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
-
-        stage.setTitle(title);
-        stage.setScene(scene);
-        stage.setMinHeight(480);
-        stage.setMinWidth(800);
-        stage.getIcons().add(new Image(Main.class.getResourceAsStream("/images/icon.png")));
-        stage.show();
-        MyLogger.ROOT_LOGGER.debug("Application launched");
+    public void start(Stage stage){
+        new StageBuilder(stage);
     }
 
     @Override
-    public void stop(){
+    public void stop() {
         MyLogger.ROOT_LOGGER.debug("Application closed.");
         System.exit(0);
     }
-
-    private void setSettings(MainFXMLController controller, Settings settings) {
-        controller.logicFX.setValue(settings.getLogic());
-        controller.timeMinFX.setText(String.valueOf(settings.getTimeSelectMin()));
-        controller.timeMaxFX.setText(String.valueOf(settings.getTimeSelectMax()));
-        controller.onTargetMinFx.setText(String.valueOf(settings.getOnTargetMin()));
-        controller.offTargetMinFX.setText(String.valueOf(settings.getOffTargetMin()));
-        controller.rateMinFx.setText(String.valueOf(settings.getRateMin()));
-        controller.possessionMinFX.setText(String.valueOf(settings.getPossessionMin()));
-    }
-
 }

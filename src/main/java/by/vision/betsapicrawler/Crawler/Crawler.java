@@ -21,7 +21,7 @@ class Crawler {
 
         // Set the folder where intermediate crawl data is stored (e.g. list of urls that are extracted from previously
         // fetched pages and need to be crawled later).
-        config.setCrawlStorageFolder(Main.jarDir());
+        config.setCrawlStorageFolder(Main.JAR_DIR);
 
         // Be polite: Make sure that we don't send more than 1 request per second (1000 milliseconds between requests).
         // Otherwise it may overload the target servers.

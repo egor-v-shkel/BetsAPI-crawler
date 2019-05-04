@@ -6,7 +6,7 @@ public class Settings implements Serializable {
     //TODO define serialVersionUID
     //static final long serialVersionUID =
 
-    private final String PATH_TO_SETTINGS = Main.jarDir() + "\\Settings.ser";
+    private final String PATH_TO_SETTINGS = Main.JAR_DIR + "\\Settings.ser";
     // flag var, which shows deserialization status
     private boolean serStat = true;
 
