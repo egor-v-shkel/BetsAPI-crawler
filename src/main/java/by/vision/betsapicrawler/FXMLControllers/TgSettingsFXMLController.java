@@ -1,14 +1,15 @@
 package by.vision.betsapicrawler.FXMLControllers;
 
-import by.vision.betsapicrawler.Main;
 import by.vision.betsapicrawler.MyLogger;
-import by.vision.betsapicrawler.Scenes.TgSettings;
+import by.vision.betsapicrawler.StageBuilder;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+
+import static by.vision.betsapicrawler.StageBuilder.settings;
 
 public class TgSettingsFXMLController {
     @FXML
@@ -42,16 +43,16 @@ public class TgSettingsFXMLController {
         getUserInput();
         if (checkInput()){
             //apply settings
-            Main.settings.setChatID(Integer.parseInt(chatIdText));
-            Main.settings.setBotToken(botTokenText);
-            Main.settings.setBotName(botNameText);
+            settings.setChatID(Integer.parseInt(chatIdText));
+            settings.setBotToken(botTokenText);
+            settings.setBotName(botNameText);
             notification.setText("Настройки применены");
             notification.setTextFill(Color.GREEN);
-            MyLogger.ROOT_LOGGER.debug("TgSettings was applied");
+            MyLogger.ROOT_LOGGER.debug("TgSettingsStage was applied");
         } else {
             notification.setText("Неправильно введены настройки");
             notification.setTextFill(Color.RED);
-            MyLogger.ROOT_LOGGER.debug("Wrong input in TgSettings");
+            MyLogger.ROOT_LOGGER.debug("Wrong input in TgSettingsStage");
         }
     }
 
@@ -69,7 +70,7 @@ public class TgSettingsFXMLController {
 
     @FXML
     void cancel(ActionEvent event) {
-        TgSettings.hide();
+        StageBuilder.getTgSettingsStage().hide();
     }
 
     @FXML
@@ -80,13 +81,6 @@ public class TgSettingsFXMLController {
 
     @FXML
     void initialize() {
-        assert OK != null : "fx:id=\"OK\" was not injected: check your FXML file 'TgSettings.fxml'.";
-        assert Apply != null : "fx:id=\"Apply\" was not injected: check your FXML file 'TgSettings.fxml'.";
-        assert Cancel != null : "fx:id=\"Cancel\" was not injected: check your FXML file 'TgSettings.fxml'.";
-        assert chatId != null : "fx:id=\"chatId\" was not injected: check your FXML file 'TgSettings.fxml'.";
-        assert botToken != null : "fx:id=\"botToken\" was not injected: check your FXML file 'TgSettings.fxml'.";
-        assert botName != null : "fx:id=\"botName\" was not injected: check your FXML file 'TgSettings.fxml'.";
-        assert notification != null : "fx:id=\"notification\" was not injected: check your FXML file 'TgSettings.fxml'.";
 
     }
 }

@@ -2,6 +2,7 @@ package by.vision.betsapicrawler;
 
 import by.vision.betsapicrawler.FXMLControllers.MainFXMLController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -62,7 +63,6 @@ public class Main extends Application {
 
     @Override
     public void stop() {
-        MyLogger.ROOT_LOGGER.debug("Application closed.");
-        System.exit(0);
+        MyLogger.STDOUT_LOGGER.debug("Application closed.");
     }
 }

@@ -19,9 +19,9 @@
             <menus>
                 <Menu mnemonicParsing="false" text="Файл">
                     <items>
-                        <MenuItem fx:id="saveSet" mnemonicParsing="false" onAction="#save" text="Сохранить настройки"/>
-                        <MenuItem fx:id="loadSet" mnemonicParsing="false" onAction="#load" text="Загрузить настройки"/>
-                        <MenuItem fx:id="exit" mnemonicParsing="false" onAction="#exit" text="Выход"/>
+                        <MenuItem fx:id="saveSet" mnemonicParsing="false" onAction="#handleSave" text="Сохранить настройки"/>
+                        <MenuItem fx:id="loadSet" mnemonicParsing="false" onAction="#handleLoad" text="Загрузить настройки"/>
+                        <MenuItem fx:id="exit" mnemonicParsing="false" onAction="#handleExit" text="Выход"/>
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Настройки">

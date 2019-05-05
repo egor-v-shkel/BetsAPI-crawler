@@ -52,7 +52,7 @@
         </Logger>
         <Root level="debug">
             <AppenderRef ref="File"/>
-            <!--<AppenderRef ref="STDOUT"/>-->
+            <AppenderRef ref="STDOUT"/>
         </Root>
     </Loggers>
 

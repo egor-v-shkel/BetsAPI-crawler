@@ -1,22 +1,32 @@
 package by.vision.betsapicrawler;
 
 import by.vision.betsapicrawler.FXMLControllers.MainFXMLController;
+import by.vision.betsapicrawler.FXMLControllers.TgSettingsFXMLController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
 public class StageBuilder {
-    private static Stage primaryStage;
     public static final String title = "BetsAPI crawler v. 0.1.2";
     public static Settings settings;
+    private static Stage primaryStage;
+    private static Stage tgSettingsStage;
 
     public StageBuilder(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXML/Main.FXML"));
+        StageBuilder.primaryStage = primaryStage;
+        buildPrimaryStage(primaryStage);
+        buildTgSettingsStage(primaryStage);
+    }
+
+    private void buildPrimaryStage(Stage primaryStage) {
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXML/Primary.fxml"));
         Parent root = null;
         try {
             root = fxmlLoader.load();
@@ -27,7 +37,7 @@ public class StageBuilder {
         MainFXMLController controller = fxmlLoader.getController();
         settings = new Settings();
         settings.deserialize();
-        setSettings(controller, settings);
+        displaySettings(controller, settings);
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
@@ -36,12 +46,39 @@ public class StageBuilder {
         primaryStage.setMinHeight(480);
         primaryStage.setMinWidth(800);
         primaryStage.getIcons().add(getIcon());
+        primaryStage.centerOnScreen();
         primaryStage.show();
         MyLogger.ROOT_LOGGER.debug("Application launched");
-
     }
 
-    private void setSettings(MainFXMLController controller, Settings settings) {
+    private void buildTgSettingsStage(Stage primaryStage) {
+        tgSettingsStage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXML/TgSettings.fxml"));
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        TgSettingsFXMLController tgController = fxmlLoader.getController();
+        Scene scene = new Scene(root);
+        tgSettingsStage.setTitle("Настройки телеграм");
+        tgSettingsStage.setScene(scene);
+        // Specifies the modality for new window.
+        tgSettingsStage.initModality(Modality.WINDOW_MODAL);
+        // Specifies the owner Window (parent) for new window.
+        tgSettingsStage.initOwner(primaryStage);
+        tgSettingsStage.centerOnScreen();
+        tgSettingsStage.initStyle(StageStyle.UTILITY);
+        //if settings was successfully loaded, show Telegram bot settings in GUI
+        if (StageBuilder.settings.getSerStat()){
+            tgController.chatId.setText(String.valueOf(settings.getChatID()));
+            tgController.botName.setText(String.valueOf(settings.getBotName()));
+            tgController.botToken.setText(String.valueOf(settings.getBotToken()));
+        }
+    }
+
+    private void displaySettings(MainFXMLController controller, Settings settings) {
         controller.logicFX.setValue(settings.getLogic());
         controller.timeMinFX.setText(String.valueOf(settings.getTimeSelectMin()));
         controller.timeMaxFX.setText(String.valueOf(settings.getTimeSelectMax()));
@@ -57,5 +94,9 @@ public class StageBuilder {
 
     public static Stage getPrimaryStage() {
         return primaryStage;
+    }
+
+    public static Stage getTgSettingsStage() {
+        return tgSettingsStage;
     }
 }

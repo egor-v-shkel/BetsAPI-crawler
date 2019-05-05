@@ -1,11 +1,8 @@
 package by.vision.betsapicrawler.FXMLControllers;
 
+import by.vision.betsapicrawler.*;
 import by.vision.betsapicrawler.Crawler.CrawlerThread;
-import by.vision.betsapicrawler.Main;
-import by.vision.betsapicrawler.MyLogger;
-import by.vision.betsapicrawler.Scenes.TgSettings;
-import by.vision.betsapicrawler.Settings;
-import by.vision.betsapicrawler.TelegramBot;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,8 +10,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
+import static by.vision.betsapicrawler.StageBuilder.*;
 
 public class MainFXMLController {
     //flag var which used for stopping crawl session
@@ -72,31 +70,30 @@ public class MainFXMLController {
     }
 
     @FXML
-    void save(ActionEvent event) {
-        Main.settings.serialize();
+    void handleSave(ActionEvent event) {
+        settings.serialize();
     }
 
     @FXML
-    void load(ActionEvent event) {
-        Main.settings.deserialize();
+    void handleLoad(ActionEvent event) {
+        settings.deserialize();
     }
 
     @FXML
-    void exit(ActionEvent event) {
-        MyLogger.ROOT_LOGGER.debug("Closing application");
-        System.exit(0);
+    void handleExit(ActionEvent event) {
+        MyLogger.ROOT_LOGGER.debug("Closing app through menu bar");
+        Platform.exit();
     }
 
     @FXML
     void openTgSettings(ActionEvent event) {
-        TgSettings tgSettings = new TgSettings();
-        tgSettings.show();
+        StageBuilder.getTgSettingsStage().showAndWait();
     }
 
     private void startCrawlSession() {
         crawlerThread = new CrawlerThread("Crawler thread");
-        //save settings
-        Main.settings.serialize();
+        //handleSave settings
+        settings.serialize();
         //start new bot session
         Main.startBotSession(new TelegramBot());
     }
@@ -107,13 +104,13 @@ public class MainFXMLController {
     }
 
     private void applySettings() {
-        Main.settings.setLogic(logicFX.getValue());
-        Main.settings.setTimeSelectMin(Integer.parseInt(timeMinFX.getText()));
-        Main.settings.setTimeSelectMax(Integer.parseInt(timeMaxFX.getText()));
-        Main.settings.setPossessionMin(Integer.parseInt(possessionMinFX.getText()));
-        Main.settings.setOnTargetMin(Integer.parseInt(onTargetMinFx.getText()));
-        Main.settings.setOffTargetMin(Integer.parseInt(offTargetMinFX.getText()));
-        Main.settings.setRateMin(Double.parseDouble(rateMinFx.getText()));
+        settings.setLogic(logicFX.getValue());
+        settings.setTimeSelectMin(Integer.parseInt(timeMinFX.getText()));
+        settings.setTimeSelectMax(Integer.parseInt(timeMaxFX.getText()));
+        settings.setPossessionMin(Integer.parseInt(possessionMinFX.getText()));
+        settings.setOnTargetMin(Integer.parseInt(onTargetMinFx.getText()));
+        settings.setOffTargetMin(Integer.parseInt(offTargetMinFX.getText()));
+        settings.setRateMin(Double.parseDouble(rateMinFx.getText()));
     }
 
     public void initialize() {
@@ -133,9 +130,8 @@ public class MainFXMLController {
                 + "Автор:\tVision_606\n"
                 + "Дата релиза:\t04.05.2019\n");
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(Main.getIcon()); // add a custom icon
-        alert.initOwner(Main.getPrimaryStage());
+        stage.getIcons().add(getIcon()); // add a custom icon
+        alert.initOwner(StageBuilder.getPrimaryStage());
         alert.showAndWait();
-
     }
 }
