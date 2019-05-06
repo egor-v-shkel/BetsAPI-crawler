@@ -1,12 +1,6 @@
 package by.vision.betsapicrawler;
 
-import by.vision.betsapicrawler.FXMLControllers.MainFXMLController;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -21,6 +15,11 @@ public class Main extends Application {
     public static final String JAR_DIR = jarDir();
     public static TelegramBotsApi botsApi;
     public static BotSession botSession;
+    private static StageBuilder stageBuilder;
+
+    public static StageBuilder getStageBuilder() {
+        return stageBuilder;
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -58,7 +57,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage){
-        new StageBuilder(stage);
+        stageBuilder = new StageBuilder(stage);
     }
 
     @Override

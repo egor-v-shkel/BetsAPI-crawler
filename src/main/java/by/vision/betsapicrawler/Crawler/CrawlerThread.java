@@ -1,6 +1,6 @@
 package by.vision.betsapicrawler.Crawler;
 
-import by.vision.betsapicrawler.FXMLControllers.MainFXMLController;
+import by.vision.betsapicrawler.FXMLControllers.PrimaryFXMLController;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import org.slf4j.Logger;
@@ -22,9 +22,9 @@ public class CrawlerThread implements Runnable {
     // Обязательный метод для интерфейса Runnable
     public void run() {
 
-        MainFXMLController.bStop = false;
+        PrimaryFXMLController.bStop = false;
 
-        while (!MainFXMLController.bStop) {
+        while (!PrimaryFXMLController.bStop) {
             try {
                 starter = new Crawler();
                 starter.start();
@@ -36,7 +36,7 @@ public class CrawlerThread implements Runnable {
     }
 
     public void stop(){
-        MainFXMLController.bStop = true;
+        PrimaryFXMLController.bStop = true;
         starter.stop();
         logger.debug("Crawler stopped");
     }

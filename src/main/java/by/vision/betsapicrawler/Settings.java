@@ -6,10 +6,11 @@ public class Settings implements Serializable {
     //TODO define serialVersionUID
     //static final long serialVersionUID =
 
-    private final String PATH_TO_SETTINGS = Main.JAR_DIR + "\\Settings.ser";
-    // flag var, which shows deserialization status
-    private boolean serStat = true;
+    private final String DEFAULT_FILE_PATH = Main.JAR_DIR + "\\Settings.ser";
+    private String currentPath = Main.JAR_DIR;
 
+    // flag var, which shows serialization status
+    private boolean serStat = true;
     //Minimal rate of any team
     private double rateMin = 1.0;
     //Time range of match
@@ -24,41 +25,24 @@ public class Settings implements Serializable {
     // Logic
     private Logic logic = Logic.AND;
     //Proxy timeout
-    private int proxyTimeout = 15000;
-    // Logic options
-    public enum Logic {
-        AND,
-        OR
-
-    }
+    //private int proxyTimeout = 15000;
     //Telegram settings
     private String botToken;
     private long chatID;
     private String botName;
 
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        String end = "\n";
-        StringBuffer settings = sb.append("Settings: \n")
-                .append("ID чата в ТГ - ").append(chatID).append(end)
-                .append("Минимальный коэффициент - ").append(rateMin).append(end)
-                .append("Минута матча, для отправки сообщения - min(").append(timeSelectMin).append("), max(").append(timeSelectMax).append(")\n")
-                .append("Владение мячом, минимум - ").append(possessionMin).append(end)
-                .append("Удар по воротам, минимум - ").append(onTargetMin).append(end)
-                .append("Удар мимо ворот, минимум - ").append(offTargetMin).append(end)
-                .append("Логика - ").append(logic).append(end)
-                .append("Тайм-аут прокси, мс - ").append(proxyTimeout).append(end);
-        return settings.toString();
-    }
-
-
+    /**
+     * Serialize object as default Settings.ser file to default location.
+     */
     //serialize object to jar file location
     public void serialize(){
-        serialize(PATH_TO_SETTINGS);
+        serialize(DEFAULT_FILE_PATH);
     }
 
-    //serialize object to defined path
+    /**
+     * Serialize object to defined path as defined .ser file.
+     * @param path is where settings file should be stored.
+     */
     public void serialize(String path){
         try {
             FileOutputStream fileOut =
@@ -68,17 +52,23 @@ public class Settings implements Serializable {
             out.close();
             fileOut.close();
             MyLogger.ROOT_LOGGER.info("Serialized data saved as"+path);
+            MyLogger.ROOT_LOGGER.info(this::toString);
         } catch (IOException i) {
             i.printStackTrace();
         }
     }
 
-    //deserialize object from jar file location
+    /**
+     * Deserialize object from default settings file location.
+     */
     public void deserialize(){
-        this.deserialize(PATH_TO_SETTINGS);
+        this.deserialize(DEFAULT_FILE_PATH);
     }
 
-    //deserialize object from defined path
+    /**
+     * Deserialize object from defined path
+     * @param path is from where settings file should be loaded.
+     */
     public void deserialize(String path) {
         Settings s = new Settings();
         try {
@@ -105,24 +95,17 @@ public class Settings implements Serializable {
                 this.chatID = s.chatID;
                 this.botToken = s.botToken;
             }
+            MyLogger.ROOT_LOGGER.info("Settings was successfully loaded\n");
+            MyLogger.ROOT_LOGGER.info(this::toString);
         }
     }
 
-    public String getBotToken() {
-        return botToken;
-    }
 
-    public void setBotToken(String botToken) {
-        this.botToken = botToken;
-    }
+    // Logic options
+    public enum Logic {
+        AND,
+        OR
 
-
-    public long getChatID() {
-        return chatID;
-    }
-
-    public void setChatID(long chatID) {
-        this.chatID = chatID;
     }
 
     public String getBotName() {
@@ -133,52 +116,20 @@ public class Settings implements Serializable {
         this.botName = botName;
     }
 
-    public double getRateMin() {
-        return rateMin;
+    public String getBotToken() {
+        return botToken;
     }
 
-    public void setRateMin(double rateMin) {
-        this.rateMin = rateMin;
+    public void setBotToken(String botToken) {
+        this.botToken = botToken;
     }
 
-    public int getTimeSelectMin() {
-        return timeSelectMin;
+    public long getChatID() {
+        return chatID;
     }
 
-    public void setTimeSelectMin(int timeSelectMin) {
-        this.timeSelectMin = timeSelectMin;
-    }
-
-    public int getTimeSelectMax() {
-        return timeSelectMax;
-    }
-
-    public void setTimeSelectMax(int timeSelectMax) {
-        this.timeSelectMax = timeSelectMax;
-    }
-
-    public int getPossessionMin() {
-        return possessionMin;
-    }
-
-    public void setPossessionMin(int possessionMin) {
-        this.possessionMin = possessionMin;
-    }
-
-    public int getOnTargetMin() {
-        return onTargetMin;
-    }
-
-    public void setOnTargetMin(int onTargetMin) {
-        this.onTargetMin = onTargetMin;
-    }
-
-    public int getOffTargetMin() {
-        return offTargetMin;
-    }
-
-    public void setOffTargetMin(int offTargetMin) {
-        this.offTargetMin = offTargetMin;
+    public void setChatID(long chatID) {
+        this.chatID = chatID;
     }
 
     public Logic getLogic() {
@@ -189,8 +140,89 @@ public class Settings implements Serializable {
         this.logic = logic;
     }
 
+    public int getOffTargetMin() {
+        return offTargetMin;
+    }
+
+    public void setOffTargetMin(int offTargetMin) {
+        this.offTargetMin = offTargetMin;
+    }
+
+    public int getOnTargetMin() {
+        return onTargetMin;
+    }
+
+    public void setOnTargetMin(int onTargetMin) {
+        this.onTargetMin = onTargetMin;
+    }
+
+    public String getCurrentPath() {
+        return currentPath;
+    }
+
+    public void setCurrentPath(String currentPath) {
+        this.currentPath = currentPath;
+    }
+
+    public int getPossessionMin() {
+        return possessionMin;
+    }
+
+    public void setPossessionMin(int possessionMin) {
+        this.possessionMin = possessionMin;
+    }
+
+    public double getRateMin() {
+        return rateMin;
+    }
+
+    public void setRateMin(double rateMin) {
+        this.rateMin = rateMin;
+    }
+
     public boolean getSerStat() {
         return serStat;
+    }
+
+    public int getTimeSelectMax() {
+        return timeSelectMax;
+    }
+
+    public void setTimeSelectMax(int timeSelectMax) {
+        this.timeSelectMax = timeSelectMax;
+    }
+
+    public int getTimeSelectMin() {
+        return timeSelectMin;
+    }
+
+    public void setTimeSelectMin(int timeSelectMin) {
+        this.timeSelectMin = timeSelectMin;
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        String newLine = "\n";
+        StringBuffer settings = sb.append("Внутренние настройки").append(newLine)
+                .append("Путь настроек по умолчанию: ").append(DEFAULT_FILE_PATH).append(newLine)
+                .append("Текущий путь: ").append(currentPath).append(newLine)
+                .append("Сохранены ли настройки? ").append(serStat?"Да":"Нет").append(newLine)
+                .append(newLine)
+                .append("Настройки пользователя: \n")
+                .append("Логика: ").append(logic).append(newLine)
+                .append(String.format("Минута матча, для отправки сообщения - min(%s), max(%s)", timeSelectMin, timeSelectMax)).append(")\n")
+                .append("Минимальный коэффициент: ").append(rateMin).append(newLine)
+                .append("Владение мячом, минимум: ").append(possessionMin).append(newLine)
+                .append("Удар по воротам, минимум: ").append(onTargetMin).append(newLine)
+                .append("Удар мимо ворот, минимум: ").append(offTargetMin).append(newLine)
+                //.append("Тайм-аут прокси, мс - ").append(proxyTimeout).append(newLine)
+                .append(newLine)
+                .append("Настройки телеги:").append(newLine)
+                .append("Чат ID: ").append(chatID).append(newLine)
+                .append("Токен бота: ").append(botToken).append(newLine)
+                .append("Имя бота: ").append(botName).append(newLine);
+        return settings.toString();
     }
 /* public int getProxyTimeout() {
         return proxyTimeout;

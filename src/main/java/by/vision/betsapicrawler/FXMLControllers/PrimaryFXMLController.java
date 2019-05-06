@@ -10,11 +10,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 import static by.vision.betsapicrawler.StageBuilder.*;
 
-public class MainFXMLController {
+public class PrimaryFXMLController {
     //flag var which used for stopping crawl session
     public static volatile boolean bStop = false;
 
@@ -37,17 +40,17 @@ public class MainFXMLController {
     public TextField offTargetMinFX;
     @FXML
     public Button startStopBtn;
+    @FXML
+    public MenuItem tgBotSetup;
     private CrawlerThread crawlerThread;
     @FXML
     private MenuBar menuBar;
     @FXML
-    private MenuItem saveSet;
+    private MenuItem save;
     @FXML
-    private MenuItem loadSet;
+    private MenuItem load;
     @FXML
     private MenuItem exit;
-    @FXML
-    private MenuItem tgBotSetup;
     @FXML
     private MenuItem about;
     private ObservableList<Settings.Logic> logicFXList = FXCollections.observableArrayList(Settings.Logic.values());
@@ -71,12 +74,30 @@ public class MainFXMLController {
 
     @FXML
     void handleSave(ActionEvent event) {
-        settings.serialize();
+        applySettings();
+        settings.serialize(settings.getCurrentPath());
+    }
+
+    @FXML
+    public void handleSaveAs(ActionEvent actionEvent) {
+        FileChooser fileChooser = predefineFileChooser();
+        File file = fileChooser.showSaveDialog(StageBuilder.getPrimaryStage());
+        if (file != null) {
+            settings.serialize(file.getAbsolutePath());
+            settings.setCurrentPath(file.getPath());
+        }
     }
 
     @FXML
     void handleLoad(ActionEvent event) {
-        settings.deserialize();
+        FileChooser fileChooser = predefineFileChooser();
+        File file = fileChooser.showOpenDialog(StageBuilder.getPrimaryStage());
+        if (file != null) {
+            settings.deserialize(file.getAbsolutePath());
+            applySettings();
+            StageBuilder stageBuilder = Main.getStageBuilder();
+            stageBuilder.showSettings(settings);
+        }
     }
 
     @FXML
@@ -86,8 +107,36 @@ public class MainFXMLController {
     }
 
     @FXML
-    void openTgSettings(ActionEvent event) {
+    void handleTgSettings(ActionEvent event) {
         StageBuilder.getTgSettingsStage().showAndWait();
+    }
+
+    @FXML
+    public void handleAbout(ActionEvent actionEvent) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(about.getText());
+        alert.setHeaderText("BetsApi crawler");
+        alert.setContentText("Версия:\t0.1.2\n"
+                + "Автор:\tVision_606\n"
+                + "Дата релиза:\tN/A\n");
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(getIcon()); // add a custom icon
+        alert.initOwner(StageBuilder.getPrimaryStage());
+        alert.showAndWait();
+    }
+
+    /**
+     * Predefine FileChooser to load only *.ser files.
+     *
+     * @return FileChooser
+     */
+    private FileChooser predefineFileChooser() {
+        FileChooser fileChooser = new FileChooser();
+        // Set extension filter
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("SER (*.ser)", "*.ser");
+        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.setInitialDirectory(new File(settings.getCurrentPath()));
+        return fileChooser;
     }
 
     private void startCrawlSession() {
@@ -103,6 +152,12 @@ public class MainFXMLController {
         Main.botSession.stop();
     }
 
+    /**
+     * Current method will save all changes made in GUI that refer to {@link Settings} class
+     * and apply it to current settings.
+     *
+     * @see by.vision.betsapicrawler.Settings;
+     */
     private void applySettings() {
         settings.setLogic(logicFX.getValue());
         settings.setTimeSelectMin(Integer.parseInt(timeMinFX.getText()));
@@ -111,6 +166,7 @@ public class MainFXMLController {
         settings.setOnTargetMin(Integer.parseInt(onTargetMinFx.getText()));
         settings.setOffTargetMin(Integer.parseInt(offTargetMinFX.getText()));
         settings.setRateMin(Double.parseDouble(rateMinFx.getText()));
+        MyLogger.ROOT_LOGGER.debug("Settings was successfully applied");
     }
 
     public void initialize() {
@@ -119,19 +175,5 @@ public class MainFXMLController {
 
         linkList.setItems(hyperlinkObservableList);
 
-    }
-
-    @FXML
-    public void handleAbout(ActionEvent actionEvent) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("О программе");
-        alert.setHeaderText("BetsApi crawler");
-        alert.setContentText("Версия:\t0.1.2\n"
-                + "Автор:\tVision_606\n"
-                + "Дата релиза:\t04.05.2019\n");
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(getIcon()); // add a custom icon
-        alert.initOwner(StageBuilder.getPrimaryStage());
-        alert.showAndWait();
     }
 }

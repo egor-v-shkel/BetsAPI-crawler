@@ -1,6 +1,6 @@
 package by.vision.betsapicrawler;
 
-import by.vision.betsapicrawler.FXMLControllers.MainFXMLController;
+import by.vision.betsapicrawler.FXMLControllers.PrimaryFXMLController;
 import by.vision.betsapicrawler.FXMLControllers.TgSettingsFXMLController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,6 +10,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.File;
 import java.io.IOException;
 
 public class StageBuilder {
@@ -17,6 +18,9 @@ public class StageBuilder {
     public static Settings settings;
     private static Stage primaryStage;
     private static Stage tgSettingsStage;
+    private static File currentSettings;
+    private PrimaryFXMLController primaryController;
+    private TgSettingsFXMLController tgController;
 
     public StageBuilder(Stage primaryStage) {
         StageBuilder.primaryStage = primaryStage;
@@ -34,10 +38,10 @@ public class StageBuilder {
             MyLogger.ROOT_LOGGER.error("Unsuccessful attempt to load Main.FXML", e);
             e.printStackTrace();
         }
-        MainFXMLController controller = fxmlLoader.getController();
+        primaryController = fxmlLoader.getController();
         settings = new Settings();
         settings.deserialize();
-        displaySettings(controller, settings);
+        showSettings(settings);
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
@@ -60,9 +64,9 @@ public class StageBuilder {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        TgSettingsFXMLController tgController = fxmlLoader.getController();
+        tgController = fxmlLoader.getController();
         Scene scene = new Scene(root);
-        tgSettingsStage.setTitle("Настройки телеграм");
+        tgSettingsStage.setTitle(primaryController.tgBotSetup.getText());
         tgSettingsStage.setScene(scene);
         // Specifies the modality for new window.
         tgSettingsStage.initModality(Modality.WINDOW_MODAL);
@@ -72,20 +76,33 @@ public class StageBuilder {
         tgSettingsStage.initStyle(StageStyle.UTILITY);
         //if settings was successfully loaded, show Telegram bot settings in GUI
         if (StageBuilder.settings.getSerStat()){
-            tgController.chatId.setText(String.valueOf(settings.getChatID()));
-            tgController.botName.setText(String.valueOf(settings.getBotName()));
-            tgController.botToken.setText(String.valueOf(settings.getBotToken()));
+            showTgSettings(tgController);
         }
     }
 
-    private void displaySettings(MainFXMLController controller, Settings settings) {
-        controller.logicFX.setValue(settings.getLogic());
-        controller.timeMinFX.setText(String.valueOf(settings.getTimeSelectMin()));
-        controller.timeMaxFX.setText(String.valueOf(settings.getTimeSelectMax()));
-        controller.onTargetMinFx.setText(String.valueOf(settings.getOnTargetMin()));
-        controller.offTargetMinFX.setText(String.valueOf(settings.getOffTargetMin()));
-        controller.rateMinFx.setText(String.valueOf(settings.getRateMin()));
-        controller.possessionMinFX.setText(String.valueOf(settings.getPossessionMin()));
+    public void showSettings(Settings settings) {
+        primaryController.logicFX.setValue(settings.getLogic());
+        primaryController.timeMinFX.setText(String.valueOf(settings.getTimeSelectMin()));
+        primaryController.timeMaxFX.setText(String.valueOf(settings.getTimeSelectMax()));
+        primaryController.onTargetMinFx.setText(String.valueOf(settings.getOnTargetMin()));
+        primaryController.offTargetMinFX.setText(String.valueOf(settings.getOffTargetMin()));
+        primaryController.rateMinFx.setText(String.valueOf(settings.getRateMin()));
+        primaryController.possessionMinFX.setText(String.valueOf(settings.getPossessionMin()));
+        //showTgSettings(tgController);
+    }
+
+    private void showTgSettings(TgSettingsFXMLController tgController) {
+        tgController.chatId.setText(String.valueOf(settings.getChatID()));
+        tgController.botName.setText(String.valueOf(settings.getBotName()));
+        tgController.botToken.setText(String.valueOf(settings.getBotToken()));
+    }
+
+    public static File getCurrentSettings() {
+        return currentSettings;
+    }
+
+    public static void setCurrentSettings(File currentSettings) {
+        StageBuilder.currentSettings = currentSettings;
     }
 
     public static Image getIcon() {
