@@ -85,6 +85,7 @@ public class PrimaryFXMLController {
         File file = fileChooser.showSaveDialog(StageBuilder.getPrimaryStage());
         if (file != null) {
             settings.serialize(file.getAbsolutePath());
+            MyLogger.STDOUT_LOGGER.debug("!!!Inside HandleAs "+file.getParent());
             settings.setCurrentPath(file.getParent());
         }
     }

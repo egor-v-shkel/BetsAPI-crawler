@@ -41,6 +41,7 @@ public class StageBuilder {
         primaryController = fxmlLoader.getController();
         settings = new Settings();
         settings.deserialize();
+        settings.serialize();
         showSettings(settings);
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
