@@ -81,16 +81,18 @@ public class PrimaryFXMLController {
     @FXML
     public void handleSaveAs(ActionEvent actionEvent) {
         FileChooser fileChooser = predefineFileChooser();
+        MyLogger.STDOUT_LOGGER.debug("Saving settings in: "+settings.getCurrentPath());
         File file = fileChooser.showSaveDialog(StageBuilder.getPrimaryStage());
         if (file != null) {
             settings.serialize(file.getAbsolutePath());
-            settings.setCurrentPath(file.getPath());
+            settings.setCurrentPath(file.getParent());
         }
     }
 
     @FXML
     void handleLoad(ActionEvent event) {
         FileChooser fileChooser = predefineFileChooser();
+        MyLogger.STDOUT_LOGGER.debug("Trying to load settings from: "+settings.getCurrentPath());
         File file = fileChooser.showOpenDialog(StageBuilder.getPrimaryStage());
         if (file != null) {
             settings.deserialize(file.getAbsolutePath());
