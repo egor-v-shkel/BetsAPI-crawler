@@ -75,7 +75,7 @@ public class PrimaryFXMLController {
     @FXML
     void handleSave(ActionEvent event) {
         applySettings();
-        settings.serialize(settings.getCurrentPath());
+        settings.serialize(settings.getCurrentFile().getAbsolutePath());
     }
 
     @FXML
