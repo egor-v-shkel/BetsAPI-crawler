@@ -63,5 +63,6 @@ public class Main extends Application {
     @Override
     public void stop() {
         MyLogger.STDOUT_LOGGER.debug("Application closed.");
+        System.exit(0);
     }
 }

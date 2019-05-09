@@ -14,7 +14,7 @@
     <children>
         <MenuBar fx:id="menuBar" prefHeight="25.0" prefWidth="361.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <menus>
-                <Menu mnemonicParsing="false" text="Файл">
+                <Menu fx:id="file" mnemonicParsing="false" text="Файл">
                     <items>
                         <MenuItem fx:id="save" mnemonicParsing="false" onAction="#handleSave" text="Сохранить настройки" />
                   <MenuItem fx:id="saveAs" mnemonicParsing="false" onAction="#handleSaveAs" text="Сохранить настройки как..." />
@@ -22,12 +22,12 @@
                         <MenuItem fx:id="exit" mnemonicParsing="false" onAction="#handleExit" text="Выход" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Настройки">
+                <Menu fx:id="settingsMenu" mnemonicParsing="false" text="Настройки">
                     <items>
                         <MenuItem fx:id="tgBotSetup" mnemonicParsing="false" onAction="#handleTgSettings" text="Настройки телеграм бота" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Помощь">
+                <Menu fx:id="help" mnemonicParsing="false" text="Помощь">
                     <items>
                         <MenuItem fx:id="about" mnemonicParsing="false" onAction="#handleAbout" text="О программе" />
                     </items>

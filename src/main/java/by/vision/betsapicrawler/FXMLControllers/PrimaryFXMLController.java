@@ -40,19 +40,30 @@ public class PrimaryFXMLController implements SettingsController {
     public TextField offTargetMinFX;
     @FXML
     public Button startStopBtn;
-    @FXML
-    public MenuItem tgBotSetup;
-    private CrawlerThread crawlerThread;
+
     @FXML
     private MenuBar menuBar;
+
+    @FXML
+    public Menu file;
     @FXML
     private MenuItem save;
     @FXML
     private MenuItem load;
     @FXML
     private MenuItem exit;
+
+    @FXML
+    public Menu settingsMenu;
+    @FXML
+    public MenuItem tgBotSetup;
+
+    @FXML
+    public Menu help;
     @FXML
     private MenuItem about;
+
+    private CrawlerThread crawlerThread;
     private ObservableList<Settings.Logic> logicFXList = FXCollections.observableArrayList(Settings.Logic.values());
 
     @FXML
@@ -62,7 +73,10 @@ public class PrimaryFXMLController implements SettingsController {
         switch (startStopBtn.getText()) {
             case START:
                 applySettings();
-                settings.checkNotNullTgSettings();
+                if (!settings.checkNotNullTgSettings()) {
+                    alert();
+                    break;
+                }
                 saveSettings();
                 startCrawlSession();
                 startStopBtn.setText(STOP);
@@ -72,6 +86,16 @@ public class PrimaryFXMLController implements SettingsController {
                 startStopBtn.setText(START);
                 break;
         }
+    }
+
+    private void alert() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Внимание");
+        alert.setHeaderText("Неверно введены настройки телеграм");
+        alert.setContentText(String.format("Проверьте правильность ввода в %s\\%s"
+                ,settingsMenu.getText(), tgBotSetup.getText()));
+
+        alert.showAndWait();
     }
 
     @FXML
