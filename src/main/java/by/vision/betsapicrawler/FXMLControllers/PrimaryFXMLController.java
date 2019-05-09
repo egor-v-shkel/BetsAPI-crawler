@@ -49,6 +49,8 @@ public class PrimaryFXMLController implements SettingsController {
     @FXML
     private MenuItem save;
     @FXML
+    public MenuItem saveAs;
+    @FXML
     private MenuItem load;
     @FXML
     private MenuItem exit;
@@ -148,7 +150,7 @@ public class PrimaryFXMLController implements SettingsController {
         alert.setTitle(about.getText());
         alert.setHeaderText("BetsApi crawler");
         alert.setContentText("Версия:\t0.1.2\n"
-                + "Автор:\tVision_606\n"
+                + "Автор:\tVision666\n"
                 + "Дата релиза:\tN/A\n");
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(getIcon()); // add a custom icon
