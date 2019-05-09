@@ -9,6 +9,8 @@ public class Settings implements Serializable {
     private static final String DEFAULT_FILE_PATH = Main.JAR_DIR + "\\Settings.ser";
     private static File currentFile = new File(DEFAULT_FILE_PATH);
 
+    //Primary settings
+
     //Logic options
     public enum Logic {
         AND,
@@ -29,10 +31,10 @@ public class Settings implements Serializable {
     private Logic logic = Logic.AND;
     //Proxy timeout
     //private int proxyTimeout = 15000;
+
     //Telegram settings
     private String botToken;
     private long chatID;
-
     private String botName;
 
     /**
@@ -83,33 +85,31 @@ public class Settings implements Serializable {
 
         pathCheck(path);
 
-        Settings s = new Settings();
+        Settings settings = new Settings();
         try {
             FileInputStream fileIn = new FileInputStream(path);
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            s = (Settings) in.readObject();
+            settings = (Settings) in.readObject();
             in.close();
             fileIn.close();
         } catch (IOException | ClassNotFoundException e) {
             MyLogger.STDOUT_LOGGER.warn("No settings local was found");
         } finally {
-            //TODO split this class in Settings.class (which will contain only fields) and SettingsApplier(which will
-            // provide all actions with Settings object)
-            this.logic = s.logic;
-            this.onTargetMin = s.onTargetMin;
-            this.offTargetMin = s.offTargetMin;
-            this.possessionMin = s.possessionMin;
-            this.rateMin = s.rateMin;
-            this.timeSelectMax = s.timeSelectMax;
-            this.timeSelectMin = s.timeSelectMin;
+            /*this.logic = settings.logic;
+            this.onTargetMin = settings.onTargetMin;
+            this.offTargetMin = settings.offTargetMin;
+            this.possessionMin = settings.possessionMin;
+            this.rateMin = settings.rateMin;
+            this.timeSelectMax = settings.timeSelectMax;
+            this.timeSelectMin = settings.timeSelectMin;
 
-            //prevent zeroes and nulls to be shown in GUI
-            boolean checkTgSettings = s.botName != null || this.chatID != 0 || this.botToken != null;
-            if(checkTgSettings){
-                this.botName = s.botName;
-                this.chatID = s.chatID;
-                this.botToken = s.botToken;
-            }
+            if(checkNotNullTgSettings()){
+                this.botName = settings.botName;
+                this.chatID = settings.chatID;
+                this.botToken = settings.botToken;
+            }*/
+
+            StageBuilder.settings = settings;
 
             currentFile = new File(path);
 
@@ -122,11 +122,22 @@ public class Settings implements Serializable {
         if(path == null || !path.endsWith(".ser")) throw new IllegalArgumentException("Not an settings file");
     }
 
+    /**
+     * Prevent zeroes and nulls to be shown in GUI
+     * @return true if all fields related to Telegram settings not null or != 0
+     * and vice versa
+     */
+    public boolean checkNotNullTgSettings() {
+        return (chatID != 0 ||
+                botName != null ||
+                botToken != null);
+    }
+
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         String newLine = "\n";
-        StringBuffer settings = sb.append("Внутренние настройки").append(newLine)
+        StringBuilder settings = sb.append("Внутренние настройки").append(newLine)
                 .append("Путь настроек по умолчанию: ").append(DEFAULT_FILE_PATH).append(newLine)
                 .append("Текущий путь: ").append(currentFile.getAbsolutePath()).append(newLine)
                 .append(newLine)

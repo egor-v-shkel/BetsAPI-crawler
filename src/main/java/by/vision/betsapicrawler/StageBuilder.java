@@ -10,19 +10,17 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.io.File;
 import java.io.IOException;
 
 public class StageBuilder {
-    public static final String title = "BetsAPI crawler v. 0.1.2";
+    private static final String title = "BetsAPI crawler v. 0.1.2";
     public static Settings settings;
     private static Stage primaryStage;
     private static Stage tgSettingsStage;
-    private static File currentSettings;
     private PrimaryFXMLController primaryController;
     private TgSettingsFXMLController tgController;
 
-    public StageBuilder(Stage primaryStage) {
+    StageBuilder(Stage primaryStage) {
         StageBuilder.primaryStage = primaryStage;
         buildPrimaryStage(primaryStage);
         buildTgSettingsStage(primaryStage);
@@ -66,6 +64,7 @@ public class StageBuilder {
             e.printStackTrace();
         }
         tgController = fxmlLoader.getController();
+        assert root != null;
         Scene scene = new Scene(root);
         tgSettingsStage.setTitle(primaryController.tgBotSetup.getText());
         tgSettingsStage.setScene(scene);
@@ -76,17 +75,7 @@ public class StageBuilder {
         tgSettingsStage.centerOnScreen();
         tgSettingsStage.initStyle(StageStyle.UTILITY);
         //if settings was successfully loaded, show Telegram bot settings in GUI
-        tgController.showTgSettings();
-    }
-
-
-
-    public static File getCurrentSettings() {
-        return currentSettings;
-    }
-
-    public static void setCurrentSettings(File currentSettings) {
-        StageBuilder.currentSettings = currentSettings;
+        tgController.showSettings();
     }
 
     public static Stage getPrimaryStage() {

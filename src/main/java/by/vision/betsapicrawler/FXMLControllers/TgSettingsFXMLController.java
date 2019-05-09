@@ -11,7 +11,7 @@ import javafx.scene.paint.Color;
 
 import static by.vision.betsapicrawler.StageBuilder.settings;
 
-public class TgSettingsFXMLController {
+public class TgSettingsFXMLController implements SettingsController {
     @FXML
     public TextField chatId;
     @FXML
@@ -35,7 +35,7 @@ public class TgSettingsFXMLController {
     @FXML
     void apply(ActionEvent event) {
         getUserInput();
-        if (checkInput()){
+        if (checkInput()) {
 
             Integer checkedId = checkChatIdPrefix();
 
@@ -56,13 +56,14 @@ public class TgSettingsFXMLController {
 
     /**
      * Assume, that user can input chatID without "minus" prefix, we will be adding it at the beginning
+     * if it's needed
      *
      * @return correct chatID
      */
     private Integer checkChatIdPrefix() {
         String prefix = "-";
         int id = Integer.parseInt(chatIdText);
-        return chatIdText.startsWith(prefix) ? id : - id;
+        return chatIdText.startsWith(prefix) ? id : -id;
     }
 
     private boolean checkInput() {
@@ -84,29 +85,29 @@ public class TgSettingsFXMLController {
 
     @FXML
     void initialize() {
-
+        //do nothing
     }
 
     /**
      * Make current settings visible in GUI
      */
-    public void showTgSettings() {
-        chatId.setText(String.valueOf(settings.getChatID()));
-        botName.setText(String.valueOf(settings.getBotName()));
-        botToken.setText(String.valueOf(settings.getBotToken()));
+    public void showSettings() {
+
+        if (settings.checkNotNullTgSettings()) {
+            chatId.setText(String.valueOf(settings.getChatID()));
+            botName.setText(String.valueOf(settings.getBotName()));
+            botToken.setText(String.valueOf(settings.getBotToken()));
+        }
+
     }
 
-    public boolean checkNull(){
-        return true;
-    }
-
-    private void getUserInput(){
+    private void getUserInput() {
         chatIdText = chatId.getText();
         botTokenText = botToken.getText();
         botNameText = botName.getText();
     }
 
-    public void applyTgSettings(){
+    public void applySettings() {
         settings.setChatID(Long.parseLong(chatIdText));
         settings.setBotToken(botTokenText);
         settings.setBotName(botNameText);

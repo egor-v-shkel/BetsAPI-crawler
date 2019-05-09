@@ -17,7 +17,7 @@ import java.io.File;
 
 import static by.vision.betsapicrawler.StageBuilder.*;
 
-public class PrimaryFXMLController {
+public class PrimaryFXMLController implements SettingsController {
     //flag var which used for stopping crawl session
     public static volatile boolean bStop = false;
 
@@ -62,6 +62,7 @@ public class PrimaryFXMLController {
         switch (startStopBtn.getText()) {
             case START:
                 applySettings();
+                settings.checkNotNullTgSettings();
                 saveSettings();
                 startCrawlSession();
                 startStopBtn.setText(STOP);
@@ -164,7 +165,7 @@ public class PrimaryFXMLController {
      *
      * @see by.vision.betsapicrawler.Settings;
      */
-    private void applySettings() {
+    public void applySettings() {
         settings.setLogic(logicFX.getValue());
         settings.setTimeSelectMin(Integer.parseInt(timeMinFX.getText()));
         settings.setTimeSelectMax(Integer.parseInt(timeMaxFX.getText()));
@@ -173,11 +174,7 @@ public class PrimaryFXMLController {
         settings.setOffTargetMin(Integer.parseInt(offTargetMinFX.getText()));
         settings.setRateMin(Double.parseDouble(rateMinFx.getText()));
         //TODO apply TG settings?
-        MyLogger.ROOT_LOGGER.debug("Settings was successfully applied");
-    }
-
-    private void saveSettings(){
-        settings.serialize();
+        MyLogger.ROOT_LOGGER.debug("Settings was applied");
     }
 
     public void initialize() {
@@ -196,7 +193,6 @@ public class PrimaryFXMLController {
         offTargetMinFX.setText(String.valueOf(settings.getOffTargetMin()));
         rateMinFx.setText(String.valueOf(settings.getRateMin()));
         possessionMinFX.setText(String.valueOf(settings.getPossessionMin()));
-        //showTgSettings(tgController);
     }
 
 }

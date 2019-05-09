@@ -13,7 +13,7 @@ import java.net.URISyntaxException;
 
 public class Main extends Application {
     public static final String JAR_DIR = jarDir();
-    public static TelegramBotsApi botsApi;
+    private static TelegramBotsApi botsApi;
     public static BotSession botSession;
     private static StageBuilder stageBuilder;
 
@@ -25,7 +25,7 @@ public class Main extends Application {
         launch(args);
     }
 
-    public static void initTgBotsAPI() {
+    private static void initTgBotsAPI() {
         ApiContextInitializer.init();
         botsApi = new TelegramBotsApi();
     }
@@ -46,7 +46,7 @@ public class Main extends Application {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        MyLogger.STDOUT_LOGGER.debug("Jar dir: " + jarDir);
+        MyLogger.ROOT_LOGGER.debug("Jar dir: " + jarDir);
         return jarDir;
     }
 
