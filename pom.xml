@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>by.vision.betsapi_parser</groupId>
+    <groupId>by.vision.betsapi_crawler</groupId>
     <artifactId>BetsAPI-crawler</artifactId>
     <version>0.1.2</version>
     <packaging>jar</packaging>
@@ -136,12 +136,7 @@
             <artifactId>telegrambots</artifactId>
             <version>4.1.2</version>
         </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
-        </dependency>
+        
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>

@@ -42,7 +42,7 @@ public class StageBuilder {
         settings = new Settings();
         settings.deserialize();
         settings.serialize();
-        showSettings(settings);
+        primaryController.showSettings();
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
@@ -76,27 +76,10 @@ public class StageBuilder {
         tgSettingsStage.centerOnScreen();
         tgSettingsStage.initStyle(StageStyle.UTILITY);
         //if settings was successfully loaded, show Telegram bot settings in GUI
-        if (StageBuilder.settings.getSerStat()){
-            showTgSettings(tgController);
-        }
+        tgController.showTgSettings();
     }
 
-    public void showSettings(Settings settings) {
-        primaryController.logicFX.setValue(settings.getLogic());
-        primaryController.timeMinFX.setText(String.valueOf(settings.getTimeSelectMin()));
-        primaryController.timeMaxFX.setText(String.valueOf(settings.getTimeSelectMax()));
-        primaryController.onTargetMinFx.setText(String.valueOf(settings.getOnTargetMin()));
-        primaryController.offTargetMinFX.setText(String.valueOf(settings.getOffTargetMin()));
-        primaryController.rateMinFx.setText(String.valueOf(settings.getRateMin()));
-        primaryController.possessionMinFX.setText(String.valueOf(settings.getPossessionMin()));
-        //showTgSettings(tgController);
-    }
 
-    private void showTgSettings(TgSettingsFXMLController tgController) {
-        tgController.chatId.setText(String.valueOf(settings.getChatID()));
-        tgController.botName.setText(String.valueOf(settings.getBotName()));
-        tgController.botToken.setText(String.valueOf(settings.getBotToken()));
-    }
 
     public static File getCurrentSettings() {
         return currentSettings;
@@ -106,15 +89,15 @@ public class StageBuilder {
         StageBuilder.currentSettings = currentSettings;
     }
 
-    public static Image getIcon() {
-        return new Image(Main.class.getResourceAsStream("/images/icon.png"));
-    }
-
     public static Stage getPrimaryStage() {
         return primaryStage;
     }
 
     public static Stage getTgSettingsStage() {
         return tgSettingsStage;
+    }
+
+    public static Image getIcon() {
+        return new Image(Main.class.getResourceAsStream("/images/icon.png"));
     }
 }

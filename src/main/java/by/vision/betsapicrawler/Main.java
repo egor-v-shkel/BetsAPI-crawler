@@ -42,7 +42,7 @@ public class Main extends Application {
         String jarDir = null;
         try {
             jarDir = new File(Main.class.getProtectionDomain().getCodeSource().getLocation()
-                    .toURI()).getPath();
+                    .toURI()).getParent();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }

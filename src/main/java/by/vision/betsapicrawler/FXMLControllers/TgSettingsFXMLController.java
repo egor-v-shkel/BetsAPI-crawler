@@ -13,23 +13,17 @@ import static by.vision.betsapicrawler.StageBuilder.settings;
 
 public class TgSettingsFXMLController {
     @FXML
-    private Button OK;
-
-    @FXML
-    private Button Apply;
-
-    @FXML
-    private Button Cancel;
-
-    @FXML
     public TextField chatId;
-
     @FXML
     public TextField botToken;
-
     @FXML
     public TextField botName;
-
+    @FXML
+    private Button OK;
+    @FXML
+    private Button Apply;
+    @FXML
+    private Button Cancel;
     @FXML
     private Label notification;
 
@@ -42,30 +36,39 @@ public class TgSettingsFXMLController {
     void apply(ActionEvent event) {
         getUserInput();
         if (checkInput()){
-            //apply settings
-            settings.setChatID(Integer.parseInt(chatIdText));
+
+            Integer checkedId = checkChatIdPrefix();
+
+            settings.setChatID(checkedId);
             settings.setBotToken(botTokenText);
             settings.setBotName(botNameText);
+
             notification.setText("Настройки применены");
             notification.setTextFill(Color.GREEN);
-            MyLogger.ROOT_LOGGER.debug("TgSettingsStage was applied");
+
+            MyLogger.ROOT_LOGGER.info("Telegram settings was applied");
         } else {
             notification.setText("Неправильно введены настройки");
             notification.setTextFill(Color.RED);
-            MyLogger.ROOT_LOGGER.debug("Wrong input in TgSettingsStage");
+            MyLogger.ROOT_LOGGER.debug("Wrong user input");
         }
     }
 
-    private boolean checkInput() {
-        return (chatIdText.matches("[-]\\d+") &&
-                botTokenText.matches("\\d{9}[:]\\w{35}") &&
-                botNameText.matches("(?i).+(_bot)$"));
+    /**
+     * Assume, that user can input chatID without "minus" prefix, we will be adding it at the beginning
+     *
+     * @return correct chatID
+     */
+    private Integer checkChatIdPrefix() {
+        String prefix = "-";
+        int id = Integer.parseInt(chatIdText);
+        return chatIdText.startsWith(prefix) ? id : - id;
     }
 
-    private void getUserInput(){
-        chatIdText = chatId.getText();
-        botTokenText = botToken.getText();
-        botNameText = botName.getText();
+    private boolean checkInput() {
+        return (chatIdText.matches("[-]\\d+|\\d+") &&
+                botTokenText.matches("\\d{9}[:]\\w{35}") &&
+                botNameText.matches("(?i).+(_bot)$"));
     }
 
     @FXML
@@ -82,5 +85,30 @@ public class TgSettingsFXMLController {
     @FXML
     void initialize() {
 
+    }
+
+    /**
+     * Make current settings visible in GUI
+     */
+    public void showTgSettings() {
+        chatId.setText(String.valueOf(settings.getChatID()));
+        botName.setText(String.valueOf(settings.getBotName()));
+        botToken.setText(String.valueOf(settings.getBotToken()));
+    }
+
+    public boolean checkNull(){
+        return true;
+    }
+
+    private void getUserInput(){
+        chatIdText = chatId.getText();
+        botTokenText = botToken.getText();
+        botNameText = botName.getText();
+    }
+
+    public void applyTgSettings(){
+        settings.setChatID(Long.parseLong(chatIdText));
+        settings.setBotToken(botTokenText);
+        settings.setBotName(botNameText);
     }
 }

@@ -6,11 +6,14 @@ public class Settings implements Serializable {
     //TODO define serialVersionUID
     //static final long serialVersionUID =
 
-    private final String DEFAULT_FILE_PATH = Main.JAR_DIR + "\\Settings.ser";
-    private String currentPath = Main.JAR_DIR;
-    private File currentFile = new File(DEFAULT_FILE_PATH);
-    // flag var, which shows serialization status
-    private boolean serStat = true;
+    private static final String DEFAULT_FILE_PATH = Main.JAR_DIR + "\\Settings.ser";
+    private static File currentFile = new File(DEFAULT_FILE_PATH);
+
+    //Logic options
+    public enum Logic {
+        AND,
+        OR
+    }
     //Minimal rate of any team
     private double rateMin = 1.0;
     //Time range of match
@@ -29,21 +32,25 @@ public class Settings implements Serializable {
     //Telegram settings
     private String botToken;
     private long chatID;
+
     private String botName;
 
     /**
      * Serialize object as default Settings.ser file to default location.
      */
     //serialize object to jar file location
-    public void serialize(){
-        serialize(DEFAULT_FILE_PATH);
+    public void serialize() throws IllegalArgumentException {
+        serialize(currentFile.getAbsolutePath());
     }
 
     /**
      * Serialize object to defined path as defined .ser file.
-     * @param path is where settings file should be stored.
+     * @param path should be absolute.
      */
-    public void serialize(String path){
+    public void serialize(String path) throws IllegalArgumentException  {
+
+        pathCheck(path);
+
         try {
             FileOutputStream fileOut =
                     new FileOutputStream(path);
@@ -51,8 +58,10 @@ public class Settings implements Serializable {
             out.writeObject(this);
             out.close();
             fileOut.close();
+
             currentFile = new File(path);
-            MyLogger.ROOT_LOGGER.info("Serialized data saved as"+path);
+
+            MyLogger.ROOT_LOGGER.info("Serialized data saved in: "+path);
             MyLogger.ROOT_LOGGER.info(this::toString);
         } catch (IOException i) {
             i.printStackTrace();
@@ -62,7 +71,7 @@ public class Settings implements Serializable {
     /**
      * Deserialize object from default settings file location.
      */
-    public void deserialize(){
+    public void deserialize() throws IllegalArgumentException{
         this.deserialize(DEFAULT_FILE_PATH);
     }
 
@@ -70,7 +79,10 @@ public class Settings implements Serializable {
      * Deserialize object from defined path
      * @param path is from where settings file should be loaded.
      */
-    public void deserialize(String path) {
+    public void deserialize(String path) throws IllegalArgumentException {
+
+        pathCheck(path);
+
         Settings s = new Settings();
         try {
             FileInputStream fileIn = new FileInputStream(path);
@@ -79,8 +91,7 @@ public class Settings implements Serializable {
             in.close();
             fileIn.close();
         } catch (IOException | ClassNotFoundException e) {
-            serStat = false;
-            MyLogger.STDOUT_LOGGER.warn("No local settings was found");
+            MyLogger.STDOUT_LOGGER.warn("No settings local was found");
         } finally {
             //TODO split this class in Settings.class (which will contain only fields) and SettingsApplier(which will
             // provide all actions with Settings object)
@@ -91,14 +102,24 @@ public class Settings implements Serializable {
             this.rateMin = s.rateMin;
             this.timeSelectMax = s.timeSelectMax;
             this.timeSelectMin = s.timeSelectMin;
-            if(serStat){
+
+            //prevent zeroes and nulls to be shown in GUI
+            boolean checkTgSettings = s.botName != null || this.chatID != 0 || this.botToken != null;
+            if(checkTgSettings){
                 this.botName = s.botName;
                 this.chatID = s.chatID;
                 this.botToken = s.botToken;
             }
+
+            currentFile = new File(path);
+
             MyLogger.ROOT_LOGGER.info("Settings was successfully loaded\n");
             MyLogger.ROOT_LOGGER.info(this::toString);
         }
+    }
+
+    private void pathCheck(String path) throws IllegalArgumentException {
+        if(path == null || !path.endsWith(".ser")) throw new IllegalArgumentException("Not an settings file");
     }
 
     @Override
@@ -107,8 +128,7 @@ public class Settings implements Serializable {
         String newLine = "\n";
         StringBuffer settings = sb.append("Внутренние настройки").append(newLine)
                 .append("Путь настроек по умолчанию: ").append(DEFAULT_FILE_PATH).append(newLine)
-                .append("Текущий путь: ").append(currentPath).append(newLine)
-                .append("Сохранены ли настройки? ").append(serStat?"Да":"Нет").append(newLine)
+                .append("Текущий путь: ").append(currentFile.getAbsolutePath()).append(newLine)
                 .append(newLine)
                 .append("Настройки пользователя: \n")
                 .append("Логика: ").append(logic).append(newLine)
@@ -124,13 +144,6 @@ public class Settings implements Serializable {
                 .append("Токен бота: ").append(botToken).append(newLine)
                 .append("Имя бота: ").append(botName).append(newLine);
         return settings.toString();
-    }
-
-    // Logic options
-    public enum Logic {
-        AND,
-        OR
-
     }
 
     public File getCurrentFile() {
@@ -189,14 +202,6 @@ public class Settings implements Serializable {
         this.onTargetMin = onTargetMin;
     }
 
-    public String getCurrentPath() {
-        return currentPath;
-    }
-
-    public void setCurrentPath(String currentPath) {
-        this.currentPath = currentPath;
-    }
-
     public int getPossessionMin() {
         return possessionMin;
     }
@@ -211,10 +216,6 @@ public class Settings implements Serializable {
 
     public void setRateMin(double rateMin) {
         this.rateMin = rateMin;
-    }
-
-    public boolean getSerStat() {
-        return serStat;
     }
 
     public int getTimeSelectMax() {

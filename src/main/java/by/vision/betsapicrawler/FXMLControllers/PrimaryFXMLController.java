@@ -62,6 +62,7 @@ public class PrimaryFXMLController {
         switch (startStopBtn.getText()) {
             case START:
                 applySettings();
+                saveSettings();
                 startCrawlSession();
                 startStopBtn.setText(STOP);
                 break;
@@ -75,31 +76,33 @@ public class PrimaryFXMLController {
     @FXML
     void handleSave(ActionEvent event) {
         applySettings();
-        settings.serialize(settings.getCurrentFile().getAbsolutePath());
+        saveSettings();
     }
 
     @FXML
-    public void handleSaveAs(ActionEvent actionEvent) {
+    public void handleSaveAs(ActionEvent event) {
         FileChooser fileChooser = predefineFileChooser();
-        MyLogger.STDOUT_LOGGER.debug("Saving settings in: "+settings.getCurrentPath());
         File file = fileChooser.showSaveDialog(StageBuilder.getPrimaryStage());
         if (file != null) {
+            applySettings();
             settings.serialize(file.getAbsolutePath());
-            MyLogger.STDOUT_LOGGER.debug("!!!Inside HandleAs "+file.getParent());
-            settings.setCurrentPath(file.getParent());
+            settings.setCurrentFile(file);
+
+            MyLogger.ROOT_LOGGER.debug("Settings was saved in: "+settings.getCurrentFile().getAbsolutePath());
         }
     }
 
     @FXML
     void handleLoad(ActionEvent event) {
         FileChooser fileChooser = predefineFileChooser();
-        MyLogger.STDOUT_LOGGER.debug("Trying to load settings from: "+settings.getCurrentPath());
         File file = fileChooser.showOpenDialog(StageBuilder.getPrimaryStage());
         if (file != null) {
             settings.deserialize(file.getAbsolutePath());
-            applySettings();
-            StageBuilder stageBuilder = Main.getStageBuilder();
-            stageBuilder.showSettings(settings);
+            //applySettings();
+
+            showSettings();
+
+            MyLogger.ROOT_LOGGER.debug("Settings was loaded from: "+ settings.getCurrentFile().getAbsolutePath());
         }
     }
 
@@ -138,14 +141,14 @@ public class PrimaryFXMLController {
         // Set extension filter
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("SER (*.ser)", "*.ser");
         fileChooser.getExtensionFilters().add(extFilter);
-        fileChooser.setInitialDirectory(new File(settings.getCurrentPath()));
+        fileChooser.setInitialDirectory(new File(settings.getCurrentFile().getParent()));
         return fileChooser;
     }
 
     private void startCrawlSession() {
         crawlerThread = new CrawlerThread("Crawler thread");
         //handleSave settings
-        settings.serialize();
+        saveSettings();
         //start new bot session
         Main.startBotSession(new TelegramBot());
     }
@@ -156,8 +159,8 @@ public class PrimaryFXMLController {
     }
 
     /**
-     * Current method will save all changes made in GUI that refer to {@link Settings} class
-     * and apply it to current settings.
+     * Current method gets all values from all GUI text fields (including "Telegam settings" text fields)
+     * and apply it to current {@link Settings}.
      *
      * @see by.vision.betsapicrawler.Settings;
      */
@@ -169,7 +172,12 @@ public class PrimaryFXMLController {
         settings.setOnTargetMin(Integer.parseInt(onTargetMinFx.getText()));
         settings.setOffTargetMin(Integer.parseInt(offTargetMinFX.getText()));
         settings.setRateMin(Double.parseDouble(rateMinFx.getText()));
+        //TODO apply TG settings?
         MyLogger.ROOT_LOGGER.debug("Settings was successfully applied");
+    }
+
+    private void saveSettings(){
+        settings.serialize();
     }
 
     public void initialize() {
@@ -179,4 +187,16 @@ public class PrimaryFXMLController {
         linkList.setItems(hyperlinkObservableList);
 
     }
+
+    public void showSettings() {
+        logicFX.setValue(settings.getLogic());
+        timeMinFX.setText(String.valueOf(settings.getTimeSelectMin()));
+        timeMaxFX.setText(String.valueOf(settings.getTimeSelectMax()));
+        onTargetMinFx.setText(String.valueOf(settings.getOnTargetMin()));
+        offTargetMinFX.setText(String.valueOf(settings.getOffTargetMin()));
+        rateMinFx.setText(String.valueOf(settings.getRateMin()));
+        possessionMinFX.setText(String.valueOf(settings.getPossessionMin()));
+        //showTgSettings(tgController);
+    }
+
 }
