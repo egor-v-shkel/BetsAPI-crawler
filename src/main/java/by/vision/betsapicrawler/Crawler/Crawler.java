@@ -1,6 +1,7 @@
 package by.vision.betsapicrawler.Crawler;
 
 import by.vision.betsapicrawler.Main;
+import by.vision.betsapicrawler.Settings;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
@@ -21,7 +22,7 @@ class Crawler {
 
         // Set the folder where intermediate crawl data is stored (e.g. list of urls that are extracted from previously
         // fetched pages and need to be crawled later).
-        config.setCrawlStorageFolder(Main.JAR_DIR);
+        config.setCrawlStorageFolder(Settings.JAR_DIR);
 
         // Be polite: Make sure that we don't send more than 1 request per second (1000 milliseconds between requests).
         // Otherwise it may overload the target servers.

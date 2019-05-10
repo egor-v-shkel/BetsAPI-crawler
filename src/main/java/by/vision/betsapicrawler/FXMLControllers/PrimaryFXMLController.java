@@ -10,10 +10,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.net.URL;
 
 import static by.vision.betsapicrawler.StageBuilder.*;
 
@@ -199,7 +202,6 @@ public class PrimaryFXMLController implements SettingsController {
         settings.setOnTargetMin(Integer.parseInt(onTargetMinFx.getText()));
         settings.setOffTargetMin(Integer.parseInt(offTargetMinFX.getText()));
         settings.setRateMin(Double.parseDouble(rateMinFx.getText()));
-        //TODO apply TG settings?
         MyLogger.ROOT_LOGGER.debug("Settings was applied");
     }
 

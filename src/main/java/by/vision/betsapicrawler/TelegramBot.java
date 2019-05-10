@@ -13,18 +13,6 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
 
-/*
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                    .setChatId(update.getMessage().getChatId())
-                    .setText(update.getMessage().getText());
-            try {
-                execute(message); // Call method to send the message
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
-        }
-*/
         switch (update.getMessage().getText()){
             case "/id":
             SendMessage sendMessage = new SendMessage()
@@ -71,7 +59,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         int atkDngL = leftMatch.getAttacksDangerous();
         int atkDngR = rightMatch.getAttacksDangerous();
 
-        //TODO make better method construction for readability
         message.append("<b>").append(league).append("</b>\n")
                 .append(clubL).append(" (").append(rateL).append(") - ").append(clubR).append(" (").append(rateR).append(")\n")
                 .append("<i>").append(timeL).append(" мин.</i>\n")

@@ -35,7 +35,7 @@ public class TgSettingsFXMLController implements SettingsController {
     @FXML
     void apply(ActionEvent event) {
         getUserInput();
-        if (checkInput()) {
+        if (checkUserInput()) {
 
             Integer checkedId = checkChatIdPrefix();
 
@@ -66,14 +66,15 @@ public class TgSettingsFXMLController implements SettingsController {
         return chatIdText.startsWith(prefix) ? id : -id;
     }
 
-    private boolean checkInput() {
+    private boolean checkUserInput() {
         return (chatIdText.matches("[-]\\d+|\\d+") &&
                 botTokenText.matches("\\d{9}[:]\\w{35}") &&
-                botNameText.matches("(?i).+(_bot)$"));
+                botNameText.matches("(?i).+(bot)$"));
     }
 
     @FXML
     void cancel(ActionEvent event) {
+        notification.setText("");
         StageBuilder.getTgSettingsStage().hide();
     }
 

@@ -1,21 +1,26 @@
 package by.vision.betsapicrawler;
 
 import java.io.*;
+import java.net.URISyntaxException;
 
 public class Settings implements Serializable {
     //TODO define serialVersionUID
     //static final long serialVersionUID =
 
-    private static final String DEFAULT_FILE_PATH = Main.JAR_DIR + "\\Settings.ser";
+    //Inner settings
+    public static final String JAR_DIR = jarDir();
+    private static final String DEFAULT_FILE_PATH = JAR_DIR + "\\Settings.ser";
     private static File currentFile = new File(DEFAULT_FILE_PATH);
 
-    //Primary settings
+    /*Primary settings*/
 
     //Logic options
     public enum Logic {
         AND,
         OR
     }
+    //Current logic
+    private Logic logic = Logic.AND;
     //Minimal rate of any team
     private double rateMin = 1.0;
     //Time range of match
@@ -27,15 +32,30 @@ public class Settings implements Serializable {
     private int onTargetMin = 2;
     // Off Target
     private int offTargetMin = 1;
-    // Logic
-    private Logic logic = Logic.AND;
     //Proxy timeout
     //private int proxyTimeout = 15000;
 
-    //Telegram settings
+    /*Telegram settings*/
+
     private String botToken;
     private long chatID;
     private String botName;
+
+    /**
+     *This method serves to get directory, where current  uberJar is located
+     * @return String
+     */
+    private static String jarDir() {
+        String jarDir = null;
+        try {
+            jarDir = new File(Main.class.getProtectionDomain().getCodeSource().getLocation()
+                    .toURI()).getParent();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        MyLogger.ROOT_LOGGER.debug("Jar dir: " + jarDir);
+        return jarDir;
+    }
 
     /**
      * Serialize object as default Settings.ser file to default location.
@@ -95,20 +115,6 @@ public class Settings implements Serializable {
         } catch (IOException | ClassNotFoundException e) {
             MyLogger.STDOUT_LOGGER.warn("No settings local was found");
         } finally {
-            /*this.logic = settings.logic;
-            this.onTargetMin = settings.onTargetMin;
-            this.offTargetMin = settings.offTargetMin;
-            this.possessionMin = settings.possessionMin;
-            this.rateMin = settings.rateMin;
-            this.timeSelectMax = settings.timeSelectMax;
-            this.timeSelectMin = settings.timeSelectMin;
-
-            if(checkNotNullTgSettings()){
-                this.botName = settings.botName;
-                this.chatID = settings.chatID;
-                this.botToken = settings.botToken;
-            }*/
-
             StageBuilder.settings = settings;
 
             currentFile = new File(path);

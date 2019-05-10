@@ -1,6 +1,11 @@
 package by.vision.betsapicrawler;
 
 import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -9,10 +14,11 @@ import org.telegram.telegrambots.meta.generics.BotSession;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 
 public class Main extends Application {
-    public static final String JAR_DIR = jarDir();
+
     private static TelegramBotsApi botsApi;
     public static BotSession botSession;
     private static StageBuilder stageBuilder;
@@ -25,7 +31,7 @@ public class Main extends Application {
         launch(args);
     }
 
-    private static void initTgBotsAPI() {
+    public static void initTgBotsAPI() {
         ApiContextInitializer.init();
         botsApi = new TelegramBotsApi();
     }
@@ -36,18 +42,6 @@ public class Main extends Application {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-    }
-
-    private static String jarDir() {
-        String jarDir = null;
-        try {
-            jarDir = new File(Main.class.getProtectionDomain().getCodeSource().getLocation()
-                    .toURI()).getParent();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        MyLogger.ROOT_LOGGER.debug("Jar dir: " + jarDir);
-        return jarDir;
     }
 
     @Override
