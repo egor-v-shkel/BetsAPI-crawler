@@ -37,9 +37,9 @@ public class TgSettingsFXMLController implements SettingsController {
         getUserInput();
         if (checkUserInput()) {
 
-            Integer checkedId = checkChatIdPrefix();
+            long chatID = Long.parseLong(chatIdText);
 
-            settings.setChatID(checkedId);
+            settings.setChatID(chatID);
             settings.setBotToken(botTokenText);
             settings.setBotName(botNameText);
 
@@ -52,18 +52,6 @@ public class TgSettingsFXMLController implements SettingsController {
             notification.setTextFill(Color.RED);
             MyLogger.ROOT_LOGGER.debug("Wrong user input");
         }
-    }
-
-    /**
-     * Assume, that user can input chatID without "minus" prefix, we will be adding it at the beginning
-     * if it's needed
-     *
-     * @return correct chatID
-     */
-    private Integer checkChatIdPrefix() {
-        String prefix = "-";
-        int id = Integer.parseInt(chatIdText);
-        return chatIdText.startsWith(prefix) ? id : -id;
     }
 
     private boolean checkUserInput() {

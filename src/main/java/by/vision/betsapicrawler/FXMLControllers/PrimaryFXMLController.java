@@ -180,7 +180,8 @@ public class PrimaryFXMLController implements SettingsController {
         //handleSave settings
         saveSettings();
         //start new bot session
-        Main.startBotSession(new TelegramBot());
+        TelegramBotModel.currentBot = new TelegramBot();
+        Main.startBotSession(TelegramBotModel.currentBot);
     }
 
     private void stopCrawlSession() {

@@ -29,7 +29,6 @@ import static by.vision.betsapicrawler.StageBuilder.*;
 
 public class MyCrawler extends WebCrawler {
 
-    private TelegramBot telegramBot = new TelegramBot();
     //List<CommonInfo> list = new ArrayList<>();
     private static HashMap<String, CommonInfo> hashMap = new HashMap<>();
     private TeamInfo leftTeamInfo;
@@ -280,6 +279,6 @@ public class MyCrawler extends WebCrawler {
             }
         });
         PrimaryFXMLController.hyperlinkObservableList.add(hyperlink);
-        telegramBot.interestingMatch(url, leftMatch, rightMatch);
+        TelegramBotModel.currentBot.interestingMatch(url, leftMatch, rightMatch);
     }
 }

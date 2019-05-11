@@ -15,19 +15,20 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         switch (update.getMessage().getText()){
             case "/id":
-            SendMessage sendMessage = new SendMessage()
-                        .setChatId(update.getMessage().getChatId())
-                        .setText(String.valueOf(update.getMessage().getChatId()));
+                Long chatId = update.getMessage().getChatId();
+                SendMessage sendChatID = new SendMessage()
+                        .setChatId(chatId)
+                        .setText(String.valueOf(chatId));
             try {
-                execute(sendMessage);
+                execute(sendChatID);
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
             break;
-            case "pause":
+            case "/pause":
                 System.out.println("Thread was paused");
                 break;
-            case "continue":
+            case "/continue":
             break;
             case "/exit":
                 System.exit(0);
@@ -72,12 +73,12 @@ public class TelegramBot extends TelegramLongPollingBot {
                 .append(url);
 
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(settings.getChatID()).setParseMode("html").setText(message.toString());
+        sendMessage.setChatId(settings.getChatID()).setText("Test");
         try {
-            this.execute(sendMessage);
+            execute(sendMessage);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-        this.onClosing();
+        //this.onClosing();
     }
 }
