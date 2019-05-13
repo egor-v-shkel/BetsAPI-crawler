@@ -1,13 +1,13 @@
 package by.vision.betsapicrawler.FXMLControllers;
 
-import by.vision.betsapicrawler.StageBuilder;
+import by.vision.betsapicrawler.SettingsModel;
 
 public interface SettingsController {
 
     void applySettings();
 
     default void saveSettings(){
-        StageBuilder.settings.serialize();
+        SettingsModel.currentSettings.serialize();
     }
 
     void showSettings();

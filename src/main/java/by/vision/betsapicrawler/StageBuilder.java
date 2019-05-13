@@ -14,7 +14,6 @@ import java.io.IOException;
 
 public class StageBuilder {
     private static final String title = "BetsAPI crawler v. 0.1.2";
-    public static Settings settings;
     private static Stage primaryStage;
     private static Stage tgSettingsStage;
     private PrimaryFXMLController primaryController;
@@ -37,9 +36,9 @@ public class StageBuilder {
             e.printStackTrace();
         }
         primaryController = fxmlLoader.getController();
-        settings = new Settings();
-        settings.deserialize();
-        settings.serialize();
+        SettingsModel.currentSettings = new Settings();
+        SettingsModel.currentSettings.deserialize();
+        SettingsModel.currentSettings.serialize();
         primaryController.showSettings();
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
@@ -74,7 +73,7 @@ public class StageBuilder {
         tgSettingsStage.initOwner(primaryStage);
         tgSettingsStage.centerOnScreen();
         tgSettingsStage.initStyle(StageStyle.UTILITY);
-        //if settings was successfully loaded, show Telegram bot settings in GUI
+        //if currentSettings was successfully loaded, show Telegram bot currentSettings in GUI
         tgController.showSettings();
     }
 

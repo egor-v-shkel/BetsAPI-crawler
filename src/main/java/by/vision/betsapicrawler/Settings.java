@@ -7,12 +7,12 @@ public class Settings implements Serializable {
     //TODO define serialVersionUID
     //static final long serialVersionUID =
 
-    //Inner settings
+    //Inner currentSettings
     public static final String JAR_DIR = jarDir();
     private static final String DEFAULT_FILE_PATH = JAR_DIR + "\\Settings.ser";
     private static File currentFile = new File(DEFAULT_FILE_PATH);
 
-    /*Primary settings*/
+    /*Primary currentSettings*/
 
     //Logic options
     public enum Logic {
@@ -35,7 +35,7 @@ public class Settings implements Serializable {
     //Proxy timeout
     //private int proxyTimeout = 15000;
 
-    /*Telegram settings*/
+    /*Telegram currentSettings*/
 
     private String botToken;
     private long chatID;
@@ -91,15 +91,15 @@ public class Settings implements Serializable {
     }
 
     /**
-     * Deserialize object from default settings file location.
+     * Deserialize object from default currentSettings file location.
      */
-    public void deserialize() throws IllegalArgumentException{
+    void deserialize() throws IllegalArgumentException{
         this.deserialize(DEFAULT_FILE_PATH);
     }
 
     /**
      * Deserialize object from defined path
-     * @param path is from where settings file should be loaded.
+     * @param path is from where currentSettings file should be loaded.
      */
     public void deserialize(String path) throws IllegalArgumentException {
 
@@ -113,9 +113,9 @@ public class Settings implements Serializable {
             in.close();
             fileIn.close();
         } catch (IOException | ClassNotFoundException e) {
-            MyLogger.STDOUT_LOGGER.warn("No settings local was found");
+            MyLogger.STDOUT_LOGGER.warn("No currentSettings local was found");
         } finally {
-            StageBuilder.settings = settings;
+            SettingsModel.currentSettings = settings;
 
             currentFile = new File(path);
 
@@ -125,12 +125,12 @@ public class Settings implements Serializable {
     }
 
     private void pathCheck(String path) throws IllegalArgumentException {
-        if(path == null || !path.endsWith(".ser")) throw new IllegalArgumentException("Not an settings file");
+        if(path == null || !path.endsWith(".ser")) throw new IllegalArgumentException("Not an currentSettings file");
     }
 
     /**
      * Prevent zeroes and nulls to be shown in GUI
-     * @return true if all fields related to Telegram settings not null or != 0
+     * @return true if all fields related to Telegram currentSettings not null or != 0
      * and vice versa
      */
     public boolean checkNotNullTgSettings() {
@@ -168,7 +168,7 @@ public class Settings implements Serializable {
     }
 
     public void setCurrentFile(File currentFile) {
-        this.currentFile = currentFile;
+        Settings.currentFile = currentFile;
     }
 
     public String getBotName() {

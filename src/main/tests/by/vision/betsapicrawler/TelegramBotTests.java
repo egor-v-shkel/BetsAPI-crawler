@@ -1,6 +1,5 @@
-package by.vision.bestapicrawler;
+package by.vision.betsapicrawler;
 
-import by.vision.betsapicrawler.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.telegram.telegrambots.ApiContextInitializer;
@@ -9,7 +8,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.BotSession;
 
-public class TelegramBotTests {
+class TelegramBotTests {
     private Settings settings;
     private TelegramBot tgBot;
     private final String TEST_MESSAGE = "Test message";
@@ -17,7 +16,7 @@ public class TelegramBotTests {
     private static BotSession botSession;
 
     @Test
-    public void shouldSendMessageToGroup(){
+    void shouldSendMessageToGroup(){
         preparation((long) -244826427);
         sendTestMessage();
         Assertions.assertEquals(TEST_MESSAGE, TEST_MESSAGE);
@@ -25,19 +24,19 @@ public class TelegramBotTests {
     }
 
     @Test
-    public void shouldSendPrivateMessage(){
+    void shouldSendPrivateMessage(){
         preparation((long) -149802553);
         sendTestMessage();
         Assertions.assertEquals(TEST_MESSAGE, TEST_MESSAGE);
         tgBot.onClosing();
     }
 
-    public void preparation(Long chatID){
+    void preparation(Long chatID){
         Settings settings = new Settings();
         settings.deserialize();
-        StageBuilder.settings = settings;
-        StageBuilder.settings.setChatID(chatID);
-        MyLogger.STDOUT_LOGGER.debug(StageBuilder.settings.toString());
+        SettingsModel.currentSettings = settings;
+        SettingsModel.currentSettings.setChatID(chatID);
+        MyLogger.STDOUT_LOGGER.debug(SettingsModel.currentSettings.toString());
         tgBot = new TelegramBot();
         initTgBotsAPI();
         startBotSession(tgBot);
@@ -53,12 +52,12 @@ public class TelegramBotTests {
         }
     }
 
-    public static void initTgBotsAPI() {
+    static void initTgBotsAPI() {
         ApiContextInitializer.init();
         botsApi = new TelegramBotsApi();
     }
 
-    public static void startBotSession(TelegramBot tgBot) {
+    static void startBotSession(TelegramBot tgBot) {
         try {
             botSession = botsApi.registerBot(tgBot);
         } catch (TelegramApiException e) {

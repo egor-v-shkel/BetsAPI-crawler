@@ -7,6 +7,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,12 +26,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import static by.vision.betsapicrawler.StageBuilder.*;
-
 public class MyCrawler extends WebCrawler {
 
     //List<CommonInfo> list = new ArrayList<>();
-    private static HashMap<String, CommonInfo> hashMap = new HashMap<>();
+    private static Map<String, CommonInfo> hashMap = new HashMap<>();
     private TeamInfo leftTeamInfo;
     private TeamInfo rightTeamInfo;
 
@@ -49,11 +48,9 @@ public class MyCrawler extends WebCrawler {
         return getCommonInfoAndDecide(doc, href);
     }
 
-    //TODO split in two methods
-
     private boolean getCommonInfoAndDecide(Document doc, String url) {
 
-        //link example https://ru.betsapi.com/r/1554160/Leixlip-United-v-Hartstown-Huntstown
+        //example link: https://ru.betsapi.com/r/1554160/Leixlip-United-v-Hartstown-Huntstown
         String href = url.replace("https://ru.betsapi.com", "");
         String CSSPattern = String.format("tr:has(a[href=%s])", href);
 
@@ -61,16 +58,14 @@ public class MyCrawler extends WebCrawler {
 
         //selecting node , where needed information located
         Element node = doc.selectFirst(CSSPattern);
-        //time
         //get time value and rid of unneeded '\'' character
         String timeStr = node.selectFirst("span.race-time").ownText().replace("'", "");
         int time = Integer.parseInt(timeStr);
         //do not add matches, that don't meet time value
-        int settingsTimeMin = settings.getTimeSelectMin();
-        int settingsTimeMax = settings.getTimeSelectMax();
+        int settingsTimeMin = SettingsModel.currentSettings.getTimeSelectMin();
+        int settingsTimeMax = SettingsModel.currentSettings.getTimeSelectMax();
         if(time < settingsTimeMin || time > settingsTimeMax) return false;
-
-        //TODO process case, when dont need to get rate param
+        //rate
         String rateLStr = node.selectFirst("td[id$=_0]").ownText();
         String rateRStr = node.selectFirst("td[id$=_2]").ownText();
         if (rateLStr.equals("-") || rateRStr.equals("-")){
@@ -81,7 +76,7 @@ public class MyCrawler extends WebCrawler {
         double rateR = Double.parseDouble(rateRStr);
 
         //do not add matches, that don't meet min coefficient value
-        double settingsRate = settings.getRateMin();
+        double settingsRate = SettingsModel.currentSettings.getRateMin();
         if(rateL < settingsRate || rateR < settingsRate) return false;
 
         //do not add matches, that already was sent to GUI/Telegram
@@ -91,7 +86,7 @@ public class MyCrawler extends WebCrawler {
 
         MyLogger.ROOT_LOGGER.debug(url);
 
-        //if match meet settings add them to hashmap
+        //if match meet currentSettings add them to hash map
         CommonInfo cmn = new CommonInfo();
         //rate
         cmn.setRateL(rateLStr);
@@ -119,8 +114,7 @@ public class MyCrawler extends WebCrawler {
     }
 
     /**
-     * This function is called when a page is fetched and ready to be processed
-     * by your program.
+     * This function is called when a page is fetched and ready to be processed.
      */
     @Override
     public void visit(Page page) {
@@ -230,9 +224,9 @@ public class MyCrawler extends WebCrawler {
             }
 
 
-            int settingsOnTargetMin = settings.getOnTargetMin();
-            int settingsOffTargetMin = settings.getOffTargetMin();
-            int settingsPossessionMin = settings.getPossessionMin();
+            int settingsOnTargetMin = SettingsModel.currentSettings.getOnTargetMin();
+            int settingsOffTargetMin = SettingsModel.currentSettings.getOffTargetMin();
+            int settingsPossessionMin = SettingsModel.currentSettings.getPossessionMin();
             boolean possessL = leftTeamInfo.getPossession() >= settingsPossessionMin;
             boolean onTargetL = leftTeamInfo.getTargetOn() >= settingsOnTargetMin;
             boolean offTargetL = leftTeamInfo.getTargetOff() >= settingsOffTargetMin;
@@ -240,7 +234,7 @@ public class MyCrawler extends WebCrawler {
             boolean onTargetR = rightTeamInfo.getTargetOn() >= settingsOnTargetMin;
             boolean offTargetR = rightTeamInfo.getTargetOff() >= settingsOffTargetMin;
 
-            switch (settings.getLogic()) {
+            switch (SettingsModel.currentSettings.getLogic()) {
 
                 case OR:
                     if ((possessL || onTargetL || offTargetL) || (possessionR || onTargetR || offTargetR))

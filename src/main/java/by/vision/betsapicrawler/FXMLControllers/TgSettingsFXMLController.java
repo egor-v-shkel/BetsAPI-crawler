@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 
-import static by.vision.betsapicrawler.StageBuilder.settings;
+import static by.vision.betsapicrawler.SettingsModel.currentSettings;
 
 public class TgSettingsFXMLController implements SettingsController {
     @FXML
@@ -39,14 +39,14 @@ public class TgSettingsFXMLController implements SettingsController {
 
             long chatID = Long.parseLong(chatIdText);
 
-            settings.setChatID(chatID);
-            settings.setBotToken(botTokenText);
-            settings.setBotName(botNameText);
+            currentSettings.setChatID(chatID);
+            currentSettings.setBotToken(botTokenText);
+            currentSettings.setBotName(botNameText);
 
             notification.setText("Настройки применены");
             notification.setTextFill(Color.GREEN);
 
-            MyLogger.ROOT_LOGGER.info("Telegram settings was applied");
+            MyLogger.ROOT_LOGGER.info("Telegram currentSettings was applied");
         } else {
             notification.setText("Неправильно введены настройки");
             notification.setTextFill(Color.RED);
@@ -78,14 +78,14 @@ public class TgSettingsFXMLController implements SettingsController {
     }
 
     /**
-     * Make current settings visible in GUI
+     * Make current currentSettings visible in GUI
      */
     public void showSettings() {
 
-        if (settings.checkNotNullTgSettings()) {
-            chatId.setText(String.valueOf(settings.getChatID()));
-            botName.setText(String.valueOf(settings.getBotName()));
-            botToken.setText(String.valueOf(settings.getBotToken()));
+        if (currentSettings.checkNotNullTgSettings()) {
+            chatId.setText(String.valueOf(currentSettings.getChatID()));
+            botName.setText(String.valueOf(currentSettings.getBotName()));
+            botToken.setText(String.valueOf(currentSettings.getBotToken()));
         }
 
     }
@@ -97,8 +97,8 @@ public class TgSettingsFXMLController implements SettingsController {
     }
 
     public void applySettings() {
-        settings.setChatID(Long.parseLong(chatIdText));
-        settings.setBotToken(botTokenText);
-        settings.setBotName(botNameText);
+        currentSettings.setChatID(Long.parseLong(chatIdText));
+        currentSettings.setBotToken(botTokenText);
+        currentSettings.setBotName(botNameText);
     }
 }

@@ -10,13 +10,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.net.URL;
 
 import static by.vision.betsapicrawler.StageBuilder.*;
 
@@ -78,7 +75,7 @@ public class PrimaryFXMLController implements SettingsController {
         switch (startStopBtn.getText()) {
             case START:
                 applySettings();
-                if (!settings.checkNotNullTgSettings()) {
+                if (!SettingsModel.currentSettings.checkNotNullTgSettings()) {
                     alert();
                     break;
                 }
@@ -115,10 +112,10 @@ public class PrimaryFXMLController implements SettingsController {
         File file = fileChooser.showSaveDialog(StageBuilder.getPrimaryStage());
         if (file != null) {
             applySettings();
-            settings.serialize(file.getAbsolutePath());
-            settings.setCurrentFile(file);
+            SettingsModel.currentSettings.serialize(file.getAbsolutePath());
+            SettingsModel.currentSettings.setCurrentFile(file);
 
-            MyLogger.ROOT_LOGGER.debug("Settings was saved in: "+settings.getCurrentFile().getAbsolutePath());
+            MyLogger.ROOT_LOGGER.debug("Settings was saved in: "+ SettingsModel.currentSettings.getCurrentFile().getAbsolutePath());
         }
     }
 
@@ -127,12 +124,12 @@ public class PrimaryFXMLController implements SettingsController {
         FileChooser fileChooser = predefineFileChooser();
         File file = fileChooser.showOpenDialog(StageBuilder.getPrimaryStage());
         if (file != null) {
-            settings.deserialize(file.getAbsolutePath());
+            SettingsModel.currentSettings.deserialize(file.getAbsolutePath());
             //applySettings();
 
             showSettings();
 
-            MyLogger.ROOT_LOGGER.debug("Settings was loaded from: "+ settings.getCurrentFile().getAbsolutePath());
+            MyLogger.ROOT_LOGGER.debug("Settings was loaded from: "+ SettingsModel.currentSettings.getCurrentFile().getAbsolutePath());
         }
     }
 
@@ -171,13 +168,13 @@ public class PrimaryFXMLController implements SettingsController {
         // Set extension filter
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("SER (*.ser)", "*.ser");
         fileChooser.getExtensionFilters().add(extFilter);
-        fileChooser.setInitialDirectory(new File(settings.getCurrentFile().getParent()));
+        fileChooser.setInitialDirectory(new File(SettingsModel.currentSettings.getCurrentFile().getParent()));
         return fileChooser;
     }
 
     private void startCrawlSession() {
         crawlerThread = new CrawlerThread("Crawler thread");
-        //handleSave settings
+        //handleSave currentSettings
         saveSettings();
         //start new bot session
         TelegramBotModel.currentBot = new TelegramBot();
@@ -190,19 +187,19 @@ public class PrimaryFXMLController implements SettingsController {
     }
 
     /**
-     * Current method gets all values from all GUI text fields (including "Telegam settings" text fields)
+     * Current method gets all values from all GUI text fields (including "Telegam currentSettings" text fields)
      * and apply it to current {@link Settings}.
      *
      * @see by.vision.betsapicrawler.Settings;
      */
     public void applySettings() {
-        settings.setLogic(logicFX.getValue());
-        settings.setTimeSelectMin(Integer.parseInt(timeMinFX.getText()));
-        settings.setTimeSelectMax(Integer.parseInt(timeMaxFX.getText()));
-        settings.setPossessionMin(Integer.parseInt(possessionMinFX.getText()));
-        settings.setOnTargetMin(Integer.parseInt(onTargetMinFx.getText()));
-        settings.setOffTargetMin(Integer.parseInt(offTargetMinFX.getText()));
-        settings.setRateMin(Double.parseDouble(rateMinFx.getText()));
+        SettingsModel.currentSettings.setLogic(logicFX.getValue());
+        SettingsModel.currentSettings.setTimeSelectMin(Integer.parseInt(timeMinFX.getText()));
+        SettingsModel.currentSettings.setTimeSelectMax(Integer.parseInt(timeMaxFX.getText()));
+        SettingsModel.currentSettings.setPossessionMin(Integer.parseInt(possessionMinFX.getText()));
+        SettingsModel.currentSettings.setOnTargetMin(Integer.parseInt(onTargetMinFx.getText()));
+        SettingsModel.currentSettings.setOffTargetMin(Integer.parseInt(offTargetMinFX.getText()));
+        SettingsModel.currentSettings.setRateMin(Double.parseDouble(rateMinFx.getText()));
         MyLogger.ROOT_LOGGER.debug("Settings was applied");
     }
 
@@ -215,13 +212,13 @@ public class PrimaryFXMLController implements SettingsController {
     }
 
     public void showSettings() {
-        logicFX.setValue(settings.getLogic());
-        timeMinFX.setText(String.valueOf(settings.getTimeSelectMin()));
-        timeMaxFX.setText(String.valueOf(settings.getTimeSelectMax()));
-        onTargetMinFx.setText(String.valueOf(settings.getOnTargetMin()));
-        offTargetMinFX.setText(String.valueOf(settings.getOffTargetMin()));
-        rateMinFx.setText(String.valueOf(settings.getRateMin()));
-        possessionMinFX.setText(String.valueOf(settings.getPossessionMin()));
+        logicFX.setValue(SettingsModel.currentSettings.getLogic());
+        timeMinFX.setText(String.valueOf(SettingsModel.currentSettings.getTimeSelectMin()));
+        timeMaxFX.setText(String.valueOf(SettingsModel.currentSettings.getTimeSelectMax()));
+        onTargetMinFx.setText(String.valueOf(SettingsModel.currentSettings.getOnTargetMin()));
+        offTargetMinFX.setText(String.valueOf(SettingsModel.currentSettings.getOffTargetMin()));
+        rateMinFx.setText(String.valueOf(SettingsModel.currentSettings.getRateMin()));
+        possessionMinFX.setText(String.valueOf(SettingsModel.currentSettings.getPossessionMin()));
     }
 
 }

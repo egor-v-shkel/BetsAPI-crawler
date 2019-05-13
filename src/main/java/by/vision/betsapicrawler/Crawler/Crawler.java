@@ -71,7 +71,7 @@ class Crawler {
         // Number of threads to use during crawling. Increasing this typically makes crawling faster. But crawling
         // speed depends on many other factors as well. You can experiment with this to figure out what number of
         // threads works best for you.
-        int numberOfCrawlers = 5;
+        int numberOfCrawlers = 2;
 
         // The factory which creates instances of crawlers.
         CrawlController.WebCrawlerFactory<MyCrawler> factory = MyCrawler::new;

@@ -6,7 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import static by.vision.betsapicrawler.StageBuilder.settings;
+import static by.vision.betsapicrawler.SettingsModel.currentSettings;
 
 public class TelegramBot extends TelegramLongPollingBot {
 
@@ -38,12 +38,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return settings.getBotName();
+        return currentSettings.getBotName();
     }
 
     @Override
     public String getBotToken() {
-        return settings.getBotToken();
+        return currentSettings.getBotToken();
     }
 
     public void interestingMatch(String url, TeamInfo leftMatch, TeamInfo rightMatch) {
@@ -73,7 +73,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                 .append(url);
 
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(settings.getChatID()).setParseMode("html").setText(message.toString());
+        sendMessage.setChatId(currentSettings.getChatID()).setParseMode("html").setText(message.toString());
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
