@@ -1,1 +1,1 @@
-web: java -cp target/classes/:target/dependency/* com.wedevol.xmpp.EntryPoint
+web: java -cp target/classes/:target/dependency/* by.vision.betsapicrawler.Main
