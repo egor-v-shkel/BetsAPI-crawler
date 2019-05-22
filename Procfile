@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp target/BetsAPI-crawler-0.1.2.jar by.vision.betsapicrawler.Main
+web: java -cp target/classes/:target/dependency/* com.wedevol.xmpp.EntryPoint
